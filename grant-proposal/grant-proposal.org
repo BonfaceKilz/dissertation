@@ -1,0 +1,89 @@
+#+OPTIONS: toc:nil title:nil num:nil
+#+latex_class: article
+#+latex_class_options: [notitlepage,11pt]
+#+INCLUDE: config.org
+
+* README                                                           :noexport:
+This is an org template for dissertation that I created for the
+purpose of applying for this [[http://www.datascienceafrica.org/dsa-research-awards-2022/][grant]]. Headers with the "/noexport"/ tag
+will not be exported. Also, headers with "/ignore/" will be ignored, but
+the content exported anyway.
+
+** Issues:
+- Data Quality
+  
+- Issues around sharing data. Here in Kenya, there's a law that says
+  that all data related to health should be stored locally. The
+  challenge with that is that we have very complicated schemas for
+  said data. As an example, last time I checked, the Ministry of
+  Health relies on <https://dhis2.org/> to collect, store, and release
+  public data. I'd wager that many people struggle with evolving
+  data-sets.
+
+- Racial bias and unfair predictions.
+
+- Reproducibility is one of them. I've heard no one talk about that. I
+  hear no one talking about it. At SU, many people, with the exception
+  of Shelby, do not appreciate it's significant. And people who may
+  (in Corporations), interpret reproducibility as using Docker
+  containers.
+  
+** Requirements [/]
+
+- [ ] A research hypothesis and expected outcomes;
+- [ ] A brief paragraph on the long-term vision for the work and a
+  description of the intended deliverables;
+- [ ] A brief ethical review that considers any perceived risks and the research’s effect on people and society;
+- [ ] A realistic timeline of the research project;
+- [ ] A budget detailing the total amount requested and expenditure allocation;
+- [ ] A letter of support by their supervisor, and a copy of the MSc/PhD study admission letter;
+- [ ] Current academic transcript of the applicant in the enrolled program;
+- [ ] Proof of permanent residency or nationality of an eligible
+  African country.
+
+* Introduction
+
+In Africa, many people limit Data Science and it's many derivatives to
+the area of machine learning algorithms. This dissertation seeks to
+research how existing platforms, particularly huge data-sets around
+open-source bio-informatics data could be stored in a more efficient
+ways, and to demonstrate that in genenetwork.
+
+
+The two aims of this dissertation are:
+
+\begin{description}
+
+\item[Aim 1: Improve the quality of data in GeneNetwork]
+
+{
+As data grows and evolves over time, the underlying database structure becomes more complicated. This complicated structure becomes an impediment to performing Machine Learning tasks. This dissertation will attempt to demonstrate the migration of a bio-informatics database to a more efficient graph-like database.
+}
+
+\item[Aim 2: Demonstrate Reproducibility in a data science project]
+
+{
+In Africa, as in the rest of the world, reproducibility in research is a problem. This dissertation aims at demonstrating how GNU Guix can be leveraged in guaranteeing reproducibility with regards to the software tool chain
+}
+
+\end{description}
+
+
+* Research Strategy
+
+TODO: Ethical Review, Timeline, Budget, Dev Environment
+
+* Project Management
+
+TODO
+
+* Bibliography                                                       :ignore:
+
+\newpage
+
+\printbibliography
+
+* Special Elisp to run on this document                     :noexport:
+# local variables:
+# eval: (progn (require 'ox-extra) (ox-extras-activate '(ignore-headlines)))
+# end:
