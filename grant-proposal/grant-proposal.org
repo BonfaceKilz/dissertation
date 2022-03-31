@@ -4,7 +4,7 @@
 #+INCLUDE: config.org
 
 * README                                                           :noexport:
-This is an org template for dissertation that I created for the
+This is an org template for a grant-proposal that I created for the
 purpose of applying for this [[http://www.datascienceafrica.org/dsa-research-awards-2022/][grant]]. Headers with the "/noexport"/ tag
 will not be exported. Also, headers with "/ignore/" will be ignored, but
 the content exported anyway.
