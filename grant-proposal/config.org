@@ -1,6 +1,7 @@
 #+LaTeX_HEADER: \usepackage[utf8]{inputenc}
 #+LaTeX_HEADER: \usepackage[T1]{fontenc}
 #+LaTeX_HEADER: \usepackage{palatino}
+#+LaTeX_HEADER: \usepackage{enumitem}
 @@latex:\linespread{1.05}@@
 @@latex:\renewcommand*\familydefault{\sfdefault}@@
 #+LaTeX_HEADER: \usepackage{amsfonts, amsmath, amsthm, amssymb}
@@ -9,7 +10,5 @@
 #+LaTeX_HEADER: \usepackage{wrapfig}
 #+LaTeX_HEADER: \usepackage[labelfont=bf]{caption}
 #+LaTeX_HEADER: \usepackage[top=0.5in,bottom=0.5in,left=0.5in,right=0.5in]{geometry}
-#+LaTeX_HEADER: \usepackage[backend=bibtex,sorting=none]{biblatex}
-#+LATEX_HEADER: \addbibresource{proposal.bib}
 @@latex:\pagestyle{empty}@@
 @@latex:\hyphenation{ionto-pho-re-tic iso-tro-pic fortran}@@

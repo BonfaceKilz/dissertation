@@ -1,7 +1,9 @@
 #+OPTIONS: toc:nil title:nil num:nil
 #+latex_class: article
 #+latex_class_options: [notitlepage,11pt]
+#+CITE_EXPORT: biblatex
 #+INCLUDE: config.org
+#+bibliography: proposal.bib
 
 * README                                                           :noexport:
 This is an org template for a grant-proposal that I created for the
