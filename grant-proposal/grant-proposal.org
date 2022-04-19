@@ -197,6 +197,9 @@ big data sets here in Kenya, particularly around
 pathogens, a concept that could be extended to
 other African countries.
 
+My supervisors for this project are Prof. Shelby Solomon, Strathmore University Nairobi, who is an expert in data science, AI and ML, and Prof Pjotr Prins, University of Tennessee USA, who is an expert on genetics, databases and data privacy and Dr George Gitinji, KEMRI/Wellcome Trust, Kenya, who is the bioinformatics and data science lead.
+
+
 * Ethical Review
 
 This research primarily involves QTL and omics
@@ -205,7 +208,9 @@ supplied by GeneNetwork, and will grow to
 accommodate human models. Working with human data
 is sensitive and is prone to misuse. Propers steps
 will be taken to ensure that the genetic human
-data will be de-anonimysed and pseudo-randomized.
+data will be anonimysed and encrypted using the latest techniques in line with institutional requirements.
+
+FIXME: you need to explain how you can make data FAIR and machine reachable while it is protected from 'misuse'.
 
 With data stored in a more semantic way in RDF,
 this research hopes to show how easy it "should"
@@ -227,7 +232,8 @@ colloquially labeled "NoSQL databases".
 This research is expected to run through the
 entirety of my Master's Program which ends in
 June 2023. I aim to finish this project by
-May 2023.
+May 2023. The grant will help me support my studies so I can focus fully on this
+data science project.
 
 * Budget
 
