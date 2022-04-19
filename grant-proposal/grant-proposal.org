@@ -32,7 +32,7 @@ ignored, but the content exported anyway.
   of Shelby, do not appreciate it's significant. And people who may
   (in Corporations), interpret reproducibility as using Docker
   containers.
-  
+
 ** Requirements [5/8]
 
 - [X] A research hypothesis and expected outcomes;
@@ -64,14 +64,23 @@ goal-- as hard as getting to Mars.
 
 * Introduction
 
-Genenetwork is a long-running bio-medical service
-that has been in existence since 1994. It aims to
-give researchers open-access FAIR data that they
-can run analysis on vis-a-vis: the web; API
-end-points; and live Jupyter notebooks inside
-self-hosted GNU Guix
-containers[cite:@theGuixEnvironment2022Gnu]. Underlying
-this service, there is a mountain of data that has
+Current efforts in machine learning and artificial intelligence are hampered by access
+to data that is hard to access and/or can not be reasoned on by machines[cite].
+Effectively, even public data is often siloed because relationships between data elements have to be guessed from limited information, such as column headers and row names.
+
+In this data-science project I aim to unlock biological data so it can be made available for machine analysis.
+I will start with the GeneNetwork public data repository that contains over 20 years of heterogeneous experimental data.
+
+Genenetwork (GN) is a long-running bio-medical webservice that has been in existence since 1994[cite 3 papers].
+GN aims to give researchers open-access FAIR data that they can run analysis on vis-a-vis: the web; API end-points; and live Jupyter notebooks inside self-hosted GNU Guix containers[cite:@theGuixEnvironment2022Gnu]. GN is uniquely centered on hosting genetical data, phenotyping, QTL and GWA studies in human and model species. Having it all in one database with a simple web UI allows any researcher to run analysis and correlate over many studies.
+
+As part of my master studies at Strathmore University I have already been writing funcionality for the web front-end of GN.
+In the course of this work I have come to realise that the underlying data structures - some 80 cross-referenced SQL tables and many different additional file types - make it hard to access this
+data for general data mining. A REST API was created to publish part of that data, but it is clear that more flexible approaches are needed to increase the value of the service.
+Unlocking the data means reorganising the data. Not only that, I aim to make a copy of the current service that is hosted in Memphis TN, USA, and host it in Kenya at KEMRI/Wellcome Trust Kilifi. This will allow us to add African studies and data to GN using the latest methods, including homomorphic encryption of human data [cite] and differential privacy [cite].
+
+Underlying
+the GN service, there is a mountain of data that has
 been growing consistently, and with it new
 challenges, in particular: espousing clear
 relations between the data given a history of
