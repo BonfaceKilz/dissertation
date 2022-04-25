@@ -33,7 +33,7 @@ ignored, but the content exported anyway.
   (in Corporations), interpret reproducibility as using Docker
   containers.
 
-** Requirements [5/8]
+** Requirements [7/8]
 
 - [X] A research hypothesis and expected outcomes;
 - [X] A brief paragraph on the long-term vision for the work and a
@@ -43,11 +43,11 @@ ignored, but the content exported anyway.
 - [X] A brief ethical review that considers any perceived risks and the research’s effect on people and society;
 - [X] A realistic timeline of the research project;
 - [X] A budget detailing the total amount requested and expenditure allocation;
-- [ ] A letter of support by their supervisor, and a copy of the MSc/PhD study admission letter;
-  - [ ] Admission Letter
+- [-] A letter of support by their supervisor, and a copy of the MSc/PhD study admission letter;
+  - [X] Admission Letter
   - [ ] Letter of support by supervisor
-- [ ] Current academic transcript of the applicant in the enrolled program;
-- [ ] Proof of permanent residency or nationality of an eligible
+- [X] Current academic transcript of the applicant in the enrolled program;
+- [X] Proof of permanent residency or nationality of an eligible
   African country
 
 ** Example of ML Case
@@ -60,8 +60,6 @@ computable genomes that have never been born yet. Can we
 compute their phenotype?  That is the big hairy audacious
 goal-- as hard as getting to Mars.
 
-
-
 * Introduction
 
 Current efforts in AI/ML are hampered by data that is difficult to access for both non-coders and intelligent machines[cite:@martens2018importance;@stall2019make;@wilkinson2016fair].
@@ -69,7 +67,7 @@ Effectively, even public data that is shared among different communities is ofte
 
 In this data science project, I aim to unlock biological data so that it can be made available for machine analysis. I will start with the Genetwork public data repository that contains over 20 years of heterogeneous experimental data.
 
-Genenetwork (GN) is a long-running bio-medical webservice that has been in existence since 1994[cite:@mulligan2017genenetwork;@sloan2016genenetwork;@wang2003webqtl;https://pubmed.ncbi.nlm.nih.gov/33472826/]. GN enables researchers with little programming or mathematical statistics experience to access omics data through the web interface, and to also run complex statistical models on the aforementioned data vis-a-vis a web interface. For the more advanced user, this data is presented through API end-points (which is accessible in a programming environment such as R or Python), or alternatively inside live Jupyter notebooks residing in self-hosted GNU Guix containers [fn:guix-containers]
+Genenetwork (GN) is a long-running bio-medical webservice that has been in existence since 1994[cite:@mulligan2017genenetwork;@sloan2016genenetwork;@wang2003webqtl;https://pubmed.ncbi.nlm.nih.gov/33472826/]. GN enables researchers with little programming or mathematical statistics experience to access omics data through the web interface, and to also run complex statistical models on the aforementioned data vis-a-vis a web interface. For the more advanced user, this data is presented through API end-points (which is accessible in a programming environment such as R or Python), or alternatively inside live Jupyter notebooks residing in self-hosted GNU Guix containers [fn:guix-containers].
 
 GN is uniquely centered on hosting genetics data, phenotyping, QTL and GWA studies in human and model species, such as mouse and rat. Having all this data from different experiments spanning over 20 years in one database with a simple web UI allows any researcher to run analysis and correlate over many studies.
 
@@ -77,12 +75,12 @@ As part of my master's studies at Strathmore University, I write functionality f
 REST APIs are not very useful for automated AI analysis because machines can not reason about the relationships of the provided resources.
 It is clear that more flexible approaches are needed to increase the value of the service.  Unlocking the data means re-organizing the data and providing a way of automated data discovery.
 In addition I aim to make a copy of the current widely used service that is physically hosted in Memphis TN, USA, and host it in Kenya at KEMRI/Wellcome Trust Kilifi.
-This will allow us to add African studies and data to GN using the latest methods, including homomorphic encryption of human data [cite:@mott2020private] and differential privacy [cite:@dwork2008differential;https://nlnet.nl/project/VariationGraph/].
+This will allow us to add African studies and data to GN using the latest methods, including homomorphic encryption of human data [cite:@mott2020private] and differential privacy [cite:@dwork2008differential;@nlnetVariationGraph].
 
-Underpinning the GN service is a mountain of data that is growing steadily (currently about 0.5TB), and with it new challenges, in particular: espousing clear relations between the data given a history of ad-hoc storage; fast data retrieval; non-obvious complex queries to do seemingly straight-forward tasks; connecting with other open databases (e.g. Uniprot) in a coherent way; and unclear means of adding new data that does not align with existing schemata. In the GN software model I found XXX specialised SQL queries for search, data fetching and analysis.
-Prividing a new graph-based RDF data model with built-in relationships will make machine-based data mining possible[cite]. These methods are not new. Two successful very large and high performing RDF databases are Wikidata - the backend for Wikipedia - and Uniprot [cites].
+Underpinning the GN service is a mountain of data that is growing steadily (currently about 0.5TB), and with it new challenges, in particular: espousing clear relations between the data given a history of ad-hoc storage; fast data retrieval; non-obvious complex queries to do seemingly straight-forward tasks; connecting with other open databases (e.g. Uniprot) in a coherent way; and unclear means of adding new data that does not align with existing schemata. In the GN software model I found 163 specialised SQL queries for search, data fetching and analysis.
+Providing a new graph-based RDF data model with built-in relationships will make machine-based data mining possible[cite:@munoz2014using]. These methods are not new. Two successful very large and high performing RDF databases are Wikidata - the backend for Wikipedia - and Uniprot [cite:@erxleben2014introducing;@malyshev2018getting;@redaschi2009uniprot].
 
-With this grant I aim to present new opportunities to the scientific community; and in particular, African organizations that have faced similar problems. Having more semantic data that's easily accessible and shareable helps in pushing research work forwards. It would be a good first step in ultimately answering some difficult open biological questions such as: "Are specific genes/genotypes associated with certain cancers in certain populations in Kenya" or "What traits/phenotypes are risk factor in conjunction with diabetes or hypertension in the Kenya"? Suffice to say that these questions can not be answered by some 'foreign' database or association study. Key is to come up with a system that can allow for data analysis. And because GeneNetwork is a long running and successful self-sustained open source project [cite github stats] I am convinced that it is a great fundament for future data science work and that my contribution will be absorbed in the overall project.
+With this grant I aim to present new opportunities to the scientific community; and in particular, African organizations that have faced similar problems. Having more semantic data that's easily accessible and shareable helps in pushing research work forwards. It would be a good first step in ultimately answering some difficult open biological questions such as: "Are specific genes/genotypes associated with certain cancers in certain populations in Kenya" or "What traits/phenotypes are risk factor in conjunction with diabetes or hypertension in the Kenya"? Suffice to say that these questions can not be answered by some 'foreign' database or association study. Key is to come up with a system that can allow for data analysis. And because GeneNetwork is a long running and successful self-sustained open source project [cite:@gnGitStats] I am convinced that it is a great fundament for future data science work and that my contribution will be absorbed in the overall project.
 
  *Research Hypothesis*: Moving graph-like biological data from a SQL database into a graph-like structure, RDF, will make it [the data] more semantic, easier to share, and reduce developer hours required during system integration with other data systems.
 
@@ -132,6 +130,8 @@ For sensitive data, applying anonymization techniques does not necessarily make 
 
 With data stored in a more semantic way in RDF, this research hopes to show how easy and safe it "should" be to share complex data, and also how cheap it can be to integrate other data sources into a project. The hope is that it would demonstrate how practical RDF is, and how cheap sharing data that lies in different servers on different schemas can be. Achieving this would push Science forward by allowing researchers easy access to data. Linked data graph-databases are going to play an increasingly important role in the bio-medical sciences, next to tabular file formats, SQL databases and the more tree-like storage systems colloquially labeled "NoSQL databases".
 
+\clearpage
+
 * Timeline
 
 This research is expected to run through the entirety of my Master's Program which ends in June 2023. I aim to finish this project by May 2023. The grant will help me support my studies so I can focus fully on this data science project.
@@ -151,7 +151,7 @@ This research is expected to run through the entirety of my Master's Program whi
 
 * Footnotes                                                          :ignore:
 [fn:guix-containers] https://guix.gnu.org/manual/en/html_node/Invoking-guix-container.html}
-[fn:storing-sql] Storing data in SQL is the current standard in biology 
+[fn:storing-sql] Storing data in SQL is the current standard in biology
 
 # local variables:
 # eval: (progn (require 'ox-extra) (ox-extras-activate '(ignore-headlines)))
