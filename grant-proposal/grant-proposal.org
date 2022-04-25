@@ -65,13 +65,13 @@ goal-- as hard as getting to Mars.
 * Introduction
 
 Current efforts in AI/ML are hampered by data that is difficult to access for both non-coders and intelligent machines[cite:@martens2018importance;@stall2019make;@wilkinson2016fair].
-Effectively, even public data that is shared among different communities is often siloed because relationships between data elements have to be guessed from limited information, such as column headers and row names. This is a time-sink in terms of developer hours in trying to work out how to integrate and use such datasets.
-
-@@ Note: in the above paragraph I would only focus on the machines - so this can be an AI preparation proposal. See:
+Effectively, even public data that is shared among different communities is often siloed because relationships between data elements have to be guessed from limited information, such as column headers and row names. For complex data to be truly useful, we need to enable machines to not only access the data, but also interpret and incorporate this data in to their algorithms. This would enable automatic inferencing beyond one-to-one equivalence matches to more complicated relationships across datasets.
 
 In this data science project, I aim to unlock biological data so that it can be made available for machine analysis. I will start with the Genetwork public data repository that contains over 20 years of heterogeneous experimental data.
 
-Genenetwork (GN) is a long-running bio-medical webservice that has been in existence since 1994[cite:@mulligan2017genenetwork;@sloan2016genenetwork;@wang2003webqtl;https://pubmed.ncbi.nlm.nih.gov/33472826/]. GN aims to give researchers open-access to FAIR data that they can run analysis on vis-a-vis (@@ not clear): the web; API end-points; and live Jupyter notebooks inside self-hosted GNU Guix containers[cite:@theGuixEnvironment2022Gnu]. GN is uniquely centered on hosting genetics data, phenotyping, QTL and GWA studies in human and model species, such as mouse and rat. Having all this data from different experiments spanning over 20 years in one database with a simple web UI allows any researcher to run analysis and correlate over many studies.
+Genenetwork (GN) is a long-running bio-medical webservice that has been in existence since 1994[cite:@mulligan2017genenetwork;@sloan2016genenetwork;@wang2003webqtl;https://pubmed.ncbi.nlm.nih.gov/33472826/]. GN enables researchers with little programming or mathematical statistics experience to access omics data through the web interface, and to also run complex statistical models on the aforementioned data vis-a-vis a web interface. For the more advanced user, this data is presented through API end-points (which is accessible in a programming environment such as R or Python), or alternatively inside live Jupyter notebooks residing in self-hosted GNU Guix containers [fn:guix-containers]
+
+GN is uniquely centered on hosting genetics data, phenotyping, QTL and GWA studies in human and model species, such as mouse and rat. Having all this data from different experiments spanning over 20 years in one database with a simple web UI allows any researcher to run analysis and correlate over many studies.
 
 As part of my master's studies at Strathmore University, I write functionality for the web front-end of GN. In the course of this work I have come to realize that underlying data structures-- some 80 cross-referenced SQL tables and many different additional file types-- make it hard to access this data for general data mining. A REST API was created to publish part of that data. However, a REST API is rigid and predicts how people want to access data; it takes some level of developer dexterity to meet the needs of the API users.
 REST APIs are not very useful for automated AI analysis because machines can not reason about the relationships of the provided resources.
@@ -94,13 +94,12 @@ With this grant I aim to present new opportunities to the scientific community; 
  - More semantic data structure that makes inserts more easier.
  - Easy integration with external systems such as Uniprot[cite:@apweiler2004uniprot].
 
-\clearpage
 
 The three specific aims of this research project are:
 
 *** Aim 1: Improve the quality of data for Artificial Intelligence (AI) and Machine Learning (ML) tasks
 
-As things stand, it is difficult to run an AI/ ML task against GN's database without creating a data warehouse-- ideally, such a task should be possible from the web interface. This difficulty is because we have complicated structures and relationships that have been forced on a rigid and constrained 2D tabular structure \footnote{Storing data in SQL is the current standard in biology} that would need human intervention to decipher; and tasks that require human intervention are prone to errors. In GN, such errors can occur when wrong identifiers are used during complicated joins in SQL. The aforementioned complexity arises when graph-like experimental data grows over time and it would therefore take some specialised knowledge, usually from a programmer or database administrator, to decipher some relations within such a database. Unpacking forced relational structures in a SQL database (MariaDB) into a natural graph-like database and format, such as RDF, will create a more semantic representation of GN data that allows easier ingestion by an AI system; and should the data evolve, also preserve it's semantic integrity despite ad-hoc node insertions.
+As things stand, it is difficult to run an AI/ ML task against GN's database without creating a data warehouse-- ideally, such a task should be possible from the web interface. This difficulty is because we have complicated structures and relationships that have been forced on a rigid and constrained 2D tabular structure [fn:storing-sql] that would need human intervention to decipher; and tasks that require human intervention are prone to errors. In GN, such errors can occur when wrong identifiers are used during complicated joins in SQL. The aforementioned complexity arises when graph-like experimental data grows over time and it would therefore take some specialised knowledge, usually from a programmer or database administrator, to decipher some relations within such a database. Unpacking forced relational structures in a SQL database (MariaDB) into a natural graph-like database and format, such as RDF, will create a more semantic representation of GN data that allows easier ingestion by an AI system; and should the data evolve, also preserve it's semantic integrity despite ad-hoc node insertions.
 
 
 *** Aim 2: Demonstrate Reproducibility in a Data Science Research Project
@@ -150,8 +149,10 @@ This research is expected to run through the entirety of my Master's Program whi
 \newpage
 #+print_bibliography:
 
+* Footnotes                                                          :ignore:
+[fn:guix-containers] https://guix.gnu.org/manual/en/html_node/Invoking-guix-container.html}
+[fn:storing-sql] Storing data in SQL is the current standard in biology 
 
-* Special Elisp to run on this document                     :noexport:
 # local variables:
 # eval: (progn (require 'ox-extra) (ox-extras-activate '(ignore-headlines)))
 # end:
