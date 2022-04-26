@@ -24,7 +24,7 @@ ignored, but the content exported anyway.
   (in Corporations), interpret reproducibility as using Docker
   containers.
 
-** Requirements [7/8]
+** Requirements [8/8]
 
 - [X] A research hypothesis and expected outcomes;
 - [X] A brief paragraph on the long-term vision for the work and a
@@ -34,9 +34,9 @@ ignored, but the content exported anyway.
 - [X] A brief ethical review that considers any perceived risks and the research’s effect on people and society;
 - [X] A realistic timeline of the research project;
 - [X] A budget detailing the total amount requested and expenditure allocation;
-- [-] A letter of support by their supervisor, and a copy of the MSc/PhD study admission letter;
+- [X] A letter of support by their supervisor, and a copy of the MSc/PhD study admission letter;
   - [X] Admission Letter
-  - [ ] Letter of support by supervisor
+  - [X] Letter of support by supervisor
 - [X] Current academic transcript of the applicant in the enrolled program;
 - [X] Proof of permanent residency or nationality of an eligible
   African country
