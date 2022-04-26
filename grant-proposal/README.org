@@ -1,0 +1,52 @@
+* README                                                           :noexport:
+This is an org template for a grant-proposal that
+I created for the purpose of applying for this
+[[http://www.datascienceafrica.org/dsa-research-awards-2022/][grant]]. Headers with the "/noexport"/ tag will not be
+exported. Also, headers with "/ignore/" will be
+ignored, but the content exported anyway.
+
+** Issues:
+- Data Quality
+
+- Issues around sharing data. Here in Kenya, there's a law that says
+  that all data related to health should be stored locally. The
+  challenge with that is that we have very complicated schemas for
+  said data. As an example, last time I checked, the Ministry of
+  Health relies on <https://dhis2.org/> to collect, store, and release
+  public data. I'd wager that many people struggle with evolving
+  data-sets.
+
+- Racial bias and unfair predictions.
+
+- Reproducibility is one of them. I've heard no one talk about that. I
+  hear no one talking about it. At SU, many people, with the exception
+  of Shelby, do not appreciate its significant. And people who may
+  (in Corporations), interpret reproducibility as using Docker
+  containers.
+
+** Requirements [7/8]
+
+- [X] A research hypothesis and expected outcomes;
+- [X] A brief paragraph on the long-term vision for the work and a
+  description of the intended deliverables;
+  - [X] Intended deliverables
+  - [X] Long-term vision
+- [X] A brief ethical review that considers any perceived risks and the research’s effect on people and society;
+- [X] A realistic timeline of the research project;
+- [X] A budget detailing the total amount requested and expenditure allocation;
+- [-] A letter of support by their supervisor, and a copy of the MSc/PhD study admission letter;
+  - [X] Admission Letter
+  - [ ] Letter of support by supervisor
+- [X] Current academic transcript of the applicant in the enrolled program;
+- [X] Proof of permanent residency or nationality of an eligible
+  African country
+
+** Example of ML Case
+RW: Genotypes should be added by application code. This won’t
+happen for some species (human), but for experimental
+animals and plants many families grow and spread. The BXDs
+grow to the BXD DAX. then the expand to the BXDx
+Collaborative Cross DAX. There are 10000s of mice with
+computable genomes that have never been born yet. Can we
+compute their phenotype?  That is the big hairy audacious
+goal-- as hard as getting to Mars.
