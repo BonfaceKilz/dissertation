@@ -335,3 +335,5 @@ flycheck_*.el
 /network-security.data
 
 
+*pdf
+*tex
