@@ -23,3 +23,4 @@
 #+latex_header: \captionsetup[figure]{font=small,labelfont=small}
 @@latex:\pagestyle{empty}@@
 @@latex:\hyphenation{ionto-pho-re-tic iso-tro-pic fortran}@@
+#+latex_header: \usepackage[sorting=none]{biblatex}
