@@ -1,4 +1,4 @@
-#+TITLE: Semantic Genenetwork: Transforming a Complex Relational Database into Linked Data
+#+TITLE: Semantic GeneNetwork: Transforming a Complex Relational Database into Linked Data
 #+OPTIONS: toc:nil title:t num:nil author:nil date:nil
 #+latex_class: article
 #+latex_class_options: [notitlepage,11pt]
