@@ -10,5 +10,16 @@
 #+LaTeX_HEADER: \usepackage{wrapfig}
 #+LaTeX_HEADER: \usepackage[labelfont=bf]{caption}
 #+LaTeX_HEADER: \usepackage[top=0.5in,bottom=0.5in,left=0.5in,right=0.5in]{geometry}
+#+latex_header: \usepackage{svg}
+#+latex_header: \setlength{\parindent}{0cm}
+#+latex_header: \setlength{\parskip}{5pt}
+#+latex_header: \setlist[itemize]{noitemsep}
+#+latex_header: \usepackage{titlesec}
+#+latex_header: \titlespacing\section{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+#+latex_header: \titlespacing\subsubsection{0pt}{0pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+#+latex_header: \usepackage{enumitem}
+#+latex_header: \setlist{nolistsep}
+#+latex_header: \usepackage{caption}
+#+latex_header: \captionsetup[figure]{font=small,labelfont=small}
 @@latex:\pagestyle{empty}@@
 @@latex:\hyphenation{ionto-pho-re-tic iso-tro-pic fortran}@@

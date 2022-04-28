@@ -1,20 +1,12 @@
-#+OPTIONS: toc:nil title:nil num:nil
+#+TITLE: Semantic Genenetwork: Transforming a Complex Relational Database into Linked Data
+#+OPTIONS: toc:nil title:t num:nil author:nil date:nil
 #+latex_class: article
 #+latex_class_options: [notitlepage,11pt]
 #+CITE_EXPORT: biblatex
 #+INCLUDE: config.org
 #+bibliography: proposal.bib
-#+latex_header: \usepackage{svg}
-#+latex_header: \setlength{\parindent}{0cm}
-#+latex_header: \setlength{\parskip}{7pt}
-#+latex_header: \setlist[itemize]{noitemsep}
-#+latex_header: \usepackage{titlesec}
-#+latex_header: \titlespacing\section{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
-#+latex_header: \titlespacing\subsubsection{0pt}{0pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
-#+latex_header: \usepackage{enumitem}
-#+latex_header: \setlist{nolistsep}
-#+latex_header: \usepackage{caption}
-#+latex_header: \captionsetup[figure]{font=small,labelfont=small}
+
+@@latex:\vspace{-5em}@@
 
 * Introduction
 
@@ -22,23 +14,21 @@ Current efforts in biomedical AI/ML are hampered by data that is difficult to ac
 Even public data is often siloed because relationships between data elements have to be guessed from limited information, such as column headers and row names. For complex data to be truly useful, we need to enable machines to not only access the data, but also interpret and incorporate this data into their algorithms. This would enable automatic inferencing beyond one-to-one equivalence matches to more complicated relationships across datasets.
 
 In this data science project, I aim to unlock biological data so that it can be made available for machine analysis. I will start with the GeneNetwork public data repository (GN) that contains over 20 years of heterogeneous experimental data that has resulted in thousands of publications [cite:@2022gnRefs]. GN is a long-running biomedical web service that has been in existence since 1994 [cite:@anderson2021highlights;@mulligan2017genenetwork;@sloan2016genenetwork;@wang2003webqtl]. GN enables researchers with little programming experience to access omics [fn:omics-data] data through a web interface and also to run complex statistical models.
-Data is also presented through API endpoints---accessible in a programming environment such as R or Python and inside live Jupyter notebooks.
-
-GN is uniquely centered on hosting genetics data, phenotyping, Quantitative Trait Loci (QTL) and Genome Wide Association (GWA) studies in human and model species [fn:model-species], such as mouse and rat. Having all this data from different experiments spanning over 20 years in one database with a simple web UI allows any researcher to run analyses and correlate over many studies.
+Data is also presented through API endpoints---accessible in a programming environment such as R or Python and inside live Jupyter notebooks. GN is uniquely centered on hosting genetics data, phenotyping, Quantitative Trait Loci (QTL) and Genome Wide Association (GWA) studies in human and model species [fn:model-species], such as mouse and rat. Having all this data from different experiments spanning over 20 years in one database with a simple web UI allows any researcher to run analyses and correlate over many studies.
 
 As part of my master's studies at Strathmore University, I write functionality for the web front-end of GN. In the course of this work, I have come to realize that the underlying data structures---some 80 cross-referenced SQL tables and many different additional file types---make it hard to access this data for more general data mining.
 A REST API was created to access data. A REST API, however, is rigid and predicts how people want to access data.
 REST APIs are not very useful for automated AI analysis because machines cannot reason about the relationships between the provided resources unless an ontology is provided. It is clear that more flexible approaches are needed to increase the value of the service. Unlocking the data means reorganizing the data and providing a way of automated data discovery. Additionally, I aim to make a copy of the current widely used service that is physically hosted in Memphis TN, USA, and host it in Kenya at KEMRI/Wellcome Trust Kilifi. This will allow us to add African studies and data to GN using the latest methods, including homomorphic encryption [cite:@mott2020private] and differential privacy [cite:@dwork2008differential;@nlnetVariationGraph] for human data.
 
 Underpinning the GN service is a mountain of data that is growing steadily (currently about 0.5 TB on the server and 30 TB from wider resources, such as Uniprot, wikidata and pubmed), and with it new challenges, in particular: espousing clear relations between the data given a history of ad-hoc storage; fast data retrieval; non-obvious complex queries to do seemingly straight-forward tasks; connecting with other open databases (e.g. Uniprot) in a coherent way; and unclear means of adding new data that does not align with existing schemas. To address this I propose to introduce a graph-based data model, with RDF and SPARQL, to replace the existing database.
-In the GN software model, I found 163 specialised SQL queries for search, data fetching and analysis. Providing a new graph-based RDF data model with built-in relationships and machine-readable annotations will make machine-based data mining possible [cite:@munoz2014using]. These methods are not new. Two successful, very large and high performing RDF databases are: Wikidata---the back-end for Wikipedia---and Uniprot [cite:@erxleben2014introducing;@malyshev2018getting;@redaschi2009uniprot].
+In the GN software model, I found 163 specialised SQL queries for search, data fetching and analysis. Providing a new graph-based RDF data model with built-in relationships and machine-readable annotations will make machine-based data mining possible [cite:@munoz2014using]. These methods are not new. Two successful, very large and high performing RDF databases are: Wikidata---the back-end for Wikipedia---and Uniprot [cite:@erxleben2014introducing;@redaschi2009uniprot].
 
-With this grant, I aim to present new opportunities to the scientific community; and in particular, African organisations that have faced similar problems. At a personal level, being diagnosed prediabetic, it would be encouraging if scientists had easier access to well-annotated localised Kenyan data so that they could perform useful analyses that would enable them to answer questions such as: "What traits/phenotypes are risk factors in conjunction with diabetes or hypertension in the Kenya?" An example of a service that does this as part of the GN infrastructure is GeneCup, a tool that efficiently and comprehensively answers the question: "What do we know about these genes and the topic I study?" [cite:@2022geneCupWeb;@gunturkun2022genecup]. As an example of using GeneCup, Figure [[fig:genecup]] shows a graph that uses the keyword: /diabetes/, in finding a relation between it and gene symbols from the NHGRI-EBI GWAS catalog. However impressing GeneCup may be, it does not retrieve relationships between genes, but instead focuses on the relationship between genes and a set of keywords organized as an ontology [cite:@gunturkun2022genecup]. Using linked data, particularly in GN, would overcome such limitations, in addition to allowing easier integration with other services that also use RDF.
+With this grant, I aim to present new opportunities to the scientific community; and in particular, African organisations that have faced similar problems. At a personal level, being diagnosed prediabetic, it would be encouraging if scientists had easier access to well-annotated localised Kenyan data so that they could perform useful analyses that would enable them to answer questions such as: "What traits/phenotypes are risk factors in conjunction with diabetes or hypertension in the Kenya?" An example of a service that does this as part of the GN infrastructure is GeneCup[fn:genecupweb], a tool that efficiently and comprehensively answers the question: "What do we know about these genes and the topic I study?" [cite:@gunturkun2022genecup]. As an example of using GeneCup, Figure [[fig:genecup]] shows a graph that uses the keyword: /diabetes/, in finding a relation between it and gene symbols from the NHGRI-EBI GWAS catalog. However impressing GeneCup may be, it does not retrieve relationships between genes, but instead focuses on the relationship between genes and a set of keywords organized as an ontology [cite:@gunturkun2022genecup]. Using linked data, particularly in GN, would overcome such limitations, in addition to allowing easier integration with other services that also use RDF.
 
 To validate the approach and its usefulness, I will take examples of published GN studies [cite:@2022gnRefs] on diabetes, obesity and longevity, and replicate the analyses using the new database. I will apply ML/AI techniques and link out the data to external resources, similar to what GeneCup achieves with deep learning PubMed abstracts (Figure [[fig:genecup]]). I will show that the data from these examples can be discovered and reasoned on by machines.
 
 
-#+CAPTION: Finding relationships between the keyword: /diabetes/ and gene symbols. GeneCup does it's literature search by querying the NIH PubMed server programmatically, and fetching the abstracts from a local copy of the PubMed archive, and later uses deep learning to automatically distinguish sentences describing systemic stress from those describing cellular stress [cite:@2022geneCupWeb]
+#+CAPTION: Finding relationships between the keyword: /diabetes/ and gene symbols. GeneCup does it's literature search by querying the NIH PubMed server programmatically, and fetching the abstracts from a local copy of the PubMed archive, and later uses deep learning to automatically distinguish sentences describing systemic stress from those describing cellular stress [cite:@gunturkun2022genecup]
 #+LABEL: fig:genecup
 #+NAME: fig:genecup
 #+ATTR_ORG: :width 550px
@@ -47,6 +37,7 @@ To validate the approach and its usefulness, I will take examples of published G
 
  *Research Hypothesis*: Moving graph-like biological data from a SQL database into a graph-like structure---RDF---will make the data more semantic, easier to share, allow for system integration with other data systems and make it more machine-discoverable.
 
+ \clearpage
  *Expected Outcomes*:
  - Conversion of GN SQL dump to RDF, and in so doing, creating a tool that changes how data is input to GN.
  - Exposure of GN data through SPARQL endpoints.
@@ -56,27 +47,18 @@ To validate the approach and its usefulness, I will take examples of published G
  - One or more peer-reviewed publications on this work
 
 The three specific aims of this research project are:
+*** Aim 1: Convert a section of the GN database to RDF to enrich it's semantic value to AI/ML tasks
+Currently, most of GN data is stored as records in MariaDB, with some data stored as files on disk. Forming meaningful queries on such a structure involves formulating complex error-prone joins. Additionally, data entry tasks may sometimes warrant the need to create new tables or files to accomodate new data sets. While working with GN, I have observed that most of our data is graph-like in nature, albeit being forced into a 2D structure (tables). This modus operandi---forcing graph-like data on 2D structures--- is limiting when adding new data with unforeseen dimensions that our rigid existing 2D schema cannot accomodate. I aim to transform a section of the GN database to RDF, and to annotate the generated graph. By so doing, I want to demonstrate improved semantic quality of GN data which can be extended to accomodate new data sets which more suitable for the Kenyan context.
 
-*** Aim 1: Improve the quality of data for AI/ML tasks
-As things stand, it is difficult to run an AI/ML task against GN's database without creating a data warehouse---ideally, such a task should be possible from the web interface. This difficulty is because we have complicated data structures and relationships that have been forced on a rigid and constrained 2D tabular structure [fn:storing-sql] that would need human intervention to decipher which are prone to errors. In GN, such errors can occur when wrong identifiers are used during complicated joins in SQL. The aforementioned complexity arises when graph-like experimental data grows over time and it would therefore take some specialised knowledge, usually from a programmer or database administrator, to decipher some relations within such a database. Unpacking forced relational structures in a SQL database (MariaDB) into a natural graph-like database and format, such as RDF, will create a more semantic representation of GN data that allows easier ingestion by an AI system; and should the data evolve, also preserve it's semantic integrity despite ad-hoc node insertions. In this research work, I aim to convert the existing complex SQL structure of GN to RDF, and to annotate the generated graph, and by so doing, improve the quality of GN data.
+*** Aim 2: Reproduce a GN related study and show that it can be made available for ML/AI
+In Africa, as in the rest of the world, reproducibility in research is challenging. Research work accepted by many journals publish /plausible/ papers at the expense of repeatable work [cite:@bajpai2017challenges]. With this grant, I aim to reproduce an existing study that used GN as its data source [cite:@2022gnRefs] to demonstrate the value addition of having well annotated semantic data. To guarantee repeatability, this research aims at following a set of simple rules outlined by [cite/a/:@sandve2013ten].
 
-*** Aim 2: Reproduce an existing study or computationally heavy task that was conducted using GN using the new RDF infrastructure
-In Africa, as in the rest of the world, reproducibility in research is challenging. Research work accepted by many journals publish /plausible/ papers at the expense of repeatable work [cite:@bajpai2017challenges]. With this grant, I aim to reproduce a computationally heavy task or an existing study that used GN as its data source. To guarantee repeatability, this research aims at following a set of simple rules outlined by [cite/t/bc/:@sandve2013ten].
-
-*** Aim 3: Creating Reliable Data Sharing Pipelines using linked data technology
-Sharing data for ML/AI purposes requires data access. However, sharing this data in a FAIR way is even more challenging. Stringent laws around data privacy in different countries make research difficult for an African researcher who requires access to that data. As an example, accessing GN data in its entirety outside the US requires working through bureaucratic processes. Similarly, here in Kenya, accessing health-care related data is restricted to our /[Kenya's]/ borders. For the purpose of this proposed research work, this presents a golden opportunity: hosting our own GN instance here in Kenya with data that's stored in a more semantic way. To work around sharing sensitive data, well annotated and useful metadata can be released to the public; and this will point curious and potential end-users to the right places to seek data access, even if it resides behind closed walls. On the other hand, technologies like SPARQL enable an organisation to have federated queries [cite:@buil2013federating] where multiple database instances living in different spaces over the internet are treated as one instance, thereby effectively allowing easier sharing over data and quicker integration with external services. Linked data allows exploration and evaluation by removing the tedium of designing an integrative schema or working out ways to normalise and/or warehouse a data subset in order to ask command /domain-spanning/ questions.
-
-Creating a reproducible semantic version of GN would provide a useful blueprint for creating the necessary infrastructure for sharing big data sets here in Kenya, particularly around pathogens, a concept that could be extended to other African countries.
-
-* Supervisors
-
-My supervisors for this project are: Prof. Shelby Solomon, Strathmore University Nairobi, who is an expert in data science, AI and ML; Prof Pjotr Prins, University of Tennessee USA, who is an expert on genetics, databases and data privacy; and Dr George Githinji, KEMRI/Wellcome Trust, Kenya, who is the bio-informatics and data science lead.
-
+*** Aim 3: Replicate the new GN infrastracture that uses linked data in a data store here in Kenya
+Sharing data for ML/AI purposes requires data access. However, sharing this data in a FAIR way is even more challenging. Stringent laws around data privacy in different countries make research difficult for an African researcher who requires access to that data. As an example, accessing GN data in it's entirety outside the US requires bureaucratic processes to work through. Similarly, here in Kenya, accessing health-care related data is restricted to our /[Kenya's]/ borders. For the purpose of this proposed research work, this presents a golden opportunity: hosting our own GN instance here in Kenya with data that's stored in a more semantic way. To work around sharing sensitive data, well annotated and useful metadata can be released to the public; and this will point curious and potential end-users to the right places to seek data access, even if it resides behind closed walls. On the other hand, technologies like SPARQL enable an organisation to have federated queries [cite:@buil2013federating] where multiple database instances living in different spaces over the internet are treated as one instance, thereby effectively allowing easier sharing over data and quicker integration with external services. Linked data allows exploration and evaluation by removing the tedium of designing an integrative schema or working out ways to normalise and/or warehouse a data subset in order to ask command /domain-spanning/ questions.
 
 * Ethical Review
-
 This research primarily involves QTL and omics database systems for major model organisms supplied by GN, and will grow to accommodate human models.
-One point of ethical concern for working with a such a data set is privacy and regulations around the same, particularly with human data which is prone to misuse [cite:@gymrek2013identifying;@wang2009learning;@erlich2014routes]. /Is there a way to anonymize data in a way that you could still perform useful research on it?/ There has been active research on this, and in fact, GN has demonstrated one such technique---/homomorphic encryption/---in anonymizing genotype and phenotype data [cite:@hegp22;@mott2020private]. Homomorphic encryption and other techniques such as differential privacy [cite:@dwork2008differential] will be explored. The most practical and feasible technique for data anonymization will be applied so that we can guarantee that any human data used is safe.
+One point of ethical concern for working with a such a data set is privacy and regulations around the same, particularly with human data which is prone to misuse [cite:@gymrek2013identifying;@wang2009learning;@erlich2014routes]. /Is there a way to anonymize data in a way that you could still perform useful research on it?/ There has been active research on this, and in fact, GN has demonstrated one such technique---/homomorphic encryption/---in anonymizing genotype and phenotype data (\url{https://hegp.genenetwork.org/}) [cite:@mott2020private]. Homomorphic encryption and other techniques such as differential privacy [cite:@dwork2008differential] will be explored. The most practical and feasible technique for data anonymization will be applied so that we can guarantee that any human data used is safe.
 
 For sensitive data, applying anonymization techniques does not necessarily make data easier to work with, nor more easily shareable. Such data should be well annotated, and necessary metadata attached to it to make it usable and easy to interpret. RDF makes this plausible. By having a well annotated FAIR dataset:
 
@@ -87,8 +69,10 @@ For sensitive data, applying anonymization techniques does not necessarily make 
 
 With data stored in a more semantic way in RDF, this research hopes to show how easy and safe it "should" be to share complex data, and also how cheap it can be to integrate other data sources into a project. The hope is that it would demonstrate how practical RDF is, and how cheap sharing data that lies in different servers on different schemata can be. Achieving this would push Science forward by allowing researchers easy access to data. Linked data graph-databases are going to play an increasingly important role in the biomedical sciences, next to tabular file formats, SQL databases and the more tree-like storage systems colloquially labeled "NoSQL databases".
 
-* Timeline and Budget
 
+* Supervisors
+My supervisors for this project are: Prof. Shelby Solomon, Strathmore University Nairobi, who is an expert in data science, AI and ML; Prof Pjotr Prins, University of Tennessee USA, who is an expert on genetics, databases and data privacy; and Dr George Githinji, KEMRI/Wellcome Trust, Kenya, who is the bio-informatics and data science lead.
+* Timeline and Budget
 This research is expected to run through the entirety of my master's program which ends in June 2023. I aim to finish this project by May 2023. The grant will help me support my studies so I can focus fully on this data science project.
 
 The expected budget is:
@@ -111,6 +95,8 @@ The expected budget is:
 [fn:omics-data] https://en.wikipedia.org/wiki/Omics
 [fn:model-species] https://en.wikipedia.org/wiki/Model_organism
 [fn:ratspub] https://rats.pub/
+[fn:genecupweb] [[https://genecup.org/]] 
+
 # local variables:
 # eval: (progn (require 'ox-extra) (ox-extras-activate '(ignore-headlines)))
 # end:
