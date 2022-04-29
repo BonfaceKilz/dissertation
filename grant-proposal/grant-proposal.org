@@ -40,7 +40,6 @@ In the GN software model, I found 163 specialised SQL queries for search, data f
  *Research Hypothesis*: Graph-databases with semantic ontologies will unlock biomedical data and make it available for ML/AI analysis.
 
  *Expected Outcomes*:
-
  - Convert GN SQL and other data sources to RDF graph-database
  - Expose GN data through graph-database SPARQL endpoints
  - Integrate/federate external systems such as Uniprot [cite:@apweiler2004uniprot].
@@ -64,12 +63,14 @@ Sharing data for ML/AI purposes requires data access and ideally the data should
 
 * Ethical Review
 This research primarily involves database systems for major model organisms supplied by GN, and will grow to accommodate human data.
-One point of ethical concern for working with such a data set is privacy and regulations around the same, particularly with human data which is prone to misuse [cite:@gymrek2013identifying;@wang2009learning;@erlich2014routes]. I will take the opportunity to discuss and research access to human data and ethics. One question to ask: /Is there a way to anonymize data in a way that you could still perform useful research on it?/ There has been active research on this, and in fact, GN has demonstrated one such technique---/homomorphic encryption/---in anonymizing genotype and phenotype data (\url{https://hegp.genenetwork.org/}) [cite:@mott2020private]. Homomorphic encryption and other techniques such as differential privacy [cite:@dwork2008differential] will be explored. The most practical and feasible technique for data anonymization will be applied so that we can guarantee that human data used is safe. The alternative is to make FAIR metadata available that can tell researchers how to reach that data:
+One point of ethical concern for working with such a data set is privacy and regulations around the same. One perceived risk, particularly when working with human data, is misuse [cite:@gymrek2013identifying;@wang2009learning;@erlich2014routes]. I will take the opportunity to discuss and research access to human data and ethics. One question to ask: /Is there a way to anonymize data in a way that you could still perform useful research on it?/ There has been active research on this, and in fact, GN has demonstrated one such technique---/homomorphic encryption/---in anonymizing genotype and phenotype data (\url{https://hegp.genenetwork.org/}) [cite:@mott2020private]. Homomorphic encryption and other techniques such as differential privacy [cite:@dwork2008differential] will be explored. The most practical and feasible technique for data anonymization will be applied so that we can guarantee that human data used is safe. The alternative is to make FAIR metadata available that can tell researchers how to reach that data:
 
 - Machines can easily "discover" and infer (/access)/ the data they need;
 - Having a shared vocabulary in a machine accessible format that guarantees interoperability;
 - Having contextual information that allows proper and correct interpretation thereby making the data more reusable; and
 - Allowing the attachment of rich provenance information to a graph-like structure which allows for accurate citation.
+
+The effect of this work on people and society is improving the underlying health care infrastructure, particularly when it comes to storing and accessing local omics data. This would have a cascading effect of improving research that needs local data and, similar to shining a beacon in the dark, lead to newer perspectives of data sets we already have.
 
 * Supervisors
 My supervisors for this project are: Prof. Shelby Solomon, Strathmore University Nairobi, who is an expert in data science, AI and ML; Prof. Pjotr Prins, University of Tennessee USA, who contributes to GeneNetwork and co-authored GeneCup and Homomorphic Encryption papers; and Dr George Githinji, KEMRI/Wellcome Trust, Kenya, who is the bio-informatics and data science lead and Adjunct Professor at Pwani University.
