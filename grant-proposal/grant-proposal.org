@@ -1,4 +1,5 @@
-#+TITLE: Semantic GeneNetwork: Transforming a Complex Relational Database into Linked Data
+#+TITLE: Unlock biomedical data for health research in Africa using GeneNetwork as an example
+
 #+OPTIONS: toc:nil title:t num:nil author:nil date:nil
 #+latex_class: article
 #+latex_class_options: [notitlepage,11pt]
@@ -14,6 +15,7 @@ Current efforts in biomedical AI/ML are hampered by data that is difficult to ac
 Even public data is hard to process because relationships between data elements have to be guessed from limited information, such as column headers and row names. For complex data to be truly useful, we need to enable machines to not only access the data, but also interpret and incorporate this data into their algorithms. This will enable automatic inferencing beyond one-to-one equivalence matches to more complicated relationships across datasets.
 
 With this grant, I hope to provide new opportunities for the African scientific community; in particular, African health research on diabetes, hypertension and longevity. At a personal level, being diagnosed prediabetic, I believe it will be encouraging to get easier access to well-annotated localised Kenyan data to answer questions such as: "What traits are risk factors in conjunction with diabetes in the Kenya?". An example of a service that does this is GeneCup[fn:genecupweb], a tool that efficiently and comprehensively answers the question: "What do we know about these genes and the topic I study?" [cite:@gunturkun2022genecup]. As an example of using GeneCup as a tool, Figure [[fig:genecup]] shows a graph that uses the keyword: /diabetes/. Through text mining abstracts from PubMed, and applied deep learning, GeneCup finds a relation between diabetes and gene symbols. I.e., GeneCup focuses on the relationship between genes and a set of keywords organized as an ontology [cite:@gunturkun2022genecup].
+
 
 My approach will be to take three examples of published GeneNetwork (GN) studies [cite:@2022gnRefs] on diabetes, obesity and longevity, and replicate the analyses of those studies building up the new graph-based database structure. I will apply ML/AI techniques and link out the data to external resources, similar to what GeneCup achieves with deep learning PubMed abstracts (Figure [[fig:genecup]]). I will show that the data from these examples can be discovered and reasoned on by machines. Next I will work with biomedical researchers to see how we can facilitate their research using the GN infrastructure and hosting that in Kenya.
 
