@@ -46,7 +46,7 @@ To get a good understaning of data-science requirements, my approach will be to 
  - An assessment on ethical aspects of access to human data in the Kenyan context
  - A peer-reviewed publication on this work
 
-Hosting the computational resources and data in Kenya and giving access to African researchers is aligned with African Sustainable Development Goals as outlined by the United Nations (\url{https://www.undp.org/sustainable-development-goals}).
+Hosting the computational resources and biomedical data in Kenya and giving access to African researchers is aligned with African Sustainable Development Goals as outlined by the United Nations (\url{https://www.undp.org/sustainable-development-goals}).
 
 The two deliverables for this research project are:
 
