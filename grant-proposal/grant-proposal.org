@@ -28,7 +28,7 @@ Underpinning the GN service is a mountain of data that is growing steadily (curr
 In the GN software model, I found 163 specialised SQL queries for search, data fetching and analysis. Providing a new graph-based RDF data model with built-in relationships and machine-readable annotations will make machine-based data mining possible [cite:@munoz2014using]. The approach is not new. In fact, two successful, very large and high performing RDF+SPARQL graph databases are Wikidata---the back-end for Wikipedia---and Uniprot [cite:@erxleben2014introducing;@redaschi2009uniprot].
 
 
-#+CAPTION: Example using GeneCup to find relationships between the keyword: /diabetes/ and gene symbols. GeneCup mines abstracts of the NIH PubMed server programmatically and uses deep learning to automatically distinguish sentences describing systemic stress from those describing cellular stress [cite:@gunturkun2022genecup]
+#+CAPTION: Example using GeneCup to find relationships between the keyword: /diabetes/ and ontological categories and traits. GeneCup mines open data abstracts of the NIH PubMed server programmatically and uses deep learning to automatically distinguish sentences describing disease related terms [cite:@gunturkun2022genecup]
 #+LABEL: fig:genecup
 #+NAME: fig:genecup
 #+ATTR_ORG: :width 550px
