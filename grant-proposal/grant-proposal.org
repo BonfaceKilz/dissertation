@@ -75,25 +75,23 @@ This research is expected to run through the entirety of my master's program whi
 
 #+CAPTION: A broken-down timeline for this project
 #+ATTR_LATEX: :environment longtable :align l|lp{3cm}r|l
-| Month         | Tasks                                                            |
-|---------------+------------------------------------------------------------------|
-| May -- Sep 22 | - Write tool to convert SQL to RDF                               |
-|               | - Setup virtuoso in a GUIX container in our servers              |
-|               | - Test it (RDF+SPARQL) in GN servers                             |
-|               | - Start moving some GN endpoints to SPARQL                       |
-|               | - Create living skeleton of research paper (for publication)     |
-|---------------+------------------------------------------------------------------|
-| Oct -- Dec 22 | - Setup Virtuoso server build script                             |
-|               | - Setup instance of GN2 and virtuoso locally                     |
-|               | - Provide assistance in adding Kenyan data to our local instance |
-|               | - Reproduce selected studies that uses GN                        |
-|---------------+------------------------------------------------------------------|
-| Jan -- Mar 23 | - Integrate external services (.e.g. uniprot)                    |
-|               | - Co-ordinate with Prof. Shelby and Pjotr in using this          |
-|               | infrastructure in an existing ML study that uses GN              |
-|---------------+------------------------------------------------------------------|
-| Apr -- May 23 | - Write paper for publication                                    |
-|               | - Prepare and present this work at a conference (e.g. PYCONKE)   |
+| Month         | Tasks                                                                  |
+|---------------+------------------------------------------------------------------------|
+| May -- Sep 22 | - Convert GN SQL and other data sources to RDF graph-database          |
+|               | - Expose GN data through graph-database SPARQL endpoints               |
+|---------------+------------------------------------------------------------------------|
+| Oct -- Dec 22 | - Run a ML/AI study replicating one or more GN related                 |
+|               | studies, and show that such data can be made available for ML/AI.      |
+|               | - Host GN at KEMRI/Wellcome Trust to allow researchers                 |
+|               | in Africa to upload and analyse data                                   |
+|               | - Provide assistance in adding Kenyan data to our local instance       |
+|               | - Reproduce selected studies that uses GN                              |
+|---------------+------------------------------------------------------------------------|
+| Jan -- Mar 23 | - Assess ethical aspects of access to human data in the Kenyan context |
+|               | - Reproduce selected studies that uses GN                              |
+|---------------+------------------------------------------------------------------------|
+| Apr -- May 23 | - Write a peer-reviewed publication on this work                       |
+
 
 #+CAPTION: Expected budget
 #+ATTR_LATEX: :environment longtable :align l|lp{3cm}r|l
