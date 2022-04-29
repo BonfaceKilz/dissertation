@@ -77,23 +77,21 @@ This research is expected to run through the entirety of my master's program whi
 
 #+CAPTION: A broken-down timeline for this project
 #+ATTR_LATEX: :environment longtable :align l|lp{3cm}r|l
-| Month         | Tasks                                                                  |
-|---------------+------------------------------------------------------------------------|
-| May -- Sep 22 | - Convert GN SQL and other data sources to RDF graph-database          |
-|               | - Expose GN data through graph-database SPARQL endpoints               |
-|---------------+------------------------------------------------------------------------|
-| Oct -- Dec 22 | - Run a ML/AI study replicating one or more GN related                 |
-|               | studies, and show that such data can be made available for ML/AI.      |
-|               | - Host GN at KEMRI/Wellcome Trust to allow researchers                 |
-|               | in Africa to upload and analyse data                                   |
-|               | - Provide assistance in adding Kenyan data to our local instance       |
-|               | - Reproduce selected studies that uses GN                              |
-|---------------+------------------------------------------------------------------------|
-| Jan -- Mar 23 | - Assess ethical aspects of access to human data in the Kenyan context |
-|               | - Reproduce selected studies that uses GN                              |
-|---------------+------------------------------------------------------------------------|
-| Apr -- May 23 | - Write a peer-reviewed publication on this work                       |
-
+| Month           | Tasks                                                                  |
+|-----------------+------------------------------------------------------------------------|
+| May -- Sep 2022 | - Convert GN SQL and other data sources to RDF graph-database          |
+|                 | - Expose GN data through graph-database SPARQL endpoints               |
+|-----------------+------------------------------------------------------------------------|
+| Oct -- Dec 2022 | - Run a ML/AI study replicating one or more GN related                 |
+|                 | studies, and show that such data can be made available for ML/AI.      |
+|                 | - Host GN at KEMRI/Wellcome Trust to allow researchers                 |
+|                 | in Africa to upload and analyse data                                   |
+|                 | - Provide assistance in adding Kenyan data to our local instance       |
+|                 | - Reproduce selected studies that uses GN                              |
+|-----------------+------------------------------------------------------------------------|
+| Jan -- Apr 2023 | - Assess ethical aspects of access to human data in the Kenyan context |
+|                 | - Reproduce selected studies that uses GN                              |
+|                 | - Write a peer-reviewed publication on this work                       |
 
 #+CAPTION: Expected budget
 #+ATTR_LATEX: :environment longtable :align l|lp{3cm}r|l
