@@ -40,6 +40,7 @@ In the GN software model, I found 163 specialised SQL queries for search, data f
  *Research Hypothesis*: Graph-databases with semantic ontologies will unlock biomedical data and make it available for ML/AI analysis.
 
  *Expected Outcomes*:
+
  - Convert GN SQL and other data sources to RDF graph-database
  - Expose GN data through graph-database SPARQL endpoints
  - Integrate/federate external systems such as Uniprot [cite:@apweiler2004uniprot].
@@ -51,13 +52,13 @@ In the GN software model, I found 163 specialised SQL queries for search, data f
 Hosting the data in Kenya and giving access to African researchers is aligned with African Sustainable Development Goals as outlined by the United Nations (\url{https://www.undp.org/sustainable-development-goals}).
 
 The three intended deliverables for this research project are:
-*** 1: Convert a section of the GN database to RDF to enrich it's semantic value to AI/ML tasks
+*** 1: Convert a specific set of SQL tables to SPARQL (2 months)
 Currently, most of GN data is stored as SQL tables in MariaDB, with some data stored as files on disk. Forming meaningful queries on such a structure involves formulating complex error-prone joins. Additionally, data entry tasks may sometimes warrant the need to create new tables or files to accomodate new data sets. While working with GN, I have observed that most of the data is graph-like in nature, albeit being forced into a 2D structure (tables). This modus operandi---forcing graph-like data on 2D structures--- is limiting when adding new data with unforeseen dimensions that our rigid existing 2D schema cannot accomodate. I aim to transform a section of the GN database to RDF, and to annotate the generated graph. By so doing, I want to demonstrate improved semantic quality of GN data which can be extended to accomodate new data sets which are more suitable for the Kenyan context.
 
-*** 2: Reproduce GN related studies and show that it can be made available for ML/AI
-In Africa, as in the rest of the world, reproducibility in research is challenging. Research work accepted by many journals publish /plausible/ papers at the expense of repeatable work [cite:@bajpai2017challenges]. With this project, I aim to reproduce an existing study that used GN as its data source [cite:@2022gnRefs] to demonstrate the value addition of having well annotated semantic data. To guarantee repeatability, this research aims at following a set of simple rules outlined by [cite/t/c/:@sandve2013ten].
-
-*** 3: Replicate the new GN infrastracture that uses linked data in a data store in Kenya
+*** 2: Test a machine learning algorithm using SPARQL, compare it to SQL (8 months)
+To demonstrate the value addition of having well annotated semantic data, this research intends to test a machine learning algorithm using SPARQL, and compare it's performance with SQL. This test will be conducted in a reproducible way by following a set of simple rules outlined by [cite/t/c/:@sandve2013ten].
+y
+*** 3: Setup the results from (2) in Kenya (2 months)
 Sharing data for ML/AI purposes requires data access and ideally the data should be FAIR[cite:@wilkinson2016fair]. Stringent laws around data privacy in different countries make research difficult for an African researcher who requires access to that data. As an example, accessing GN data in it's entirety outside the US requires bureaucratic processes to work through. Similarly, here in Kenya, accessing health-care related data is restricted to our /[Kenya's]/ borders. For the purpose of my research this presents an opportunity: hosting our own GN instance here in Kenya with data that's stored in a more semantic way. To work around sharing sensitive data, well annotated and useful metadata can be released to the public; and this will point curious and potential end-users to the right places to seek data access, even if it resides behind closed walls. SPARQL allows for federated queries [cite:@buil2013federating] where multiple database instances living in different spaces over the internet act as one single instance. Such linked data allows exploration and evaluation by removing the tedium of designing an integrative schema or working out ways to normalise and/or warehouse a data subset in order to ask /domain-spanning/ questions.
 
 
