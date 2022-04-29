@@ -37,7 +37,6 @@ In the GN software model, I found 163 specialised SQL queries for search, data f
 
  *Research Hypothesis*: Graph-databases with semantic ontologies will unlock biomedical data and make it available for ML/AI analysis.
 
- \clearpage
  *Expected Outcomes*:
 
  - Convert GN SQL and other data sources to RDF graph-database
@@ -58,7 +57,6 @@ In Africa, as in the rest of the world, reproducibility in research is challengi
 *** Aim 3: Replicate the new GN infrastracture that uses linked data in a data store in Kenya
 Sharing data for ML/AI purposes requires data access and ideally the data should be FAIR[cite:@wilkinson2016fair]. Stringent laws around data privacy in different countries make research difficult for an African researcher who requires access to that data. As an example, accessing GN data in it's entirety outside the US requires bureaucratic processes to work through. Similarly, here in Kenya, accessing health-care related data is restricted to our /[Kenya's]/ borders. For the purpose of my research this presents an opportunity: hosting our own GN instance here in Kenya with data that's stored in a more semantic way. To work around sharing sensitive data, well annotated and useful metadata can be released to the public; and this will point curious and potential end-users to the right places to seek data access, even if it resides behind closed walls. SPARQL allows for federated queries [cite:@buil2013federating] where multiple database instances living in different spaces over the internet act as one single instance. Such linked data allows exploration and evaluation by removing the tedium of designing an integrative schema or working out ways to normalise and/or warehouse a data subset in order to ask /domain-spanning/ questions.
 
-\clearpage
 
 * Ethical Review
 This research primarily involves database systems for major model organisms supplied by GN, and will grow to accommodate human data.
@@ -75,8 +73,29 @@ My supervisors for this project are: Prof. Shelby Solomon, Strathmore University
 * Timeline and Budget
 This research is expected to run through the entirety of my master's program which ends in June 2023. I aim to finish this project by May 2023. The grant will help me support my studies so I can focus fully on this data science project.
 
-The expected budget is:
+#+CAPTION: A broken-down timeline for this project
+#+ATTR_LATEX: :environment longtable :align l|lp{3cm}r|l
+| Month         | Tasks                                                            |
+|---------------+------------------------------------------------------------------|
+| May -- Sep 22 | - Write tool to convert SQL to RDF                               |
+|               | - Setup virtuoso in a GUIX container in our servers              |
+|               | - Test it (RDF+SPARQL) in GN servers                             |
+|               | - Start moving some GN endpoints to SPARQL                       |
+|               | - Create living skeleton of research paper (for publication)     |
+|---------------+------------------------------------------------------------------|
+| Oct -- Dec 22 | - Setup Virtuoso server build script                             |
+|               | - Setup instance of GN2 and virtuoso locally                     |
+|               | - Provide assistance in adding Kenyan data to our local instance |
+|               | - Reproduce selected studies that uses GN                        |
+|---------------+------------------------------------------------------------------|
+| Jan -- Mar 23 | - Integrate external services (.e.g. uniprot)                    |
+|               | - Co-ordinate with Prof. Shelby and Pjotr in using this          |
+|               | infrastructure in an existing ML study that uses GN              |
+|---------------+------------------------------------------------------------------|
+| Apr -- May 23 | - Write paper for publication                                    |
+|               | - Prepare and present this work at a conference (e.g. PYCONKE)   |
 
+#+CAPTION: Expected budget
 #+ATTR_LATEX: :environment longtable :align l|lp{3cm}r|l
 | /Item/                          | /Budget/   | /Months/ | /Amount/ |
 |-------------------------------+----------+--------+--------|
