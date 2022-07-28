@@ -1,0 +1,57 @@
+* Short Summary
+
+GeneNetwork (GN) is one of the oldest omics databases in the world. It has been collecting data since 1994 and to date, data collection is on-going. This project aims at making this data easier to use, particularly for AI/ML algorithms. Naturally, this implies having a well annotated data set that's machine readable and discoverable. This project aims at transforming specific GN data types---files on disk and tables in a SQL server---in to an RDF graph-database and exposing this through SPARQL endpoints. To ensure data integrity, this project will use existing studies based on GN, and try to replicate them with the new graph-database and make
+measurable comparisons between SQL and RDF+SPARQL. The final step in this project would be to replicate this GN infrastracture here in Kenya for use by local facilities--- KEMRI/Wellcome Trust---for further research.
+
+The estimated total contribution for this proposal is USD 5000. The grant will help me support my studies so I can focus fully on this data science project.
+
+* Motivational Statement
+
+Some time back, I got diagnosed with prediabetes. Troubling as this news was to me, and being fortunate enough to work with bio-informaticians and geneticists as part of the GeneNetwork development efforts, I learnt how little we know about diseases, and most importantly, how hard it is to share data (in a safe way) around diseases. It's even more concerning to read about how bias data can get. Efforts to work around such bias is hampered by well-meaning privacy laws, and in some cases a lack of infrastructure to acquire the data. The on-going Covid19 pandemic clearly highlights this. This research work is important to me because it's a small effort in enabling researchers here in Kenya to share their data in a FAIR way, and most importantly, in a practical convenient way, thereby enabling research on conditions/diseases that may be contextualised to Kenya.
+
+* Activities and Methodology
+Activities:
+- Take existing studies as an example and convert a specific set of GN tables to RDF graph-database
+- Expose GN data through graph-database SPARQL endpoints
+- Host GN at KEMRI/Wellcome Trust to allow researchers in Africa to upload and analyse data
+- Write a peer-reviewed publication on this work
+
+Methodology:
+
+The activities of this project will proceed incrementally. If advancements in one activity are beneficial to another aim, such changes will be made.
+
+In this project, I will use the GeneNetwork (GN) database as my primary data source. Because I actively work in the GN project, getting this data is not a hindrance. After transforming specific tables in GN from RDF to SQL, I intend to replicate previous GN studies to be able to compare the performance between SQL and RDF+SQL. This comparison will involve: measuring and contrasting the speed of complex queries; assessing the complexity of queries; and assessing the difficulty of common data operations, particularly insertions and deletions. Similar to any other complex data science project, should new relevant measurements come in to focus, they will be made. Finally, using GNU Guix as a strong infrastracture backbone, I will replicate the GN environment here in Kenya.
+
+* Expected Outputs
+ - A subset of GN tables converted to an RDF graph-database
+ - Exposed GN data through graph-database SPARQL endpoints
+ - Hosted GN at KEMRI/Wellcome Trust to allow researchers in Africa to upload and analyse data
+ - An assessment on ethical aspects of access to human data in the Kenyan context
+ - A peer-reviewed publication on this work
+
+* Ethical and Environmental implications
+
+This research primarily involves database systems for major model organisms supplied by GeneNetwork (GN), and will grow to accommodate human data.
+One point of ethical concern for working with such a data set is privacy and regulations around the same. A major perceived risk when working with data, particularly with human data, is that it is prone to misuse. I will take the opportunity to discuss and research access to human data and ethics. We can ask: Is there a way to anonymize data in a way that you could still perform useful research on it? There has been active research on this, and in fact, GN has demonstrated one such technique---/homomorphic encryption/---in anonymizing genotype and phenotype data. Homomorphic encryption and other techniques such as differential privacy  will be explored. The most practical and feasible technique for data anonymization will be applied so that we can guarantee that human data used is safe. The alternative is to make FAIR metadata available that can tell researchers how to reach that data.
+
+With regards to the environment, the effect this project will have on the environment will be in compute power, particularly required in running GN.
+
+* Risks and Mitigations
+
+One risk will be that this project won't get hardware support. My supervisor at KEMRI/Wellcome runs a high-performance compute cluster with large storage and we want to host GeneNetwork there. If that turns out to be a problem I may use a cluster at Pwani University. Another fallback is the University of Tennesee GeneNetwork servers where I have access [https://genenetwork.org/facilities/] and that is always available for GeneNetwork related work.
+
+Another risk may be that I get no collaborators in Kenya to share their scientific requirements and studies. My supervisors are involved with a great number of them and are positive that scientists are eager to collaborate with me on data-science targets. We need more data scientists in the biomedical sciences in Kenya.
+
+
+* Timeline/ Work schedule
+May -- Sep 2022:
+- Take existing studies as an example and convert a specific set of GN tables to RDF graph-database
+- Expose GN data through graph-database SPARQL endpoints
+
+Oct -- Dec 2022
+- Host GN at KEMRI/Wellcome Trust to allow researchers in Africa to upload and analyse data
+- Provide assistance in adding Kenyan data to our local instance
+
+Jan -- Apr 2023
+- Assess ethical aspects of access to human data in the Kenyan context
+- Write a peer-reviewed publication on this work

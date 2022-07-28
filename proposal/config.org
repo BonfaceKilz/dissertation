@@ -1,0 +1,23 @@
+#+LaTeX_HEADER: \usepackage[utf8]{inputenc}
+#+LaTeX_HEADER: \usepackage[T1]{fontenc}
+#+LaTeX_HEADER: \usepackage{palatino}
+#+LaTeX_HEADER: \usepackage{enumitem}
+@@latex:\linespread{1.05}@@
+@@latex:\renewcommand*\familydefault{\sfdefault}@@
+#+LaTeX_HEADER: \usepackage{amsfonts, amsmath, amsthm, amssymb}
+#+LaTeX_HEADER: \usepackage{graphicx}
+#+LaTeX_HEADER: \usepackage{booktabs}
+#+LaTeX_HEADER: \usepackage{wrapfig}
+#+LaTeX_HEADER: \usepackage[labelfont=bf]{caption}
+#+latex_header: \usepackage{svg}
+#+latex_header: \setlength{\parindent}{0cm}
+#+latex_header: \setlength{\parskip}{5pt}
+#+latex_header: \setlist[itemize]{noitemsep}
+#+latex_header: \usepackage{titlesec}
+#+latex_header: \usepackage{enumitem}
+#+latex_header: \setlist{nolistsep}
+#+latex_header: \usepackage{caption}
+#+latex_header: \captionsetup[figure]{font=small,labelfont=small}
+@@latex:\pagestyle{empty}@@
+@@latex:\hyphenation{ionto-pho-re-tic iso-tro-pic fortran}@@
+#+latex_header: \usepackage[sorting=none]{biblatex}

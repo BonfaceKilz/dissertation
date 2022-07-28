@@ -1,0 +1,6 @@
+Problem Statement:
+
+With technological improvements, both in terms of computational and storage power, there is proliferation of data in biomedical AI/ML.  Current efforts in this space are hampered by data that is difficult to access and which is often siloed.  Even public data is hard to process because relationships between data elements have to be guessed from limited information, such as column headers and row names.  For complex data to be truly useful, we need to enable machines to not only access the data, but also interpret and incorporate this data into their algorithms.  This will enable automatic inferencing beyond one-to-one equivalence matches to more complicated relationships across datasets.
+
+This dissertation aims to provide new opportunities for the African scientific community; in particular, African health research on diabetes, hypertension and longevity.  It aims to do so by outlining and demonstrating, using GeneNetwork as an example, how to reshape existing data, and model it into a more semantic machine-ingestible way in an extensible way.  It will be encouraging to give scientists easier access to well-annotated localised Kenyan data to answer context-specific questions such as: "What traits are risk factors in conjunction with diabetes in Kenya?"
+

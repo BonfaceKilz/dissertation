@@ -1,0 +1,91 @@
+#+TITLE: Unlocking Biomedical Data for AI Health Research in Africa Using GeneNetwork as an Example
+
+#+OPTIONS: toc:nil title:t num:nil author:nil date:nil
+#+latex_class: article
+#+latex_class_options: [notitlepage,11pt]
+#+CITE_EXPORT: biblatex
+#+INCLUDE: config.org
+#+bibliography: proposal.bib
+
+@@latex:\vspace{-5em}@@
+
+* Introduction
+
+Current efforts in biomedical AI/ML are hampered by data that is difficult to access and siloed [cite:@martens2018importance;@stall2019make;@wilkinson2016fair].  Even public data is hard to process because relationships between data elements have to be guessed from limited information, such as column headers and row names.  For complex data to be truly useful, we need to enable machines to not only access the data, but also interpret and incorporate this data into their algorithms.  This will enable automatic inferencing beyond one-to-one equivalence matches to more complicated relationships across datasets.
+
+This dissertation aims to provide new opportunities for the African scientific community; in particular, African health research on diabetes, hypertension and longevity.  At a personal level, being diagnosed prediabetic, I believe it will be encouraging to give scientists easier access to well-annotated localised Kenyan data to answer context-specific questions such as: "What traits are risk factors in conjunction with diabetes in Kenya?"  An example of a service that does this is GeneCup[fn:genecupweb], a tool that efficiently and comprehensively answers the question: "What do we know about these genes and the topic I study?"  [cite:@gunturkun2022genecup].  As an example of using GeneCup as a tool, Figure [[fig:genecup]] shows a graph that uses the keyword: /diabetes/.  Through text mining abstracts from PubMed, and applied deep learning, GeneCup finds a relation between diabetes and gene symbols.  i.e., GeneCup focuses on the relationship between genes and a set of keywords organized as an ontology [cite:@gunturkun2022genecup].
+
+The long term vision of this data science dissertation is to unlock Kenyan biological data, so that it can be made available for machine analysis in services such as GeneCup.  I will start with the public GeneNetwork (GN) resource that contains over 20 years of heterogeneous experimental data that has resulted in thousands of publications [cite:@2022gnRefs].  GN is a long-running biomedical web service that has been in existence since 1994 [cite:@anderson2021highlights;@mulligan2017genenetwork;@sloan2016genenetwork;@wang2003webqtl].  GN enables researchers with little programming experience to access large data [fn:omics-data] through a web interface and to run complex statistical models.
+Data is also presented through API endpoints---accessible in programming environments like R, Python and live Jupyter notebooks.  GN is uniquely centered on hosting genetics data, phenotyping, Quantitative Trait Loci (QTL) and Genome Wide Association (GWA) studies in human and model species [fn:model-species], such as mouse and rat.  Having all this data from different experiments spanning over 20 years in one database with a simple web UI allows any researcher to uniquely run analyses across many studies.
+
+During my master's studies at Strathmore University, I have written functionality for the web front-end of GN.  In the course of this work, I have come to realize that the underlying data structures---some 80 cross-referenced SQL tables and many different additional file types---make it hard to access this data for more general data mining.
+A REST API was created to access data.  A REST API, however, is rigid and predicts how people want to access data.
+REST APIs are not very useful for automated data-science analysis because machines cannot reason about the relationships between the provided resources unless an ontology is provided.  It is clear that more flexible approaches are needed to increase the value of the service.  Unlocking the data means reorganizing the data and providing a way of automated data discovery.  Additionally, I aim to make a copy of the current widely used service that is physically hosted in Memphis TN, USA, and host it in Kenya at KEMRI/Wellcome Trust Kilifi [fn:howKemri].  This will allow us to add African studies and data to GN using the latest analysis and storage methods, including homomorphic encryption [cite:@mott2020private] and differential privacy [cite:@dwork2008differential;@nlnetVariationGraph] for human data.
+
+Underpinning the GN service is a mountain of data that is growing steadily (currently about 0.5 TB on the server and 30 TB from wider resources, such as Uniprot, Wikidata and PubMed), and with it new challenges, in particular: espousing clear relations between the data given a history of ad-hoc storage; fast data retrieval; non-obvious complex queries to do seemingly straight-forward tasks; connecting with other open databases (e.g.  Uniprot) in a coherent way; and unclear means of adding new data that does not align with existing schemas.  To address this I will introduce a graph-based data model, with web standards RDF and SPARQL, to replace the existing database.
+In the GN software model, I found 163 specialised SQL queries for search, data fetching and analysis.  Providing a new graph-based RDF data model with built-in relationships and machine-readable annotations will make machine-based data mining possible [cite:@munoz2014using].  The approach is not new.  In fact, two successful, very large and high performing RDF+SPARQL graph databases are Wikidata---the back-end for Wikipedia---and Uniprot [cite:@erxleben2014introducing;@redaschi2009uniprot].
+
+To get a good understaning of data-science requirements, my approach will be to take three or more examples of published GeneNetwork (GN) studies [cite:@2022gnRefs], e.g., on diabetes, obesity and longevity, and replicate the analyses of those studies building up the new graph-based database structure.  I will apply ML/AI techniques and link out the data to external resources, similar to what GeneCup achieves with deep learning PubMed abstracts (Figure [[fig:genecup]]).  I will show that the data from these examples can be discovered and reasoned on by machines.  Next, through KEMRI/Wellcome and Strathmore University, I will work with biomedical researchers to see how we can facilitate their research using the GN infrastructure and hosting that in Kenya.
+
+
+#+CAPTION: Example using GeneCup to find relationships between the keyword: /diabetes/ and ontological categories and traits.  GeneCup mines open data abstracts of the NIH PubMed server programmatically and uses deep learning to automatically distinguish sentences describing disease related terms [cite:@gunturkun2022genecup]
+#+LABEL: fig:genecup
+#+NAME: fig:genecup
+#+ATTR_ORG: :width 550px
+#+ATTR_LATEX: :width 550px :center t
+[[../grant-proposal//genecup-graph.png]]
+
+ *Research Hypothesis*: Graph-databases with semantic ontologies will unlock biomedical data and make it available for ML/AI analysis.
+
+ *Expected Outcomes*:
+
+ - A subset of GN tables converted to an RDF graph-database
+ - Exposed GN data through graph-database SPARQL endpoints
+ - Hosted GN at KEMRI/Wellcome Trust to allow researchers in Africa to upload and analyse data
+ - An assessment on ethical aspects of access to human data in the Kenyan context
+ - A peer-reviewed publication on this work
+
+Hosting the computational resources and biomedical data in Kenya and giving access to African researchers is aligned with African Sustainable Development Goals as outlined by the United Nations (\url{https://www.undp.org/sustainable-development-goals}).
+
+The two deliverables for this research dissertation are:
+
+*** 1: Convert existing data types to RDF graph-databases and make them available as machine discoverable resources with SPARQL and ontologies
+
+Currently, most of GN data is stored as SQL tables in MariaDB, with some data stored as files on disk.  Forming meaningful queries on such a structure involves formulating complex joins and prior understanding of data relationships.  Additionally, data entry tasks may sometimes require adding new tables or files to accomodate new studies.  While working with GN, I have observed that most of the data is graph-like in nature, albeit being forced into a 2D structure (tables).  This modus operandi---forcing graph-like data on 2D structures--- is limiting when adding new data with unforeseen dimensions that our rigid existing 2D schema cannot accomodate.  I aim to assess graph-like entries in the GN database and transform them to RDF, and to annotate the generated graph.  By so doing, I want to demonstrate improved semantic quality of GN data which can be extended to accomodate new data sets, particularly for the Kenyan context.
+
+*** 2: Move GeneNetwork and the results of deliverable 1 to hosted facilities in Kenya
+
+Sharing data for ML/AI purposes requires data access and ideally the data should be FAIR[cite:@wilkinson2016fair].  Stringent laws around data privacy in different countries make research difficult for an African researcher who requires access to that data.  As an example, accessing GN data in it's entirety outside the US requires bureaucratic processes to work through.  Similarly, here in Kenya, accessing health-care related data is restricted to our /[Kenya's]/ borders.  For the purpose of my research this presents an opportunity: hosting our own GN instance here in Kenya with data that's stored in a more semantic way.  To work around sharing sensitive data, well annotated and useful metadata can be released to the public; and this will point curious and potential end-users to the right places to seek data access, even if it resides behind closed walls.  SPARQL allows for federated queries [cite:@buil2013federating] where multiple database instances living in different spaces over the internet act as one single instance.  Such linked data allows exploration and evaluation by removing the tedium of designing an integrative schema or working out ways to normalise and/or warehouse a data subset in order to ask /domain-spanning/ questions.
+
+One risk will be that we don't get hardware support.  My supervisor at KEMRI/Wellcome runs a high-performance compute cluster with large storage and we want to host GeneNetwork there.  If that turns out to be a problem I may use a cluster at Pwani University.  Another fallback is the University of Tennesee GeneNetwork servers where I have access [https://genenetwork.org/facilities/] and that is always available for GeneNetwork related work.  Another risk may be that I get no collaborators in Kenya to share their scientific requirements and studies.  My supervisors are involved with a great number of them and are positive that scientists are eager to collaborate with me on data-science targets.  We need more data scientists in the biomedical sciences in Kenya.
+
+* Ethical Review
+
+This research primarily involves database systems for major model organisms supplied by GN, and will grow to accommodate human data.
+One point of ethical concern for working with such a data set is privacy and regulations around the same.  A major perceived risk when working with data, particularly with human data, is that it is prone to misuse [cite:@gymrek2013identifying;@wang2009learning;@erlich2014routes].  I will take the opportunity to discuss and research access to human data and ethics.  We can ask: /Is there a way to anonymize data in a way that you could still perform useful research on it?/ There has been active research on this, and in fact, GN has demonstrated one such technique---/homomorphic encryption/---in anonymizing genotype and phenotype data (\url{https://hegp.genenetwork.org/}) [cite:@mott2020private].  Homomorphic encryption and other techniques such as differential privacy [cite:@dwork2008differential] will be explored.  The most practical and feasible technique for data anonymization will be applied so that we can guarantee that human data used is safe.  The alternative is to make FAIR metadata available that can tell researchers how to reach that data:
+
+- Machines can easily "discover" and infer (/access)/ the data they need;
+- Having a shared vocabulary in a machine accessible format that guarantees interoperability;
+- Having contextual information that allows proper and correct interpretation thereby making the data more reusable; and
+- Allowing the attachment of rich provenance information to a graph-like structure which allows for accurate citation.
+
+The effect of this work on people and society is improving the underlying health care infrastructure, particularly when it comes to storing and accessing local omics data.  This would have a cascading effect of improving research that needs local data and, similar to shining a beacon in the dark, lead to newer perspectives of data sets we already have.
+
+* Supervisors
+My /[external]/ supervisors for this disseration are: Prof.  Shelby Solomon, who is an expert in data science, AI and ML; Prof.  Pjotr Prins, University of Tennessee USA, who contributes to GeneNetwork and co-authored GeneCup and Homomorphic Encryption papers; and Dr George Githinji, KEMRI/Wellcome Trust, Kenya, who is the bio-informatics and data science lead and Adjunct Professor at Pwani University.  Computational facilities and storage will be made available by KEMRI/Wellcome Trust, Strathmore University, and the University of Tennessee.  With the help of Strathmore University, I am in the process of looking for an internal supervisor.
+
+* References                                                         :ignore:
+#+print_bibliography:
+
+* Footnotes                                                          :ignore:
+[fn:guix-containers] https://guix.gnu.org/manual/en/html_node/Invoking-guix-container.html}
+[fn:storing-sql] Storing data in SQL is the current standard in biology
+[fn:omics-data] https://en.wikipedia.org/wiki/Omics
+[fn:model-species] https://en.wikipedia.org/wiki/Model_organism
+[fn:ratspub] https://rats.pub/
+[fn:genecupweb] [[https://genecup.org/]]
+[fn:howKemri] My supervisors will assist me to co-ordinate the actual details of getting a server to use from KEMRI/Wellcome Trust Kilifi.
+
+# local variables:
+# eval: (progn (require 'ox-extra) (ox-extras-activate '(ignore-headlines)))
+# end:
