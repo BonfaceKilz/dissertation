@@ -1,0 +1,37 @@
+\section{Methodology}
+
+The objective of this dissertation is to enhance the accessibility and interpretability of biological data stored in the Genenetwork repository through the use of a graph database. This database will be utilized to reorganize the data and facilitate automated data discovery, with the ultimate goal of improving data retrieval and complex query capabilities. In this chapter, we will first describe the tools and data that will be utilized in the study. We will then delve into the design and implementation of the SQL to RDF dumper, including details on how it will be tested. Finally, we will outline the expected results of the study and how they will be presented.
+
+\subsection{Data Collection}
+
+This dissertation will utilize the small GeneNetwork2 database as the primary source of data. This database, which is available for public use and exploration, is a truncated version of the main GeneNetwork2 database, which is constantly expanding. The small GeneNetwork2 database contains a diverse array of experimental data from genetics, phenotyping, QTL, and GWA studies in human and model species such as mouse and rat.
+
+In addition to the GeneNetwork2 database, other relevant datasets from external sources may also be collected and included in the analysis. These sources may include publicly available biological databases, such as the Gene Ontology database or the Uniprot protein database. Careful consideration will be given to the selection of these external datasets to ensure that they are relevant and reliable.
+
+Overall, the data collection process for this research project will involve extracting the data from the GeneNetwork2 database and potentially including additional relevant datasets from external sources.
+
+
+\subsection{System Analysis, Design and Implementation}
+
+The GeneNetwork database currently operates using SQL on a MariaDB instance. In order to analyze the system, the first step is to compile a list of tables containing relevant data that can be converted to RDF. Alongside this, it is also necessary to define and implement a suitable ontology for use in the conversion process.
+
+Once the relevant tables have been identified and the ontology has been defined, the next phase is implementation. The aim is to define the data dumping process in a declarative manner, for which purpose we will utilize the Scheme programming language and its powerful macro system to create efficient and flexible code.
+
+\subsection{Testing and Validation}
+
+The efficacy of the system will be assessed by linting the outputted RDF format and uploading it to a Virtuoso instance. To further validate the performance of the system, a subset of Genenetwork2's SQL-based functionality will be replaced with RDF and analyzed.
+
+\subsection{Expected Results}
+The expected results are:
+
+\begin{enumerate}
+\item A thorough analysis of Genenetwork2's current SQL database.
+
+\item A detailed evaluation of the potential benefits and challenges of porting the database to RDF, including its impact on data interoperability, integration, and security.
+
+\item A proof-of-concept implementation of the RDF-based Genenetwork2 database, including the necessary scripts and tools for data migration and integration.
+
+\item An assessment of the performance and interoperability of the RDF-based database.
+
+\item An evaluation of the potential benefits of the RDF-based Genenetwork2 for users and the broader genetics community, including its impact on data integration, analysis, and sharing.
+\end{enumerate}
