@@ -1,25 +1,133 @@
 \section{Methodology}
 
-The objective of this dissertation is to enhance the accessibility and interpretability of biological data stored in the Genenetwork repository through the use of a graph database. This database will be utilized to reorganize the data and facilitate automated data discovery, with the ultimate goal of improving data retrieval and complex query capabilities. In this chapter, we will first describe the tools and data that will be utilized in the study. We will then delve into the design and implementation of the SQL to RDF dumper, including details on how it will be tested. Finally, we will outline the expected results of the study and how they will be presented.
+The objective of this dissertation is to enhance the accessibility and interpretability of biological metadata in GN by using which will be utilized to reorganize the data and facilitate automated data discovery, with the ultimate goal of improving metadata retrieval and complex query capabilities.  This chapter will provide an overview of the tools and data that will be used in this dissertation, where the data is sourced from, the design and implementation of the SQL to RDF dumper, including testing and validation details, and the expected results of this dissertation and how they will be presented.
+
+\subsection{Tools and Software Used}
+
+For this dissertation, the following tools and software will be used:
+
+\begin{enumerate}
+\item \textit{GNU/Linux}:  MacOS and Windows are not factored in at all in the environments.  A GNU/Linux distribution is used because it is free, open and in wide usage for software development and deployment purposes.  MacOS and Windows are expensive.
+\item \textit{GNU Guix}: This will act as a package manager to declaratively specify and control the dependencies for the dissertation, and guarantee bit for bit reproducibility.
+\item \textit{GNU Guile}: GNU Guile, as a dialect of Scheme, will be the primary programming language utilized to develop the SQL to RDF parser. Its robust macro system will facilitate the creation of a declarative and expressive Domain Specific Language that will greatly aid in parsing SQL to RDF.
+\item \textit{MariaDB}: This is an open-source RDBMS that is a fork of MySQL which can be used as a drop-in replacement for MySQL.  MariaDB will primarily be used as the SQL data source in this dissertation.
+\item \textit{Virtuoso}: This is an open source high-performance engine that can be use to manage and query large amounts of RDF data.
+\item \textit{Graphviz}: This is an open-source graph visualization software that is used to visualize different types of graphs.
+\item \textit{rapper}: This is a RDF parsing and serializing utility that can be used to lint RDF files that use the Turtle syntax.
+\end{enumerate}
 
 \subsection{Data Collection}
 
-This dissertation will utilize the small GeneNetwork2 database as the primary source of data. This database, which is available for public use and exploration, is a truncated version of the main GeneNetwork2 database, which is constantly expanding. The small GeneNetwork2 database contains a diverse array of experimental data from genetics, phenotyping, QTL, and GWA studies in human and model species such as mouse and rat.
+The GN small database, a publicly accessible and reduced version of the main database, will be used as the primary source of data during the implementation of this dissertation.  The main database, which is constantly growing, hosted at the University of Tennessee Health Science Center, will be used to test and validate the results.  Testing and validation of the results will be done against the main database which is hosted at the University of Tennessee Health Science Center.
 
-In addition to the GeneNetwork2 database, other relevant datasets from external sources may also be collected and included in the analysis. These sources may include publicly available biological databases, such as the Gene Ontology database or the Uniprot protein database. Careful consideration will be given to the selection of these external datasets to ensure that they are relevant and reliable.
+In addition to the GeneNetwork2 database, other relevant datasets from external sources may also be collected and included in the analysis.  These sources may include publicly available biological databases, such as the Gene Ontology database or the Uniprot protein database.  Careful consideration will be given to the selection of these external datasets to ensure that they are relevant and reliable.
 
 Overall, the data collection process for this research project will involve extracting the data from the GeneNetwork2 database and potentially including additional relevant datasets from external sources.
 
+\subsection{Design and Implementation}
 
-\subsection{System Analysis, Design and Implementation}
+GN currently operates using SQL on a MariaDB instance.  The first step is to create a parser that can be used to convert the results of a SQL query to a valid triple store.  As an example, consider the following ``Species'' table which is defined as follows:
 
-The GeneNetwork database currently operates using SQL on a MariaDB instance. In order to analyze the system, the first step is to compile a list of tables containing relevant data that can be converted to RDF. Alongside this, it is also necessary to define and implement a suitable ontology for use in the conversion process.
+\begin{center}
+\begin{tabular}{llllll}
+Field & Type & Null & Key & Default & Extra\\
+\hline
+Id & smallint(5) unsigned & NO & PRI & NULL & auto\_increment\\
+SpeciesId & int(5) & YES &  & NULL & \\
+SpeciesName & varchar(50) & YES &  & NULL & \\
+Name & char(30) & NO & MUL &  & \\
+MenuName & char(50) & YES &  & NULL & \\
+FullName & char(100) & NO &  &  & \\
+TaxonomyId & int(11) & YES &  & NULL & \\
+OrderId & smallint(6) & YES &  & NULL & \\
+\hline
+\end{tabular}
+\end{center}
 
-Once the relevant tables have been identified and the ontology has been defined, the next phase is implementation. The aim is to define the data dumping process in a declarative manner, for which purpose we will utilize the Scheme programming language and its powerful macro system to create efficient and flexible code.
+In the small GN database, the result of executing \textit{``SELECT * FROM Species;''} is:
 
-\subsection{Testing and Validation}
+\begin{center}
+\begin{tabular}{rrllllrr}
+Id & SpeciesId & SpeciesName & Name & MenuName & FullName & TaxonomyId & OrderId\\
+\hline
+1 & 1 & Mouse & mouse & Mouse & Mus musculus & 10090 & 30\\
+4 & 4 & Human & human & Human & Homo sapiens & 9606 & 10\\
+\hline
+\end{tabular}
+\end{center}
 
-The efficacy of the system will be assessed by linting the outputted RDF format and uploading it to a Virtuoso instance. To further validate the performance of the system, a subset of Genenetwork2's SQL-based functionality will be replaced with RDF and analyzed.
+The initial step in creating the SQL to RDF parser is to establish a set of macros that enable us to dump data in a declarative manner.  As an example, using the ``Species'' table outlined above, the dump in GNU Guile would be defined in a declarative form as follows:
+
+\begin{verbatim}
+(define-dump dump-species
+  (tables (Species))
+  (schema-triples
+   (gn:name rdfs:range rdfs:Literal)
+   (gn:menuname rdfs:range rdfs:Literal)
+   (gn:binomialName rdfs:range rdfs:Literal))
+  (triples (binomial-name->species-id (field Species FullName))
+    (set gn:name (field Species SpeciesName))
+    (set gn:menuName (field Species MenuName))
+    (set gn:binomialName (field Species FullName))))
+\end{verbatim}
+
+
+The above snippet defines a dump called ``dump-species'' which is used to dump data from the ``Species'' table.  It specifies the schema triples for the dump, which includes the properties: \textit{gn:name} \textit{gn:menuname} \textit{binomialName}.  To run the above macro, one would have to call it with a proper MariaDB connection as such:
+\clearpage
+\begin{verbatim}
+(call-with-genenetwork-database
+ (lambda (db)
+   (with-output-to-file (string-append %dump-directory "/dump.ttl")
+     (lambda ()
+       (prefix "rdf:" "<http://www.w3.org/1999/02/22-rdf-syntax-ns#>")
+       (prefix "rdfs:" "<http://www.w3.org/2000/01/rdf-schema#>")
+       (prefix "foaf:" "<http://xmlns.com/foaf/0.1/>")
+       (prefix "gn:" "<http://genenetwork.org/>")
+       (newline)
+       (dump-species db)))))
+\end{verbatim}
+
+The above would result in the following RDF:
+
+\begin{verbatim}
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix gn: <http://genenetwork.org/> .
+
+gn:name rdfs:range rdfs:Literal .
+gn:menuname rdfs:range rdfs:Literal .
+gn:binomialName rdfs:range rdfs:Literal .
+gn:dump_species_name rdf:type gn:dump .
+gn:dump_species_name gn:createsPredicate gn:name .
+gn:dump_species_name gn:dependsOn gn:field_species__speciesname .
+gn:dump_species_menuname rdf:type gn:dump .
+gn:dump_species_menuname gn:createsPredicate gn:menuName .
+gn:dump_species_menuname gn:dependsOn gn:field_species__menuname .
+gn:dump_species_binomialname rdf:type gn:dump .
+gn:dump_species_binomialname gn:createsPredicate gn:binomialName .
+gn:dump_species_binomialname gn:dependsOn gn:field_species__fullname .
+gn:species_mus_musculus gn:name "Mouse" .
+gn:species_mus_musculus gn:menuName "Mouse" .
+gn:species_mus_musculus gn:binomialName "Mus musculus" .
+gn:species_homo_sapiens gn:name "Human" .
+gn:species_homo_sapiens gn:menuName "Human" .
+gn:species_homo_sapiens gn:binomialName "Homo sapiens" .
+\end{verbatim}
+
+The above generated RDF could be visualized as shown below:
+
+[TODO: Add Diagram]
+
+
+\subsection{Validation and Testing}
+\subsubsection*{Validation}
+In order to ensure that the output of the SQL to RDF parser is valid, \textit{rapper}, an RDF linter, will be used to assess whether there are any errors in the output of the RDF format.  This will make sure that there are no errors thereby allowing data to be ingested into RDF.  Should there be no errors, the data will be uploaded to a running Virtuoso instance for testing.
+
+\subsubsection*{Testing}
+
+In order to evaluate the performance and efficiency of RDF as a data representation and querying format, a subset of the functionality provided by Genenetwork2, which is currently based on SQL, will be replaced with RDF.  This will enable a direct comparison of the speed and complexity of RDF vs SQL.  By measuring the time and resources required to perform specific tasks, we will be able to gain a deeper understanding of the trade-offs involved in using RDF, and how it compares to SQL in terms of performance, complexity and scalability.
+
 
 \subsection{Expected Results}
 The expected results are:
