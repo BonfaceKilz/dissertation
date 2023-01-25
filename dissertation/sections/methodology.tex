@@ -27,7 +27,31 @@ Overall, the data collection process for this research project will involve extr
 
 \subsection{Design and Implementation}
 
-GN currently operates using SQL on a MariaDB instance.  The first step is to create a parser that can be used to convert the results of a SQL query to a valid triple store.  As an example, consider the following ``Species'' table which is defined as follows:
+GN currently operates using SQL on a MariaDB instance.  The first step is to create a parser that can be used to convert the results of a SQL query to a valid triple store.
+
+The initial step in creating the SQL to RDF parser is to establish a set of macros that enable us to dump data in a declarative manner.  For this dissertation, a \texttt{define-dump} macro will be used to dump a view of the database.  It will consist of three order-agnostic clauses - tables, schema-triples and triples - in the form show below:
+
+\begin{verbatim}
+(define-dump function-name
+  (tables (table ...) raw-forms ...)
+  (schema-triples
+   (subject predicate object) ...)
+  (triples subject
+    (verb predicate object) ...))
+\end{verbatim}
+
+The \texttt{tables} clause specifies the database tables to be joined to construct the view to be dumped.  \texttt{TABLE} must be either of the form \texttt{TABLE-NAME} or of the form \texttt{JOIN-OPERATOR TABLE-NAME RAW-CONDITION}.  \texttt{TABLE-NAME} is the name of the target table.  The \texttt{JOIN-OPERATOR} can be either a join, left-join or an inner-join.  \texttt{RAW-CONDITION} should be the join condition as a raw string for example \texttt{``USING (SpeciesId)''}.  \texttt{RAW-FORMS} are expressions that should evaluate to strings which will be appended to the SQL query.
+
+The schema-triples clause specifies the list of triples to be written once when the dump starts.
+
+The triples clause specifies the triples to be dumped once for each row in the view. All triples have a common \texttt{SUBJECT}. The \texttt{(verb predicate object)} clauses are described below:
+
+\begin{itemize}
+\item \texttt{VERB} must either be a set or multiset. For the set \texttt{VERB}, a single triple \texttt{(SUBJECT PREDICATE OBJECT-VALUE)} is written where \texttt{OBJECT-VALUE} is the result of evaluating \texttt{OBJECT}. For the multiset \texttt{VERB}, \texttt{OBJECT} must evaluate to a list, and a triple \texttt{(SUBJECT PREDICATE OBJECT-VALUE-ELEMENT)} is created for each element \texttt{OBJECT-VALUE-ELEMENT} of that list.
+\item The \texttt{SUBJECT} and \texttt{OBJECT} expressions in the triples clause must reference database fields using a \texttt{(field TABLE COLUMN)} clause where \texttt{TABLE} and \texttt{COLUMN} refer to the table and column of the field being referenced. Database fields can also be referenced using \texttt{(field TABLE COLUMN ALIAS)} where \texttt{ALIAS} is an alias for that column in the SQL query.
+\end{itemize}
+
+As an example, consider the following ``Species'' table which is defined as follows:
 
 \begin{center}
 \begin{tabular}{llllll}
@@ -57,7 +81,8 @@ Id & SpeciesId & SpeciesName & Name & MenuName & FullName & TaxonomyId & OrderId
 \end{tabular}
 \end{center}
 
-The initial step in creating the SQL to RDF parser is to establish a set of macros that enable us to dump data in a declarative manner.  As an example, using the ``Species'' table outlined above, the dump in GNU Guile would be defined in a declarative form as follows:
+
+As an example, using the ``Species'' table outlined above, the dump in GNU Guile would be defined in a declarative form as follows:
 
 \begin{verbatim}
 (define-dump dump-species
@@ -72,9 +97,8 @@ The initial step in creating the SQL to RDF parser is to establish a set of macr
     (set gn:binomialName (field Species FullName))))
 \end{verbatim}
 
-
 The above snippet defines a dump called ``dump-species'' which is used to dump data from the ``Species'' table.  It specifies the schema triples for the dump, which includes the properties: \textit{gn:name} \textit{gn:menuname} \textit{binomialName}.  To run the above macro, one would have to call it with a proper MariaDB connection as such:
-\clearpage
+
 \begin{verbatim}
 (call-with-genenetwork-database
  (lambda (db)
@@ -115,10 +139,6 @@ gn:species_homo_sapiens gn:name "Human" .
 gn:species_homo_sapiens gn:menuName "Human" .
 gn:species_homo_sapiens gn:binomialName "Homo sapiens" .
 \end{verbatim}
-
-The above generated RDF could be visualized as shown below:
-
-[TODO: Add Diagram]
 
 
 \subsection{Validation and Testing}
