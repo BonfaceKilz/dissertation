@@ -8,21 +8,33 @@
 
 https://bonfacemunyoki.com
 
+* Goals
+- Show you how a typical workflow with data
+  and how that may look like.
+
+- Highlight problems
+
+- Show our solutions
+  
 * You work in Science...
 
-We are a data scientist.  Our role is to collect data from
-experiments.  How would an experiment look like?
+Put on a hat...
 
-Here's an example of one:
+We are some data scientist.
+Our role is to collect data from experiments.
 
-** BXDPublish - Our first experiment
+How would an experiment look like?
+
+Here's an example of some:
+
+* BXDPublish - Our first experiment
 
 A dataset belongs to an experiment:
 
 Name: BXDPublish
 Publication Title: BXD Published Phenotypes
 Summary: Some summary
-Species: Home Sapiens / Human
+Species: Mouse / Mus Musculus
 GeneticType: riset
 
 
@@ -31,7 +43,7 @@ Publication Title: HLC
 Summary: Some summary
 Species: Homo Sapiens / Human
 
-** Creating our database!
+* Creating our database!
 - Create our database
 
 #+begin_src sql :engine mysql :dbhost localhost :dbuser root :dbpassword root
@@ -46,17 +58,6 @@ CREATE TABLE IF NOT EXISTS Species (
        SpeciesName varchar(50) DEFAULT NULL,
        FullName char(30) DEFAULT NULL,
        PRIMARY KEY(Id)
-);
-#+end_src
-
-#+begin_src sql :engine mysql :dbhost localhost :dbuser root :dbpassword root :database Demo
-CREATE TABLE IF NOT EXISTS Dataset (
-       Id INT(10) NOT NULL AUTO_INCREMENT,
-       DatasetName VARCHAR(50) DEFAULT NULL,
-       PublicationTitle CHAR(30) DEFAULT NULL,
-       Summary CHAR(30) DEFAULT NULL,
-       SpeciesId INT(10) REFERENCES DEFAULT NULL,
-       PRIMARY KEY(Id);
 );
 #+end_src
 
@@ -96,30 +97,42 @@ VALUES
 Note how we force relationships!
 
 
-** Problems  
+* Problems  
 - What happens when we need to add extra metadata?
   A dataset:
   E.g. AboutCases, AboutTissue, AboutDataProcessing, Contributors, Citations, Notes, GeoSeries
 
-- What happens when something can have more than one meaning?  
+- What happens when something can have more than one meaning?
   E.g Datasets "Title"
 
 - What happens when we want data to grow?
 
-* Enter RDF
-** Crash Course
-Triples:
+* Enter RDF: Crash Course
 
-Subject -> Verb -> Pridicate
+Triples - REMEMBER the word:
+
+(Subject -> Predicate -> Object)
 
 Simple Example:
 
-"John" -> isA -> "DataScientist"
-"isA" -> ofType -> "relationship"
+John -> isA -> DataScientist
+isA -> ofType -> relationship
 
-And you can ask questions such as given you know something about one
-of the things.
-  
+And you can ask questions such as:
+
+#+begin_src sql
+SPARQL
+
+SELECT ?personName ?personType WHERE {
+    ?personName isA ?personType .
+};
+
+-- OR
+SELECT ?relationship WHERE {
+    John ?relationship DataScientist.
+};
+#+end_src
+
 Applied to our example:
 
 gn:Species -> gn:Name -> "Mouse"
@@ -127,19 +140,22 @@ gn:Species -> gn:FullName -> "Homo Sapiens"
 
 This is a graph!
 
-** RDF
+* RDF
 
 - We use a graph to capture metadata!
-- Currently, we have a database, we can use that as our foundation for
-  getting building our metadata
+- Currently, we have a database, we can use that
+  as our foundation for getting building
+   our metadata in RDF!
 
-** Current work:
+* How do you go from SQL -> RDF?
 
-- Dump data DECLARATIVELY - somehow convert sql to rdf!
-- Doesn't matter whether we had prior knowledge of your database!  We just created some from scratch.
+- Dump data DECLARATIVELY - somehow
+   convert sql to rdf!
+- Doesn't matter whether we had prior
+  knowledge of your database!
+  We just created some from scratch.
 
-
-** How does that look: (PART I -> Species):
+* How does that look: (PART I -> Species):
 
 #+begin_src scheme
 (define-dump dump-species
@@ -154,7 +170,7 @@ This is a graph!
     (set gn:fullName (field Species FullName))))
 #+end_src
 
-** Part II -> Dataset (using a join!)
+* Part II -> Dataset (using a join!)
   
 #+begin_src scheme
 (define-dump dump-dataset
@@ -176,7 +192,7 @@ This is a graph!
     (set gn:geneticType (field Dataset GeneticType))))
 #+end_src
 
-** And we load it
+* And we load it
 
 #+begin_src scheme
 (call-with-genenetwork-database
@@ -192,13 +208,13 @@ This is a graph!
        (dump-dataset db)))))
 #+end_src
 
-** And we (a) check, (b) load, and (c) Run things
+* And we (a) check, (b) load, and (c) Run things
 :NOTES:
 - Note taken on [2023-01-29 Sun 22:55] \\
   Run virtuoso:
   : ,virtuoso fix-sql-queries
 :END:
-
+: guix shell guile-dbi guile-hashing -m manifest.scm -- ./pre-inst-env ./demo.scm conn-demo.scm demo-dump
 : rapper --input turtle --count demo-dump/rdf-dump.ttl
 
 Check virtuoso:
@@ -220,19 +236,25 @@ PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 PREFIX gn: <http://genenetwork.org/>
 
 
-SELECT ?speciesName ?datasetName ?summary WHERE {
+SELECT DISTINCT ?datasetName ?speciesName ?summary WHERE {
     ?species rdf:type gn:species .
-    ?species gn:fullName ?speciesName .
+    ?species gn:name ?speciesName .
+    ?dataset gn:species ?speciesName .
     ?dataset gn:title ?datasetName .
-    ?dataset gn:summary ?summary
+    ?dataset gn:summary ?summary .
 };
 #+end_src
+
+This is a query that ML can come up with.
+
+* Honorable Mentions
+
+LMDB
+
 * Unlocking Biomedical Data - A Tale of Data Transformation
 
-- Unlocking - We have lots of data that fits into a graph.  Let's make it accessible by...
+- Unlocking - We have lots of data in SQL that fits into a graph.  Let's make it accessible by...
 
 - Transforming - Making that data, usually in SQL form easy to convert to RDF; And ...
 
 - ML - easy for AI to reason about and inference!
-
-  
