@@ -1,0 +1,238 @@
+#+TITLE: Unlocking Biomedical Data - A Tale of Data Transformation
+#+AUTHOR: Munyoki Kilyungi
+
+* Who I am
+- Free s/w enthusiast
+- Msc. Student at SU - MSc. Data Science and Analytics
+- GeneNetwork active contributor
+
+https://bonfacemunyoki.com
+
+* You work in Science...
+
+We are a data scientist.  Our role is to collect data from
+experiments.  How would an experiment look like?
+
+Here's an example of one:
+
+** BXDPublish - Our first experiment
+
+A dataset belongs to an experiment:
+
+Name: BXDPublish
+Publication Title: BXD Published Phenotypes
+Summary: Some summary
+Species: Home Sapiens / Human
+GeneticType: riset
+
+
+Name: HLCPublish
+Publication Title: HLC
+Summary: Some summary
+Species: Homo Sapiens / Human
+
+** Creating our database!
+- Create our database
+
+#+begin_src sql :engine mysql :dbhost localhost :dbuser root :dbpassword root
+CREATE DATABASE Demo	
+#+end_src
+
+- Create our tables:
+
+#+begin_src sql :engine mysql :dbhost localhost :dbuser root :dbpassword root :database Demo
+CREATE TABLE IF NOT EXISTS Species (
+       Id INT(10) NOT NULL AUTO_INCREMENT,
+       SpeciesName varchar(50) DEFAULT NULL,
+       FullName char(30) DEFAULT NULL,
+       PRIMARY KEY(Id)
+);
+#+end_src
+
+#+begin_src sql :engine mysql :dbhost localhost :dbuser root :dbpassword root :database Demo
+CREATE TABLE IF NOT EXISTS Dataset (
+       Id INT(10) NOT NULL AUTO_INCREMENT,
+       DatasetName VARCHAR(50) DEFAULT NULL,
+       PublicationTitle CHAR(30) DEFAULT NULL,
+       Summary CHAR(30) DEFAULT NULL,
+       SpeciesId INT(10) REFERENCES DEFAULT NULL,
+       PRIMARY KEY(Id);
+);
+#+end_src
+
+Insert our data!
+
+- Species:
+#+begin_src sql :engine mysql :dbhost localhost :dbuser root :dbpassword root :database Demo
+INSERT INTO Species (SpeciesName, FullName)
+VALUES ("Mouse", "Mus Musculus")
+      ,("Human", "Homo Sapiens");
+#+end_src
+
+- Datasets:
+#+begin_src sql :engine mysql :dbhost localhost :dbuser root :dbpassword root :database Demo
+CREATE TABLE IF NOT EXISTS Dataset (
+       Id INT NOT NULL AUTO_INCREMENT,
+       Title VARCHAR(50),
+       Summary VARCHAR(50),
+       GeneticType VARCHAR(50),
+       SpeciesId INT(10),
+       PRIMARY KEY(Id),
+       FOREIGN KEY (SpeciesId) REFERENCES Species(Id)
+);
+#+end_src
+
+And adding the datasets:
+
+#+begin_src sql :engine mysql :dbhost localhost :dbuser root :dbpassword root :database Demo
+INSERT INTO Dataset (Title, Summary, GeneticType, SpeciesId)
+VALUES
+	 ("BXDPublish", "BXD Published Phenotype", "riset",
+	 (SELECT Id FROM Species WHERE SpeciesName="Mouse"))
+    ,("HLCPublish", NULL, NULL,
+    (SELECT Id FROM Species WHERE SpeciesName="Human"));
+#+end_src
+
+Note how we force relationships!
+
+
+** Problems  
+- What happens when we need to add extra metadata?
+  A dataset:
+  E.g. AboutCases, AboutTissue, AboutDataProcessing, Contributors, Citations, Notes, GeoSeries
+
+- What happens when something can have more than one meaning?  
+  E.g Datasets "Title"
+
+- What happens when we want data to grow?
+
+* Enter RDF
+** Crash Course
+Triples:
+
+Subject -> Verb -> Pridicate
+
+Simple Example:
+
+"John" -> isA -> "DataScientist"
+"isA" -> ofType -> "relationship"
+
+And you can ask questions such as given you know something about one
+of the things.
+  
+Applied to our example:
+
+gn:Species -> gn:Name -> "Mouse"
+gn:Species -> gn:FullName -> "Homo Sapiens"
+
+This is a graph!
+
+** RDF
+
+- We use a graph to capture metadata!
+- Currently, we have a database, we can use that as our foundation for
+  getting building our metadata
+
+** Current work:
+
+- Dump data DECLARATIVELY - somehow convert sql to rdf!
+- Doesn't matter whether we had prior knowledge of your database!  We just created some from scratch.
+
+
+** How does that look: (PART I -> Species):
+
+#+begin_src scheme
+(define-dump dump-species
+  (tables (Species))
+  (schema-triples
+   (gn:name rdfs:range rdfs:Literal)
+   (gn:fullName rdfs:range rdfs:Literal))
+  (triples
+      (binomial-name->species-id (field Species FullName))
+    (set rdf:type 'gn:species)
+    (set gn:name (field Species SpeciesName))
+    (set gn:fullName (field Species FullName))))
+#+end_src
+
+** Part II -> Dataset (using a join!)
+  
+#+begin_src scheme
+(define-dump dump-dataset
+  (tables (Dataset
+           (join Species "ON Dataset.SpeciesId = Species.Id")
+           ;; "WHERE GN_AccesionId IS NOT NULL"
+           ))
+  (schema-triples
+   (gn:species rdfs:domain rdfs:Literal)
+   (gn:title rdfs:range gn:Literal)
+   (gn:summary rdfs:range rdfs:Literal)
+   (gn:geneticType rdfs:range rdfs:Literal))
+  (triples
+      (string->identifier "dataset" (field Dataset Title))
+    (set rdf:type 'gn:dataset)
+    (set gn:species (field Species SpeciesName))
+    (set gn:title (field Dataset Title))
+    (set gn:summary (field Dataset Summary))
+    (set gn:geneticType (field Dataset GeneticType))))
+#+end_src
+
+** And we load it
+
+#+begin_src scheme
+(call-with-genenetwork-database
+ (lambda (db)
+   (with-output-to-file (string-append %dump-directory "/rdf-dump.ttl")
+     (lambda ()
+       (prefix "rdf:" "<http://www.w3.org/1999/02/22-rdf-syntax-ns#>")
+       (prefix "rdfs:" "<http://www.w3.org/2000/01/rdf-schema#>")
+       (prefix "foaf:" "<http://xmlns.com/foaf/0.1/>")
+       (prefix "gn:" "<http://genenetwork.org/>")
+       (newline)
+       (dump-species db)
+       (dump-dataset db)))))
+#+end_src
+
+** And we (a) check, (b) load, and (c) Run things
+:NOTES:
+- Note taken on [2023-01-29 Sun 22:55] \\
+  Run virtuoso:
+  : ,virtuoso fix-sql-queries
+:END:
+
+: rapper --input turtle --count demo-dump/rdf-dump.ttl
+
+Check virtuoso:
+
+: guix shell virtuoso-ose -- isql 8891
+
+Load instance
+: guix shell -m manifest.scm -- ./pre-inst-env ./load-rdf.scm conn-demo.scm demo-dump/rdf-dump.ttl
+
+
+Let's run some queries
+
+#+begin_src sql
+SPARQL
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+PREFIX foaf: <http://xmlns.com/foaf/0.1/> 
+PREFIX gn: <http://genenetwork.org/>
+
+
+SELECT ?speciesName ?datasetName ?summary WHERE {
+    ?species rdf:type gn:species .
+    ?species gn:fullName ?speciesName .
+    ?dataset gn:title ?datasetName .
+    ?dataset gn:summary ?summary
+};
+#+end_src
+* Unlocking Biomedical Data - A Tale of Data Transformation
+
+- Unlocking - We have lots of data that fits into a graph.  Let's make it accessible by...
+
+- Transforming - Making that data, usually in SQL form easy to convert to RDF; And ...
+
+- ML - easy for AI to reason about and inference!
+
+  
