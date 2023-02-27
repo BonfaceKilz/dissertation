@@ -1,13 +1,13 @@
-\section{Literature Review}
+\chapter{Literature Review}
 %To examine previous research and studies conducted on the GeneNetwork platform.
-\subsection{GeneNetwork}
+\section{GeneNetwork}
 System genetics is a field of genetics that aims to understand how the interactions between genes, the environment, and other factors contribute to an organism's traits and characteristics.  GeneNetwork (\url{https://www.genenetwork.org}, GN) is a continuously updated web service for systems genetics analyses that allows researchers to analyze genetic data and identify patterns of covariation between different traits and genes \citep{mulligan2017genenetwork}.  It is a toolbox that allows for the analysis of genomic data in order to identify genetic associations with complex traits. The tool has been successfully used in a number of studies, including the expanded BXD family of mice cohort for experimental systems genetics and precision medicine \citep{Ashbrook:2019} and the GeneNetwork framework for web-based genetics \citep{sloan2016genenetwork}.  GN also allows for the upload of high-throughput experimental data, including genomic expression data obtained through microarray and RNA-sequencing technologies, as well as classical phenotypic data, such as disease-related traits \citep{Anderson:2021}.
 
 GN is currently written in Python and JavaScript and comprises tooling and libraries that can be written in any computer language.  To guarantee bit for bit reproducibility and easy installation, the GN platform is packaged and deployed using GNU Guix \citep{sloan2016genenetwork}
 
 While GN is a powerful platform for data integration and analysis, it has one major limitation in that it relies on a SQL database to retrieve metadata for specific experiments.  This metadata includes data from the PubMed database \footnote{https://www.ncbi.nlm.nih.gov/pubmed}, which is a widely used and comprehensive resource for scientific literature.  However, using PubMed  as a source of metadata for GeneNetwork may not provide the complete context for the relationships between the metadata and the data itself.  As shown with GeneCup, a tool for mining PubMed and the GWAS catalog for gene-keyword relationships, using the PubMed metadata without storing any of the relationships may not capture the full context of the relationships it identifies, potentially limiting the usefulness of the tool \citep{gunturkun2022genecup}.
 
-\subsection{Linked Data and Semantic Web Standards}
+\section{Linked Data and Semantic Web Standards}
 
 Linked Data is a set of best practices for publishing and interlinking structured data on the Web \citep{bizer2011linkedData}.  It is based on the idea of using standard Web technologies, such as HTTP and RDF, to represent and link data in a way that is both human-readable and machine-readable.  Linked Data enables data from different sources to be connected and accessed in a decentralized manner, enabling data re-use and integration across a wide range of applications and domains \citep{bizer2011linkedData}.
 
@@ -19,7 +19,7 @@ The Semantic Web has several key properties which are important during applicati
 
 In addition to their use in specific applications, Linked Data and Semantic Web standards have also been adopted as a general approach for improving data interoperability and enabling data integration.  For example, the Linked Data principles have been widely adopted by government agencies and other organizations as a way to publish and share data on the Web \citep{bizer2011linkedData}.  The use of Semantic Web standards has also been endorsed by the World Wide Web Consortium (W3C) as a way to enable the creation of a more interoperable and connected Web \citep{shadbolt2006semantic}.
 
-\subsection{Resource Description Framework}
+\section{Resource Description Framework}
 The Resource Description Framework (RDF) is a widely-used semantic data model that is designed to represent and exchange information about resources on the World Wide Web \citep{schreiber2014rdf}.  It is based on the idea of representing data as a set of triples, where each triple consists of a subject, predicate, and object.  The subject represents the resource being described, the predicate represents the property of the resource, and the object represents the value of the property \citep{schreiber2014rdf}.
 
 RDF has several benefits for data modeling and representation, including its ability to support complex data types, reasoning, and ontologies \citep{schreiber2014rdf}.  One of the key benefits of RDF is its support for complex data types, such as lists, sets, and graphs.  This allows RDF to represent more complex relationships between resources, which is not possible with traditional data models such as relational databases \citep{allemang2011semantic}.
@@ -36,7 +36,7 @@ In the field of biomedical research, RDF has been used to represent and integrat
 
 There have also been numerous studies that have demonstrated the benefits of RDF for representing and integrating data in other domains, including biology, social media, and the Semantic Web \citep{schreiber2014rdf,allemang2011semantic,heath2011linked}.  These studies have shown that RDF can support the representation and integration of complex data from multiple sources, and can facilitate the use of reasoning and inferencing to derive new knowledge from existing data.
 
-\subsection{SPARQL}
+\section{SPARQL}
 
 SPARQL (SPARQL Protocol and RDF Query Language) is a query language designed to retrieve and manipulate data stored in Resource Description Framework (RDF) format, which is a standard for representing data as a graph of interconnected triples\citep{prud2008sparql}.  It has become a popular choice for querying and integrating data from multiple sources, as it allows for the representation and integration of data from diverse domains, and the querying of that data using a single language.
 
@@ -48,7 +48,7 @@ According to \citep{allemang2011semantic}, SPARQL has been widely adopted in a v
 
 There are several implementations of SPARQL, including standalone servers, libraries for various programming languages, and web-based tools \citep{sparql22i}.  Some popular SPARQL implementations include Apache Jena, OpenRDF Sesame, and Virtuoso.
 
-\subsection{SQL Databases and Their Limitations}
+\section{SQL Databases and Their Limitations}
 SQL databases are a type of database management system (DBMS) that are widely used for storing and manipulating structured data \citep{garcia2008database}.  Structured data is data that is organized into tables with rows and columns, and is well-suited for SQL databases because they provide efficient querying and data manipulation capabilities \citep{ramez2016fundamentals}.  However, SQL databases have certain limitations that can impact their performance and scalability \citep{chen2014data}.
 
 One limitation of SQL databases is that they are not well-suited for storing large volumes of unstructured data, such as text documents or images \citep{chen2014data}.  While it is possible to store unstructured data in a SQL database, it requires additional processing and can be inefficient compared to using a database specifically designed for unstructured data, such as a NoSQL database \citep{kleppmann2019designing}.
@@ -57,6 +57,6 @@ Another limitation of SQL databases is that they do not scale well when dealing 
 
 SQL databases can also be limited in their ability to handle real-time data processing and analytics \citep{kleppmann2019designing,chen2014data}.  In order to perform real-time analysis on data stored in a SQL database, it is necessary to continuously update the database, which can impact performance and create additional overhead \citep{garcia2008database}.
 
-\subsection{Summary}
+\section{Summary}
 
 SQL databases are a popular choice for storing structured data due to their efficient querying and data manipulation capabilities.  However, they have limitations when it comes to handling large volumes of unstructured data, scaling to handle large amounts of data or high levels of concurrency, and performing real-time data processing and analytics.  Linked Data and Semantic Web standards, such as RDF, provide a way to represent and exchange data in a machine-readable form, enabling automated processing and integration across a range of applications and domains.  RDF, in particular, allows for the representation of data as a set of interconnected triples, comprising a subject, predicate, and object.  This enables the creation of a graph-based data model that can be used to represent and link data on the Web.  SPARQL is a query language for RDF data that allows users to retrieve and manipulate data stored in an RDF graph.  It is commonly used in combination with Linked Data and Semantic Web technologies to enable the querying and integration of data from diverse sources.

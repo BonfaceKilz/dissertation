@@ -1,8 +1,8 @@
-\section{Methodology}
+\chapter{Methodology}
 
 The objective of this dissertation is to enhance the accessibility and interpretability of biological metadata in GN by using RDF which will be utilized to reorganize the data and facilitate automated data discovery, with the ultimate goal of improving metadata retrieval and complex query capabilities.  This chapter provides an overview of the tools and data that will be used in this dissertation, where the data is sourced from, the design and implementation of the SQL to RDF dumper, including testing and validation details, and the expected results of this dissertation and how they will be presented.
 
-\subsection{Tools and Software Used}
+\section{Tools and Software Used}
 
 For this dissertation, the following tools and software will be used:
 
@@ -17,7 +17,7 @@ For this dissertation, the following tools and software will be used:
 \item \textit{pytorch or GPT-3}: We will use a machine learning tool to scope AI needs. pytorch is a good candidate.  We will also try natural language processing, such as offered by GPT-3 and feed RDF to see what type of questions we can ask and provide future recommendations.
 \end{enumerate}
 
-\subsection{Data Collection}
+\section{Data Collection}
 
 The GN small database, a publicly accessible and reduced version of the main database, will be used as the primary source of data during the implementation of this dissertation.  The main database, which is constantly growing, hosted at the University of Tennessee Health Science Center, will be used to test and validate the results.  Testing and validation of the results will be done against the main database which is hosted at the University of Tennessee Health Science Center.
 
@@ -25,7 +25,7 @@ In addition to the GeneNetwork2 database, other relevant datasets from external 
 
 Overall, the data collection process for this research project will involve extracting the data from the GeneNetwork2 database and potentially including additional relevant datasets from external sources.
 
-\subsection{Design and Implementation}
+\section{Design and Implementation}
 
 GN currently operates using SQL on a MariaDB instance.  The first step is to create a parser that can be used to convert the results of a SQL query to a valid triple store.
 
