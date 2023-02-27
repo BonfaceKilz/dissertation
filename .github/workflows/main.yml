@@ -1,0 +1,46 @@
+name: Generate pdf
+
+# Run actions when pushing to the main branch or when you create a
+# PR against it
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    tags:
+      - '*'
+  pull_request:
+
+jobs:
+  build_latex:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Compile dissertation defense      
+      uses: xu-cheng/texlive-action/full@v1
+      with:
+        run: |
+          cd proposal-defense/
+          make
+          mv main.pdf proposal-defense.pdf
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: PDF
+        path: |
+          proposal-defense/proposal-defense.pdf
+
+    - name: Generate release tag
+      id: tag
+      run: |
+        echo "::set-output name=release_tag::UserBuild_$(date +"%Y.%m.%d_%H-%M")"
+
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ steps.tag.outputs.release_tag }}
+        files: |
+          proposal-defense/proposal-defense.pdf
