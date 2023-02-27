@@ -143,7 +143,7 @@ gn:species_homo_sapiens gn:binomialName "Homo sapiens" .
 
 \subsection{Validation and Testing}
 \subsubsection*{Validation}
-In order to ensure that the output of the SQL to RDF parser is valid, \textit{rapper}, an RDF linter, will be used to assess whether there are any errors in the output of the RDF format.  This will make sure that there are no errors thereby allowing data to be ingested into RDF.  Should there be no errors, the data will be uploaded to a running Virtuoso instance for testing.
+In order to ensure that the output of the SQL to RDF parser is valid, \textit{rapper}, an RDF linter, will be used to assess whether there are any errors in the output of the RDF format, a process called linting.  This will make sure that there are no errors thereby allowing data to be ingested into RDF.  Should there be no errors, the data will be uploaded to a running Virtuoso instance for testing.
 
 \subsubsection*{Testing}
 
@@ -154,13 +154,10 @@ In order to evaluate the performance and efficiency of RDF as a data representat
 The expected results are:
 
 \begin{enumerate}
-\item A thorough analysis of Genenetwork2's current SQL database.
 
-\item A detailed evaluation of the potential benefits and challenges of porting the database to RDF, including its impact on data interoperability, integration, and security.
+\item Faster, easier and more efficient metadata access with RDF compared to SQL due to a better and more fluent representation of metadata
 
-\item A proof-of-concept implementation of the RDF-based Genenetwork2 database, including the necessary scripts and tools for data migration and integration.
+\item The creation of an easy to use Embedded Domain Specific Language that makes it easy to generate RDF triples from SQL.
 
-\item An assessment of the performance and interoperability of the RDF-based database.
-
-\item An evaluation of the potential benefits of the RDF-based Genenetwork2 for users and the broader genetics community, including its impact on data integration, analysis, and sharing.
+\item Easier integration of the RDF data store with external resources such as UniProt (\url{https://www.uniprot.org/}).
 \end{enumerate}
