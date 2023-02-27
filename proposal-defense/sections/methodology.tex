@@ -141,16 +141,16 @@ gn:species_homo_sapiens gn:binomialName "Homo sapiens" .
 \end{verbatim}
 
 
-\subsection{Validation and Testing}
-\subsubsection*{Validation}
+\section{Validation and Testing}
+\subsection{Validation}
 In order to ensure that the output of the SQL to RDF parser is valid, \textit{rapper}, an RDF linter, will be used to assess whether there are any errors in the output of the RDF format, a process called linting.  This will make sure that there are no errors thereby allowing data to be ingested into RDF.  Should there be no errors, the data will be uploaded to a running Virtuoso instance for testing.
 
-\subsubsection*{Testing}
+\subsection{Testing}
 
 In order to evaluate the performance and efficiency of RDF as a data representation and querying format, a subset of the functionality provided by Genenetwork2, which is currently based on SQL, will be replaced with RDF.  This will enable a direct comparison of the speed and complexity of RDF vs SQL.  By measuring the time and resources required to perform specific tasks, we will be able to gain a deeper understanding of the trade-offs involved in using RDF, and how it compares to SQL in terms of performance, complexity and scalability.
 
 
-\subsection{Expected Results}
+\section{Expected Results}
 The expected results are:
 
 \begin{enumerate}
