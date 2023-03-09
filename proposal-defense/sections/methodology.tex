@@ -1,6 +1,6 @@
 \chapter{Methodology}
 
-The objective of this dissertation is to enhance the accessibility, interoperability and interpretability of biological metadata in GN by leveraging RDF which will be utilized to reorganize the data and facilitate automated data discovery, with the ultimate goal of improving metadata retrieval and complex query capabilities.  To achieve the first and third objectives, a Domain Specific Language (DSL) capable of converting SQL to RDF will be proposed.  This will allow for an evaluation of the current limitations of the Genenetwork2 SQL database, as well as an assessment of the benefits and drawbacks of migrating to RDF.  The second objective has already been addressed in the literature review, where previous research on the GN platform has been examined.  Finally, to achieve the last objective, the performance of RDF in the context of Genenetwork2 will be compared to that of SQL.
+The objective of this dissertation is to enhance the accessibility, interoperability and interpretability of biological metadata in GN by leveraging RDF which will be utilized to reorganize the data and facilitate automated data discovery, with the ultimate goal of improving metadata retrieval and complex query capabilities.  To achieve the first and third objectives, a Domain Specific Language (DSL) capable of converting SQL to RDF will be designed and implemented.  This will allow for an evaluation of the current limitations of the Genenetwork2 SQL database, as well as an assessment of the benefits and drawbacks of migrating to RDF.  The second objective has already been addressed in the literature review, where previous research on the GN platform has been examined.  Finally, to achieve the last objective, the performance of RDF in the context of Genenetwork2 will be compared to that of SQL.
 
 \section{Tools and Software Used}
 
@@ -50,7 +50,7 @@ Given that GN uses SQL to store data, we have the ability to run queries in SQL 
   \label{table:species}
 \end{table}
 
-\textit{Listing \ref{listing:dump-species}} shows an example of the proposed Domain Specific Language (DSL) used to perform the aforementioned dump operation for \textit{Table \ref{table:species}}:
+\textit{Listing \ref{listing:dump-species}} shows an example of the proposed DSL used to perform the aforementioned dump operation for \textit{Table \ref{table:species}}.
 
 \begin{listing}[H]
 \begin{minted}{scheme}
@@ -69,8 +69,10 @@ Given that GN uses SQL to store data, we have the ability to run queries in SQL 
  (lambda (db)
    (with-output-to-file (string-append %dump-directory "/dump.ttl")
      (lambda ()
-       (prefix "rdf:" "<http://www.w3.org/1999/02/22-rdf-syntax-ns#>")
-       (prefix "rdfs:" "<http://www.w3.org/2000/01/rdf-schema#>")
+       (prefix "rdf:"
+               "<http://www.w3.org/1999/02/22-rdf-syntax-ns#>")
+       (prefix "rdfs:"
+               "<http://www.w3.org/2000/01/rdf-schema#>")
        (prefix "foaf:" "<http://xmlns.com/foaf/0.1/>")
        (prefix "gn:" "<http://genenetwork.org/>") 
       (newline)
@@ -117,12 +119,13 @@ The first step in testing the output of the SQL to RDF parser involves utilizing
 
 Beyond linting, a subset of functionality in Genenetwork2 that uses SQL will be substituted with RDF with the expectation that there will be no loss in functionality.  This will be accompanied by integration tests and unit tests to ensure that the expected level of functionality is maintained.
 
+\clearpage
 \section{Expected Results}
 The expected results are:
 
 \begin{enumerate}
 
-\item Faster and more efficient metadata access with RDF compared to SQL due to a better and more fluent representation of metadata
+\item Faster and more efficient metadata access with RDF compared to SQL due to a better and more fluent representation of metadata.
 
 \item The creation of an Embedded Domain Specific Language that generates RDF triples from SQL.
 
