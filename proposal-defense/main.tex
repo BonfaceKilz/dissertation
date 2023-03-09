@@ -11,12 +11,17 @@
 \usepackage{mathpazo}
 \usepackage{amsmath}
 \usepackage{graphicx}
+\usepackage{minted}
 
 \usepackage[backend=biber,style=apa,natbib=true]{biblatex}
 \usepackage{caption}
 \addbibresource{refs.bib}
 
 \usepackage[autostyle=true]{csquotes}
+\usepackage{tcolorbox}
+
+\BeforeBeginEnvironment{minted}{\begin{tcolorbox}}%
+\AfterEndEnvironment{minted}{\end{tcolorbox}}%
 
 \geometry{
 	paper=a4paper,
