@@ -1,0 +1,133 @@
+\chapter{Methodology}
+
+The objective of this dissertation is to enhance the accessibility, interoperability and interpretability of biological metadata in GN by leveraging RDF which will be utilized to reorganize the data and facilitate automated data discovery, with the ultimate goal of improving metadata retrieval and complex query capabilities.  To achieve the first and third objectives, a Domain Specific Language (DSL) capable of converting SQL to RDF will be designed and implemented.  This will allow for an evaluation of the current limitations of the Genenetwork2 SQL database, as well as an assessment of the benefits and drawbacks of migrating to RDF.  The second objective has already been addressed in the literature review, where previous research on the GN platform has been examined.  Finally, to achieve the last objective, the performance of RDF in the context of Genenetwork2 will be compared to that of SQL.
+
+\section{Tools and Software Used}
+
+For this dissertation, the following tools and software will be used:
+
+\begin{enumerate}
+\item \textit{GNU/Linux}:  MacOS and Windows are not factored in at all in the development environment.  A GNU/Linux distribution is used because it is free, open and in wide usage for software development and deployment purposes.  MacOS and Windows are expensive.
+\item \textit{GNU Guix} (\url{https://guix.gnu.org/}): This will act as a package manager to declaratively specify and control the dependencies for the dissertation, and guarantee bit for bit reproducibility.
+\item \textit{GNU Guile} (\url{https://www.gnu.org/software/guile/}): GNU Guile, as a dialect of Scheme, will be the primary programming language utilized to develop the SQL to RDF parser. Its robust macro system will facilitate the creation of a declarative and expressive Domain Specific Language that will greatly aid in parsing SQL to RDF.
+\item \textit{MariaDB} (\url{https://mariadb.org/}): This is an open-source RDBMS that is a fork of MySQL which can be used as a drop-in replacement for MySQL.  MariaDB will primarily be used as the SQL data source in this dissertation.
+\item \textit{Virtuoso} (\url{https://virtuoso.openlinksw.com/}): This is an open source high-performance engine that can be use to manage and query large amounts of RDF data.
+\item \textit{Graphviz} (\url{https://graphviz.org/}): This is an open-source graph visualization software that is used to visualize different types of graphs.
+\item \textit{rapper} (\url{https://librdf.org/raptor/rapper.html}): This is a RDF parsing and serializing utility that can be used to lint RDF files that use the Turtle syntax.
+\item \textit{pytorch} (\url{https://pytorch.org/}) or \textit{GPT-3} (\url{https://github.com/openai/gpt-3}): We will use a machine learning tool to scope AI needs. pytorch is a good candidate.  We will also try natural language processing, such as offered by GPT-3 and feed RDF to see what type of questions we can ask and provide future recommendations.
+\end{enumerate}
+
+\section{Data Collection}
+
+The GN small database, a publicly accessible and reduced version of the main database, will be used as the primary source of data during the implementation of this dissertation.  The main database, which is constantly growing, hosted at the University of Tennessee Health Science Center, will be used to test and validate the results.  Testing and validation of the results will be done against the main database which is hosted at the University of Tennessee Health Science Center.
+
+In addition to the Genenetwork2 database, other relevant datasets from external sources may also be collected and included in the analysis.  These sources may include publicly available biological databases, such as the Gene Ontology database or the Uniprot protein database.  Careful consideration will be given to the selection of these external datasets to ensure that they are relevant and reliable.
+
+Overall, the data collection process for this research project will involve extracting the data from the Genenetwork2 database and potentially including additional relevant datasets from external sources.
+
+\section{Design and Implementation}
+
+GN currently operates using SQL on a MariaDB instance.  The first step towards migrating SQL databases to RDF triple stores would be to develop a flexible database-agnostic parser that can be used to convert the results of a SQL query to valid RDF triples.  This proposed parser is essentially a Domain Specific Language (DSL) that transforms the results of a sql query to RDF triple stores while supporting s-expressions.  To achieve this, a core set of macros will be designed to form the basis of the DSL.
+
+Given that GN uses SQL to store data, we have the ability to run queries in SQL to get the results we want.  We take advantage of this fact to mold the returned results to RDF.  It is immediately clear that we need a special form to be able to query SQL using s-expressions.  As an example consider \textit{Table \ref{table:species}}.
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{llllll}
+    Field & Type & Null & Key & Default & Extra\\
+    \hline
+    Id & smallint(5) unsigned & NO & PRI & NULL & auto\_increment\\
+    SpeciesId & int(5) & YES &  & NULL & \\
+    SpeciesName & varchar(50) & YES &  & NULL & \\
+    Name & char(30) & NO & MUL &  & \\
+    MenuName & char(50) & YES &  & NULL & \\
+    FullName & char(100) & NO &  &  & \\
+    TaxonomyId & int(11) & YES &  & NULL & \\
+    OrderId & smallint(6) & YES &  & NULL & \\
+    \hline
+  \end{tabular}
+  \caption{\textit{Species Table}}
+  \label{table:species}
+\end{table}
+
+\textit{Listing \ref{listing:dump-species}} shows an example of the proposed DSL used to perform the aforementioned dump operation for \textit{Table \ref{table:species}}.
+
+\begin{listing}[H]
+\begin{minted}{scheme}
+(define-dump dump-species
+  (tables (Species))
+  (schema-triples
+   (gn:name rdfs:range rdfs:Literal)
+   (gn:menuname rdfs:range rdfs:Literal)O
+   (gn:binomialName rdfs:range rdfs:Literal))
+  (triples (binomial-name->species-id (field Species FullName))
+    (set gn:name (field Species SpeciesName))
+    (set gn:menuName (field Species MenuName))
+    (set gn:binomialName (field Species FullName))))
+
+(call-with-genenetwork-database
+ (lambda (db)
+   (with-output-to-file (string-append %dump-directory "/dump.ttl")
+     (lambda ()
+       (prefix "rdf:"
+               "<http://www.w3.org/1999/02/22-rdf-syntax-ns#>")
+       (prefix "rdfs:"
+               "<http://www.w3.org/2000/01/rdf-schema#>")
+       (prefix "foaf:" "<http://xmlns.com/foaf/0.1/>")
+       (prefix "gn:" "<http://genenetwork.org/>") 
+      (newline)
+  (dump-species db)))))
+\end{minted}
+\caption{\textit{Example of a dump for the Species Table}}
+\label{listing:dump-species}
+\end{listing}
+
+The outcome of executing the code presented in \textit{Listing \ref{listing:dump-species}} is demonstrated in \textit{Listing \ref{listing:rdf-species}}.
+
+\begin{listing}[H]
+\begin{minted}{turtle}
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix gn: <http://genenetwork.org/> .
+
+gn:name rdfs:range rdfs:Literal .
+gn:menuname rdfs:range rdfs:Literal .
+gn:binomialName rdfs:range rdfs:Literal .
+gn:species_mus_musculus gn:name "Mouse" .
+gn:species_mus_musculus gn:menuName "Mouse" .
+gn:species_mus_musculus gn:binomialName "Mus musculus" .
+gn:species_homo_sapiens gn:name "Human" .
+gn:species_homo_sapiens gn:menuName "Human" .
+gn:species_homo_sapiens gn:binomialName "Homo sapiens" .
+\end{minted}
+\caption{\textit{Example of a the results of a dump for the Species Table}}
+\label{listing:rdf-species}
+\end{listing}
+
+Internally, the Domain Specific Language (DSL) defined in \textit{Listing \ref{listing:dump-species}} is used to execute a ``SELECT'' query for every row in the end result, producing the RDF triple stores displayed in \textit{Listing \ref{listing:rdf-species}}.
+
+\section{Validation and Testing}
+
+\subsection{Validation}
+
+In order to validate the benefits and challenges of the ported Genenetwork2 database in RDF, a subset of the functionality provided by Genenetwork2, which is currently based on SQL, will be replaced with RDF.  This will enable a direct comparison of the speed and complexity of RDF vs SQL.  By measuring the time and resources required to perform specific tasks, we will be able to gain a deeper understanding of the trade-offs involved in using RDF, and how it compares to SQL in terms of data interoperability, integration, and scalability.
+
+\subsection{Testing}
+
+The first step in testing the output of the SQL to RDF parser involves utilizing \textit{rapper}, an RDF linter, to assess the accuracy of the RDF format.  This process, known as linting, ensures that the output is error-free, allowing the data to be ingested into RDF.  If no errors are detected during the linting process, the data can then be uploaded to a running Virtuoso instance.
+
+Beyond linting, a subset of functionality in Genenetwork2 that uses SQL will be substituted with RDF with the expectation that there will be no loss in functionality.  This will be accompanied by integration tests and unit tests to ensure that the expected level of functionality is maintained.
+
+\clearpage
+\section{Expected Results}
+The expected results are:
+
+\begin{enumerate}
+
+\item Faster and more efficient metadata access with RDF compared to SQL due to a better and more fluent representation of metadata.
+
+\item The creation of an Embedded Domain Specific Language that generates RDF triples from SQL.
+
+\item Seamless integration of the RDF data store with external resources such as UniProt (\url{https://www.uniprot.org/}).
+\end{enumerate}
