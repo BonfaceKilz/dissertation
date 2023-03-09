@@ -118,16 +118,3 @@ In order to validate the benefits and challenges of the ported Genenetwork2 data
 The first step in testing the output of the SQL to RDF parser involves utilizing \textit{rapper}, an RDF linter, to assess the accuracy of the RDF format.  This process, known as linting, ensures that the output is error-free, allowing the data to be ingested into RDF.  If no errors are detected during the linting process, the data can then be uploaded to a running Virtuoso instance.
 
 Beyond linting, a subset of functionality in Genenetwork2 that uses SQL will be substituted with RDF with the expectation that there will be no loss in functionality.  This will be accompanied by integration tests and unit tests to ensure that the expected level of functionality is maintained.
-
-\clearpage
-\section{Expected Results}
-The expected results are:
-
-\begin{enumerate}
-
-\item Faster and more efficient metadata access with RDF compared to SQL due to a better and more fluent representation of metadata.
-
-\item The creation of an Embedded Domain Specific Language that generates RDF triples from SQL.
-
-\item Seamless integration of the RDF data store with external resources such as UniProt (\url{https://www.uniprot.org/}).
-\end{enumerate}
