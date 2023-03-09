@@ -1,6 +1,6 @@
 SHELL=/bin/bash
 MAIN=main
-LATEX=pdflatex
+LATEX=pdflatex -shell-escape
 BIBER=biber
 DTM=$(shell date +%Y%m%d-%H%M%S)
 
