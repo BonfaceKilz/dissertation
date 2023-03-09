@@ -1,6 +1,6 @@
 \chapter{Methodology}
 
-The objective of this dissertation is to enhance the accessibility, interoperability and interpretability of biological metadata in GN by leveraging RDF which will be utilized to reorganize the data and facilitate automated data discovery, with the ultimate goal of improving metadata retrieval and complex query capabilities.  To achieve the first and third objectives, a Domain Specific Language (DSL) capable of converting SQL to RDF will be designed and implemented.  This will allow for an evaluation of the current limitations of the Genenetwork2 SQL database, as well as an assessment of the benefits and drawbacks of migrating to RDF.  The second objective has already been addressed in the literature review, where previous research on the GN platform has been examined.  Finally, to achieve the last objective, the performance of RDF in the context of Genenetwork2 will be compared to that of SQL.
+This chapter introduces the tools, software, and methodology used to convert Genenetwork2's SQL tables to RDF.  To achieve the first and third objectives, which involve improving accessibility, interoperability, and interpretability of biological metadata, a Domain Specific Language (DSL) capable of converting SQL to RDF will be designed.  This DSL will enable an evaluation of the current limitations of the Genenetwork2 SQL database and an assessment of the benefits and drawbacks of migrating to RDF.  The second objective, which pertains to reviewing previous research on the GN platform, has already been addressed in the literature review.  Finally, to achieve the last objective, the performance of RDF in the context of Genenetwork2 will be compared to that of SQL.
 
 \section{Tools and Software Used}
 
@@ -27,85 +27,23 @@ Overall, the data collection process for this dissertation will involve extracti
 
 \section{Design and Implementation}
 
-GN currently operates using SQL on a MariaDB instance.  The first step towards migrating SQL databases to RDF triple stores would be to develop a flexible database-agnostic parser that can be used to convert the results of a SQL query to valid RDF triples.  This proposed parser is essentially a Domain Specific Language (DSL) that transforms the results of a sql query to RDF triple stores while supporting s-expressions.  To achieve this, a core set of macros will be designed to form the basis of the DSL.
+The proposed parser will be a Domain Specific Language (DSL) that can transform SQL query results into valid RDF triples.  It will be a flexible database-agnostic parser that supports s-expressions.  This parser will declaratively describe how the results of a SQL query maps onto a pre-defined ontology.  Figure \ref{fig:parser-demo} shows how this parser would work.
 
-Given that GN uses SQL to store data, we have the ability to run queries in SQL to get the results we want.  We take advantage of this fact to mold the returned results to RDF.  It is immediately clear that we need a special form to be able to query SQL using s-expressions.  As an example consider \textit{Table \ref{table:species}}.
-
-\begin{table}[h!]
+\begin{figure}[H]
   \centering
-  \begin{tabular}{llllll}
-    Field & Type & Null & Key & Default & Extra\\
-    \hline
-    Id & smallint(5) unsigned & NO & PRI & NULL & auto\_increment\\
-    SpeciesId & int(5) & YES &  & NULL & \\
-    SpeciesName & varchar(50) & YES &  & NULL & \\
-    Name & char(30) & NO & MUL &  & \\
-    MenuName & char(50) & YES &  & NULL & \\
-    FullName & char(100) & NO &  &  & \\
-    TaxonomyId & int(11) & YES &  & NULL & \\
-    OrderId & smallint(6) & YES &  & NULL & \\
-    \hline
-  \end{tabular}
-  \caption{\textit{Species Table}}
-  \label{table:species}
-\end{table}
+  \includegraphics[width=8cm]{parserDemo}
+  \caption{\textit{The parser operates on each row to produce a valid triple store}}
+  \label{fig:parser-demo}
+  \centering
+\end{figure}
 
-\textit{Listing \ref{listing:dump-species}} shows an example of the proposed DSL used to perform the aforementioned dump operation for \textit{Table \ref{table:species}}.
+In order to support s-expressions, a special form is necessary to query SQL, especially when the structure of the table is not known.  To achieve this, a core set of macros will be designed to form the basis of the DSL.  The architecture design for the parser will primarily focus on functional requirements, specifically on creating a DSL that is user-friendly and naturally describes the process of converting table records into RDF subject-predicate-object triples.
 
-\begin{listing}[H]
-\begin{minted}{scheme}
-(define-dump dump-species
-  (tables (Species))
-  (schema-triples
-   (gn:name rdfs:range rdfs:Literal)
-   (gn:menuname rdfs:range rdfs:Literal)O
-   (gn:binomialName rdfs:range rdfs:Literal))
-  (triples (binomial-name->species-id (field Species FullName))
-    (set gn:name (field Species SpeciesName))
-    (set gn:menuName (field Species MenuName))
-    (set gn:binomialName (field Species FullName))))
+\section{Development Methodology}
 
-(call-with-genenetwork-database
- (lambda (db)
-   (with-output-to-file (string-append %dump-directory "/dump.ttl")
-     (lambda ()
-       (prefix "rdf:"
-               "<http://www.w3.org/1999/02/22-rdf-syntax-ns#>")
-       (prefix "rdfs:"
-               "<http://www.w3.org/2000/01/rdf-schema#>")
-       (prefix "foaf:" "<http://xmlns.com/foaf/0.1/>")
-       (prefix "gn:" "<http://genenetwork.org/>") 
-      (newline)
-  (dump-species db)))))
-\end{minted}
-\caption{\textit{Example of a dump for the Species Table}}
-\label{listing:dump-species}
-\end{listing}
+The development of a functional parser is a critical aspect of using RDF triple stores as the underlying data storage system for Genenetwork2's metadata in this dissertation. To achieve this, a \textit{rapid application development} methodology will be adopted, which involves minimal planning and rapid prototyping. This methodology is well-suited for Read-Eval-Print-Loop (REPL) driven development that is commonly used in the Lisp community.
 
-The outcome of executing the code presented in \textit{Listing \ref{listing:dump-species}} is demonstrated in \textit{Listing \ref{listing:rdf-species}}.
-
-\begin{listing}[H]
-\begin{minted}{turtle}
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix foaf: <http://xmlns.com/foaf/0.1/> .
-@prefix gn: <http://genenetwork.org/> .
-
-gn:name rdfs:range rdfs:Literal .
-gn:menuname rdfs:range rdfs:Literal .
-gn:binomialName rdfs:range rdfs:Literal .
-gn:species_mus_musculus gn:name "Mouse" .
-gn:species_mus_musculus gn:menuName "Mouse" .
-gn:species_mus_musculus gn:binomialName "Mus musculus" .
-gn:species_homo_sapiens gn:name "Human" .
-gn:species_homo_sapiens gn:menuName "Human" .
-gn:species_homo_sapiens gn:binomialName "Homo sapiens" .
-\end{minted}
-\caption{\textit{Example of a the results of a dump for the Species Table}}
-\label{listing:rdf-species}
-\end{listing}
-
-Internally, the Domain Specific Language (DSL) defined in \textit{Listing \ref{listing:dump-species}} is used to execute a ``SELECT'' query for every row in the end result, producing the RDF triple stores displayed in \textit{Listing \ref{listing:rdf-species}}.
+With rapid prototyping, a working Domain Specific Language (DSL) will be created. Subsequently, the relevant tables will be parsed, and their performance will be evaluated in tandem. This approach will facilitate the incorporation of changes within the development, validation, and testing cycle, as heavy pre-planning is not required.
 
 \section{Validation and Testing}
 
@@ -119,7 +57,6 @@ The first step in testing the output of the SQL to RDF parser involves utilizing
 
 Beyond linting, a subset of functionality in Genenetwork2 that uses SQL will be substituted with RDF with the expectation that there will be no loss in functionality.  This will be accompanied by integration tests and unit tests to ensure that the expected level of functionality is maintained.
 
-\clearpage
 \section{Expected Results}
 The expected results are:
 
