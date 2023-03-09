@@ -23,15 +23,17 @@ jobs:
       with:
         run: |
           cd proposal-defense/
-          make
-          mv main.pdf proposal-defense.pdf
+          make && mv main.pdf proposal-defense.pdf
+          cd ../dissertation
+          make && mv main.pdf dissertation.pdf
 
-    - name: Upload artifact
+    - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
         name: PDF
         path: |
           proposal-defense/proposal-defense.pdf
+          dissertation/dissertation.pdf
 
     - name: Release
       uses: softprops/action-gh-release@v1
@@ -39,3 +41,4 @@ jobs:
         tag_name: proposal-defense
         files: |
           proposal-defense/proposal-defense.pdf
+          dissertation/dissertation.pdf
