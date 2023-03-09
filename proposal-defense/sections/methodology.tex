@@ -1,6 +1,6 @@
 \chapter{Methodology}
 
-The objective of this dissertation is to enhance the accessibility and interpretability of biological metadata in GN by using RDF which will be utilized to reorganize the data and facilitate automated data discovery, with the ultimate goal of improving metadata retrieval and complex query capabilities.  This chapter provides an overview of the tools and data that will be used in this dissertation, where the data is sourced from, the design and implementation of the SQL to RDF dumper, including testing and validation details, and the expected results of this dissertation and how they will be presented.
+The objective of this dissertation is to enhance the accessibility, interoperability and interpretability of biological metadata in GN by leveraging RDF which will be utilized to reorganize the data and facilitate automated data discovery, with the ultimate goal of improving metadata retrieval and complex query capabilities.  To achieve the first and third objectives, a Domain Specific Language (DSL) capable of converting SQL to RDF will be proposed.  This will allow for an evaluation of the current limitations of the Genenetwork2 SQL database, as well as an assessment of the benefits and drawbacks of migrating to RDF.  The second objective has already been addressed in the literature review, where previous research on the GN platform has been examined.  Finally, to achieve the last objective, the performance of RDF in the context of Genenetwork2 will be compared to that of SQL.
 
 \section{Tools and Software Used}
 
@@ -21,85 +21,50 @@ For this dissertation, the following tools and software will be used:
 
 The GN small database, a publicly accessible and reduced version of the main database, will be used as the primary source of data during the implementation of this dissertation.  The main database, which is constantly growing, hosted at the University of Tennessee Health Science Center, will be used to test and validate the results.  Testing and validation of the results will be done against the main database which is hosted at the University of Tennessee Health Science Center.
 
-In addition to the GeneNetwork2 database, other relevant datasets from external sources may also be collected and included in the analysis.  These sources may include publicly available biological databases, such as the Gene Ontology database or the Uniprot protein database.  Careful consideration will be given to the selection of these external datasets to ensure that they are relevant and reliable.
+In addition to the Genenetwork2 database, other relevant datasets from external sources may also be collected and included in the analysis.  These sources may include publicly available biological databases, such as the Gene Ontology database or the Uniprot protein database.  Careful consideration will be given to the selection of these external datasets to ensure that they are relevant and reliable.
 
-Overall, the data collection process for this research project will involve extracting the data from the GeneNetwork2 database and potentially including additional relevant datasets from external sources.
+Overall, the data collection process for this research project will involve extracting the data from the Genenetwork2 database and potentially including additional relevant datasets from external sources.
 
 \section{Design and Implementation}
 
-GN currently operates using SQL on a MariaDB instance.  The first step is to create a parser that can be used to convert the results of a SQL query to a valid triple store.
+GN currently operates using SQL on a MariaDB instance.  The first step towards migrating SQL databases to RDF triple stores would be to develop a flexible database-agnostic parser that can be used to convert the results of a SQL query to valid RDF triples.  This proposed parser is essentially a Domain Specific Language (DSL) that transforms the results of a sql query to RDF triple stores while supporting s-expressions.  To achieve this, a core set of macros will be designed to form the basis of the DSL.
 
-The initial step in creating the SQL to RDF parser is to establish a set of macros that enable us to dump data in a declarative manner.  For this dissertation, a \texttt{define-dump} macro will be used to dump a view of the database.  It will consist of three order-agnostic clauses - tables, schema-triples and triples - in the form show below:
+Given that GN uses SQL to store data, we have the ability to run queries in SQL to get the results we want.  We take advantage of this fact to mold the returned results to RDF.  It is immediately clear that we need a special form to be able to query SQL using s-expressions.  As an example consider \textit{Table \ref{table:species}}.
 
-\begin{verbatim}
-(define-dump function-name
-  (tables (table ...) raw-forms ...)
-  (schema-triples
-   (subject predicate object) ...)
-  (triples subject
-    (verb predicate object) ...))
-\end{verbatim}
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{llllll}
+    Field & Type & Null & Key & Default & Extra\\
+    \hline
+    Id & smallint(5) unsigned & NO & PRI & NULL & auto\_increment\\
+    SpeciesId & int(5) & YES &  & NULL & \\
+    SpeciesName & varchar(50) & YES &  & NULL & \\
+    Name & char(30) & NO & MUL &  & \\
+    MenuName & char(50) & YES &  & NULL & \\
+    FullName & char(100) & NO &  &  & \\
+    TaxonomyId & int(11) & YES &  & NULL & \\
+    OrderId & smallint(6) & YES &  & NULL & \\
+    \hline
+  \end{tabular}
+  \caption{\textit{Species Table}}
+  \label{table:species}
+\end{table}
 
-The \texttt{tables} clause specifies the database tables to be joined to construct the view to be dumped.  \texttt{TABLE} must be either of the form \texttt{TABLE-NAME} or of the form \texttt{JOIN-OPERATOR TABLE-NAME RAW-CONDITION}.  \texttt{TABLE-NAME} is the name of the target table.  The \texttt{JOIN-OPERATOR} can be either a join, left-join or an inner-join.  \texttt{RAW-CONDITION} should be the join condition as a raw string for example \texttt{``USING (SpeciesId)''}.  \texttt{RAW-FORMS} are expressions that should evaluate to strings which will be appended to the SQL query.
+\textit{Listing \ref{listing:dump-species}} shows an example of the proposed Domain Specific Language (DSL) used to perform the aforementioned dump operation for \textit{Table \ref{table:species}}:
 
-The schema-triples clause specifies the list of triples to be written once when the dump starts.
-
-The triples clause specifies the triples to be dumped once for each row in the view. All triples have a common \texttt{SUBJECT}. The \texttt{(verb predicate object)} clauses are described below:
-
-\begin{itemize}
-\item \texttt{VERB} must either be a set or multiset. For the set \texttt{VERB}, a single triple \texttt{(SUBJECT PREDICATE OBJECT-VALUE)} is written where \texttt{OBJECT-VALUE} is the result of evaluating \texttt{OBJECT}. For the multiset \texttt{VERB}, \texttt{OBJECT} must evaluate to a list, and a triple \texttt{(SUBJECT PREDICATE OBJECT-VALUE-ELEMENT)} is created for each element \texttt{OBJECT-VALUE-ELEMENT} of that list.
-\item The \texttt{SUBJECT} and \texttt{OBJECT} expressions in the triples clause must reference database fields using a \texttt{(field TABLE COLUMN)} clause where \texttt{TABLE} and \texttt{COLUMN} refer to the table and column of the field being referenced. Database fields can also be referenced using \texttt{(field TABLE COLUMN ALIAS)} where \texttt{ALIAS} is an alias for that column in the SQL query.
-\end{itemize}
-
-As an example, consider the following ``Species'' table which is defined as follows:
-
-\begin{center}
-\begin{tabular}{llllll}
-Field & Type & Null & Key & Default & Extra\\
-\hline
-Id & smallint(5) unsigned & NO & PRI & NULL & auto\_increment\\
-SpeciesId & int(5) & YES &  & NULL & \\
-SpeciesName & varchar(50) & YES &  & NULL & \\
-Name & char(30) & NO & MUL &  & \\
-MenuName & char(50) & YES &  & NULL & \\
-FullName & char(100) & NO &  &  & \\
-TaxonomyId & int(11) & YES &  & NULL & \\
-OrderId & smallint(6) & YES &  & NULL & \\
-\hline
-\end{tabular}
-\end{center}
-
-In the small GN database, the result of executing \textit{``SELECT * FROM Species;''} is:
-
-\begin{center}
-\begin{tabular}{rrllllrr}
-Id & SpeciesId & SpeciesName & Name & MenuName & FullName & TaxonomyId & OrderId\\
-\hline
-1 & 1 & Mouse & mouse & Mouse & Mus musculus & 10090 & 30\\
-4 & 4 & Human & human & Human & Homo sapiens & 9606 & 10\\
-\hline
-\end{tabular}
-\end{center}
-
-
-As an example, using the ``Species'' table outlined above, the dump in GNU Guile would be defined in a declarative form as follows:
-
-\begin{verbatim}
+\begin{listing}[H]
+\begin{minted}{scheme}
 (define-dump dump-species
   (tables (Species))
   (schema-triples
    (gn:name rdfs:range rdfs:Literal)
-   (gn:menuname rdfs:range rdfs:Literal)
+   (gn:menuname rdfs:range rdfs:Literal)O
    (gn:binomialName rdfs:range rdfs:Literal))
   (triples (binomial-name->species-id (field Species FullName))
     (set gn:name (field Species SpeciesName))
     (set gn:menuName (field Species MenuName))
     (set gn:binomialName (field Species FullName))))
-\end{verbatim}
 
-The above snippet defines a dump called ``dump-species'' which is used to dump data from the ``Species'' table.  It specifies the schema triples for the dump, which includes the properties: \textit{gn:name} \textit{gn:menuname} \textit{binomialName}.  To run the above macro, one would have to call it with a proper MariaDB connection as such:
-
-\begin{verbatim}
 (call-with-genenetwork-database
  (lambda (db)
    (with-output-to-file (string-append %dump-directory "/dump.ttl")
@@ -107,14 +72,18 @@ The above snippet defines a dump called ``dump-species'' which is used to dump d
        (prefix "rdf:" "<http://www.w3.org/1999/02/22-rdf-syntax-ns#>")
        (prefix "rdfs:" "<http://www.w3.org/2000/01/rdf-schema#>")
        (prefix "foaf:" "<http://xmlns.com/foaf/0.1/>")
-       (prefix "gn:" "<http://genenetwork.org/>")
-       (newline)
-       (dump-species db)))))
-\end{verbatim}
+       (prefix "gn:" "<http://genenetwork.org/>") 
+      (newline)
+  (dump-species db)))))
+\end{minted}
+\caption{\textit{Example of a dump for the Species Table}}
+\label{listing:dump-species}
+\end{listing}
 
-The above would result in the following RDF:
+The outcome of executing the code presented in \textit{Listing \ref{listing:dump-species}} is demonstrated in \textit{Listing \ref{listing:rdf-species}}.
 
-\begin{verbatim}
+\begin{listing}[H]
+\begin{minted}{turtle}
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
@@ -123,32 +92,30 @@ The above would result in the following RDF:
 gn:name rdfs:range rdfs:Literal .
 gn:menuname rdfs:range rdfs:Literal .
 gn:binomialName rdfs:range rdfs:Literal .
-gn:dump_species_name rdf:type gn:dump .
-gn:dump_species_name gn:createsPredicate gn:name .
-gn:dump_species_name gn:dependsOn gn:field_species__speciesname .
-gn:dump_species_menuname rdf:type gn:dump .
-gn:dump_species_menuname gn:createsPredicate gn:menuName .
-gn:dump_species_menuname gn:dependsOn gn:field_species__menuname .
-gn:dump_species_binomialname rdf:type gn:dump .
-gn:dump_species_binomialname gn:createsPredicate gn:binomialName .
-gn:dump_species_binomialname gn:dependsOn gn:field_species__fullname .
 gn:species_mus_musculus gn:name "Mouse" .
 gn:species_mus_musculus gn:menuName "Mouse" .
 gn:species_mus_musculus gn:binomialName "Mus musculus" .
 gn:species_homo_sapiens gn:name "Human" .
 gn:species_homo_sapiens gn:menuName "Human" .
 gn:species_homo_sapiens gn:binomialName "Homo sapiens" .
-\end{verbatim}
+\end{minted}
+\caption{\textit{Example of a the results of a dump for the Species Table}}
+\label{listing:rdf-species}
+\end{listing}
 
+Internally, the Domain Specific Language (DSL) defined in \textit{Listing \ref{listing:dump-species}} is used to execute a ``SELECT'' query for every row in the end result, producing the RDF triple stores displayed in \textit{Listing \ref{listing:rdf-species}}.
 
 \section{Validation and Testing}
+
 \subsection{Validation}
-In order to ensure that the output of the SQL to RDF parser is valid, \textit{rapper}, an RDF linter, will be used to assess whether there are any errors in the output of the RDF format, a process called linting.  This will make sure that there are no errors thereby allowing data to be ingested into RDF.  Should there be no errors, the data will be uploaded to a running Virtuoso instance for testing.
+
+In order to validate the benefits and challenges of the ported Genenetwork2 database in RDF, a subset of the functionality provided by Genenetwork2, which is currently based on SQL, will be replaced with RDF.  This will enable a direct comparison of the speed and complexity of RDF vs SQL.  By measuring the time and resources required to perform specific tasks, we will be able to gain a deeper understanding of the trade-offs involved in using RDF, and how it compares to SQL in terms of data interoperability, integration, and scalability.
 
 \subsection{Testing}
 
-In order to evaluate the performance and efficiency of RDF as a data representation and querying format, a subset of the functionality provided by Genenetwork2, which is currently based on SQL, will be replaced with RDF.  This will enable a direct comparison of the speed and complexity of RDF vs SQL.  By measuring the time and resources required to perform specific tasks, we will be able to gain a deeper understanding of the trade-offs involved in using RDF, and how it compares to SQL in terms of performance, complexity and scalability.
+The first step in testing the output of the SQL to RDF parser involves utilizing \textit{rapper}, an RDF linter, to assess the accuracy of the RDF format.  This process, known as linting, ensures that the output is error-free, allowing the data to be ingested into RDF.  If no errors are detected during the linting process, the data can then be uploaded to a running Virtuoso instance.
 
+Beyond linting, a subset of functionality in Genenetwork2 that uses SQL will be substituted with RDF with the expectation that there will be no loss in functionality.  This will be accompanied by integration tests and unit tests to ensure that the expected level of functionality is maintained.
 
 \section{Expected Results}
 The expected results are:
