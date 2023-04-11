@@ -1,31 +1,23 @@
 \chapter{Introduction}
 
 \section{Background}
-Genetic data analysis is important for understanding the underlying mechanisms of various biological processes and diseases.  Genenetwork2 (\url{https://genenetwork.org}) is a powerful open-source software platform that provides a range of tools and resources for analyzing, visualizing, and storing genetic data, mostly written in the python programming language with a SQL database and flat files as a backend \citetext{\citealp{sloan2016genenetwork}; \citealp*{mulligan2017genenetwork}}.  It contains over 20 years of experimental data from genetics, phenotyping, QTL, and GWA studies in human and model species such as mouse and rat \citep{sloan2016genenetwork}.  The size of the data is about 1TB and growing about 20\% a year. The current SQL database underlying GN can be complex and difficult to write software against, and lacks interoperability with other systems.
+Genetic data analysis is important for understanding the underlying mechanisms of various biological processes and diseases.  Genenetwork2 (\url{https://genenetwork.org}) is a powerful open-source software platform that provides a range of tools and resources for analyzing, visualizing, and storing genetic data, mostly written in the python programming language with a SQL database and flat files as a backend \citetext{\citealp{sloan2016genenetwork}; \citealp*{mulligan2017genenetwork}}.  It contains over 20 years of experimental data from genetics, phenotyping, QTL and GWA studies in human and model species such as mouse and rat \citep{sloan2016genenetwork}.  The size of the data is about 1TB and growing about 20\% a year.  The current SQL database underlying GN can be complex and difficult to write software against, and lacks interoperability with other systems.
 
-The Resource Description Framework (RDF) is a widely-used graph based semantic data model that can provide several benefits over SQL, including support for complex data types, reasoning, and ontologies \citep*{candan2001resource,allemang2011semantic}.  Representing GN's data in RDF has the potential to enable more flexible querying, data integration, and reasoning capabilities, as well as better support for Linked Data and Semantic Web standards. RDF is particularly suitable for machine learning and AI because it allows machines/software to analyse and discover the structure of the data and to start reasoning on it without human intervention. So, by providing RDF, Genenetwork2 data will be easily accessible for AI. This dissertation will make the data available for AI and make recommendations for future use of RDF in AI in a biological/clinical context.
+The Resource Description Framework (RDF) is a widely-used graph based semantic data model that can provide several benefits over SQL, including support for complex data types, reasoning, and ontologies \citep*{candan2001resource,allemang2011semantic}.  Representing GN's data in RDF has the potential to enable more flexible querying, data integration, and reasoning capabilities, as well as better support for Linked Data and Semantic Web standards.  RDF is particularly suitable for machine learning and AI because it allows machines/software to analyse and discover the structure of the data and to start reasoning on it without human intervention.  So, by providing RDF, Genenetwork2 data will be easily accessible for AI.  This dissertation will make the data available for AI and make recommendations for future use of RDF in AI in a biological/clinical context.
 
-\clearpage
 \section{Problem Statement}
 
-The current SQL database of Genenetwork2 has several limitations, such as its lack of support for complex data types, reasoning, and ontologies.  These limitations make it difficult to integrate and query Genenetwork2's data with other sources, and to perform advanced analysis tasks, such as inferencing and querying by example.
+The current SQL database of Genenetwork2 has several limitations, such as its lack of support for complex data types, reasoning, and ontologies.  These limitations make it difficult to integrate and query Genenetwork2's data with other sources and to perform advanced analysis tasks, such as inferencing and querying by example.
 
 \section{General Objectives}
 
-The main objective of this dissertation is to port Genenetwork2's SQL database to RDF, and to evaluate the potential benefits and challenges of this approach.  The specific research objectives are:
-
-\begin{enumerate}
-\item Evaluate the potential benefits and challenges of porting the database to RDF, including its impact on data interoperability, integration, and scalability;
-\item Develop a detailed plan for the porting process, including the steps, tools, and resources; and
-\item Try using an AI against that data to provide future recommendations.
-\end{enumerate}
-
+The main objective of this dissertation is to port Genenetwork2's SQL database to RDF, and to evaluate the potential benefits and challenges of this approach.
 
 \section{Research Objectives}
 
 \begin{enumerate}
+\item To examine previous research and studies conducted on the GeneNetwork platform and Resource Description Framework (RDF).  
 \item Understand the current limitations of the Genenetwork2 SQL database and how the use of RDF could address these limitations, as well as the potential benefits and challenges of porting the Genenetwork2 database to RDF, including its impact on data interoperability, integration, and scalability.
-\item To examine previous research and studies conducted on the GeneNetwork platform.
 \item Design, implement and test a framework for the porting process, including steps, tools, and resources, for porting the Genenetwork2 database to RDF.
 \item Validate the research by evaluating the benefits and challenges of the ported Genenetwork2 database in RDF, including its impact on data interoperability, integration, and scalability.
 \end{enumerate}
@@ -33,15 +25,15 @@ The main objective of this dissertation is to port Genenetwork2's SQL database t
 \section{Research Questions}
 
 \begin{enumerate}
+\item What are the previous studies and research work conducted on the GeneNetwork platform and RDF?
 \item What are the current limitations of the Genenetwork2 SQL database and how could the use of RDF address these limitations?
-\item What are the previous studies and research work conducted on the GeneNetwork platform?
 \item How can we design, implement and test a framework for porting the Genenetwork2 database to RDF?
-\item What are the benefits and challenges of the ported Genenetwork2 database in RDF?
+\item In the context of Genenetwork2, how does the performance of RDF compare against SQL/flat-files?
 \end{enumerate}
 
 \section{Research Relevance}
 
-This dissertation is relevant to the GeneNetwork ecosystem because it addresses the current limitations of the Genenetwork2 platform and provides a potential solution to enable more flexible querying, data integration, and reasoning capabilities.  The use of RDF could enable machines/software to analyze and discover the structure of the data without human intervention.  This research will contribute to the field of linked data storage in a biological/clinical context.
+This dissertation aims to integrate RDF into the Genenetwork2 infrastracture, thereby facilitating a semantically enriched web environment that makes it easier to share data among various communities.  With the rise of Artificial Intelligence research, this dissertation creates a semantic infrastructure that will enable machines to autonomously analyse and discern data structures using inferencing techniques, eliminating the need for human intervention.  Consequently, this dissertation will contribute to the field of linked data storage, with a particular focus on the domains of biology and clinical research.
 
 \section{Scope and Limitations}
 
