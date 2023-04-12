@@ -22,10 +22,10 @@ jobs:
       uses: xu-cheng/texlive-action/full@v1
       with:
         run: |
-          cd proposal-defense/
-          make && mv main.pdf proposal-defense.pdf
-          cd ../dissertation
-          make && mv main.pdf dissertation.pdf
+          make -C proposal-defense/
+          make -C dissertation/
+          mv proposal-defense/main.pdf proposal-defense/proposal-defense.pdf          
+          mv dissertation/main.pdf dissertation/dissertation.pdf
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
@@ -40,5 +40,5 @@ jobs:
       with:
         tag_name: Dissertation---PDF
         files: |
-          dissertation/dissertation.pdf
           proposal-defense/proposal-defense.pdf
+          dissertation/dissertation.pdf
