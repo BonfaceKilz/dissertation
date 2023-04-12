@@ -13,7 +13,7 @@ build:
 	$(LATEX) $(MAIN).tex
 
 clean:
-	@rm -f $(MAIN).{pdf,ps,log,lot,lof,toc,out,dvi,bbl,blg} *.aux
+	@rm -f $(MAIN).{pdf,ps,log,lot,lof,toc,out,dvi,bbl,bcf,run.xml,blg} *.aux
 	@echo Cleared all temporary files and $(MAIN).pdf
 
 clear:
