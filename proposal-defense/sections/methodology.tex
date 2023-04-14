@@ -1,6 +1,6 @@
 \chapter{Methodology}
 
-This chapter provides a comprehensive explanation of how each of the research questions listed in Chapter One will be addressed.  This involves showing how the proposed solution will be designed, how the research planning will be carried out, and how development and testing will be done.  
+This chapter provides a comprehensive explanation of how each of the research questions listed in Chapter One will be addressed.  This involves showing how the proposed solution will be designed, how the research planning will be carried out and how development and testing will be done.
 
 \section{Research Approach for Objectives 1 and 2}
 
@@ -10,7 +10,7 @@ The first objective of this dissertation was to study previous research work con
 
 In order to accomplish objectives three and four, a Domain Specific Language (DSL) will be developed to facilitate the translation of SQL into RDF.  This DSL will be employed to convert SQL tables into RDF representations, subsequently enabling a comprehensive comparison of RDF performance against that of SQL.
 
-The development methodology that will be adopted for this step is the \textit{Rapid Application Development (RAD)} methodology since it prioritizes development and prototype-building over planning.  It emphasizes the end-user involvement, prototyping, reuse and the use of automated tools \citep*{van2008software}.  This gives the researcher the ability to efficiently execute numerous iterations and updates to the software/model without the need to begin each iteration anew.  This yields a significant advantage, as it facilitates the ability to modify the design, augment functionality, and iteratively refine the software/model at a high frequency.
+The development methodology that will be adopted for this step is the \textit{Rapid Application Development (RAD)} methodology since it prioritizes development and prototype-building over planning.  It emphasizes the end-user involvement, prototyping, reuse and the use of automated tools \citep*{van2008software}.  This gives the researcher the ability to efficiently execute numerous iterations and updates to the software/model without the need to begin each iteration anew.  This yields a significant advantage, as it facilitates the ability to modify the design, augment functionality and iteratively refine the software/model at a high frequency.
 
 \citet*{van2008software} outlines the four fundamental steps of the Rapid Application Development (RAD) methodology as:
 
@@ -62,8 +62,6 @@ The construction phase encompasses the development of a robust, reusable tool.  
 
 During this final stage, the Domain Specific Language (DSL) will be used to convert GeneNetwork tables into RDF format.  Components of GeneNetwork that rely extensively on metadata will be restructured to utilize RDF.  A comparison between SQL and RDF performance will be assessed.
 
-\section{Research Approach for Objectives 4: Validation}
+\section{Validation}
 
-The validation process for the proposed RDF parser entails evaluating its capacity to accurately convert SQL query results into valid RDF triples, adhering to a user-defined ontology.  This assessment will be conducted by generating a diverse set of non-trivial SQL queries, and subsequently comparing the parser's output with the anticipated RDF results. A successful validation will be demonstrated through a consistent alignment between the evaluated output and the expected RDF triples.
-
-
+The final objective of this dissertation is to validate this dissertation by comparing the performance of RDF against SQL/flat-files.  To validate the findings in this dissertation, performance benchmarks will be conducted to compare the efficiency of RDF, SQL and flat-files in different scenarios.  The performance benchmarks will include measuring the time required to execute specific queries.  Moreover, functionalities that can be achieved using SPARQL but not SQL will be identified.
