@@ -1,0 +1,115 @@
+#+AUTHOR: Munyoki Kilyungi
+#+EMAIL: bonface.kilyungi@strathmore.edu
+
+
+* Project Details
+Project Name: Unlocking Biomedical Data for AI Health Research in Africa Using GeneNetwork as an Example
+Location: Nairobi, Kenya
+Grant: Africa Research Awards 2022
+Reporting Period: 
+Report Compiled by: Bonface Munyoki Kilyungi
+Date Submitted: 30-July-2023
+
+* Summary:
+
+Thus far, this project has created a self-documenting Domain Specific Language (DSL) that is able to convert SQL to machine readable RDF.  The public RDF server is hosted at https://sparql.genenetwork.org/sparql
+
+* Required Activities and Outputs
+** Activity: Convert Existing Data Types to RDF graph-databases and make them available as machine discoverable resources with SPARQL and ontologies
+- *Status*: Achieved
+- *Objective*: Convert Existing Data Types to RDF graph-databases and make them available as machine discoverable resources with SPARQL and ontologies in a FAIR way.
+- *Activity Dates*:
+ - *Planned*: May - Sep 2022
+ - *Actual*: May - June 2022
+- *Progressed*: Achieved
+- *Outputs Created*:
+  - A DSL for parsing arbitrary SQL to RDF.  The results of this work can found in this repository: https://github.com/genenetwork/dump-genenetwork-database/.
+  - The dumps are declaratively defined here: https://github.com/genenetwork/dump-genenetwork-database/tree/master/examples
+
+** Activity: Expose GN data through graph-database SPARQL endpoints
+- *Status*: Achieved
+- *Objective*: Expose graph-database SPARQL endpoints in a public server
+- *Activity Dates*:
+ - *Planned*: May - Sep 2022
+ - *Actual*: Aug 2022 - Feb 2023
+- *Progressed*: Achieved
+- *Outputs Created*:
+  - An existing SPARQL server that hosts the aforementioned data: https://sparql.genenetwork.org/sparql
+  - Auto-generated documentation while dumping data: https://github.com/genenetwork/gn-docs/tree/master/rdf-documentation
+
+** Activity: Host GN at KEMRI/Wellcome Trust
+- *Status:* In progress
+- *Objective:*
+  - Host a SPARQL server at KEMRI/Wellcome Trust and provide assistance to adding Kenyan data to our local instance
+  - Expose GN data through graph-database SPARQL endpoints  
+- *Activity Dates:*
+  - *Planned:* Oct - Dec 2022
+  - *Actual:* Feb - On-going
+- *Progress:* In progress
+- *Outputs Created:*
+  - Reproducible Playbooks for running the server in a reproducible way when a server is provided:
+    - https://github.com/genenetwork/genenetwork-machines/blob/main/public-sparql.scm
+    - https://github.com/genenetwork/genenetwork-machines/blob/main/public-sparql-deploy.sh
+
+** Activity: Assess ethical aspects of access to human data in the Kenyan context/Write a peer-reviewed publication on this work
+- *Status:* In progress
+- *Objective*: Not Started
+- *Activity Dates:*
+  - *Planned:* Jan - Apr 2023
+  - *Actual:* Jun 2023 - On-going
+- *Outputs Created*:
+  - This project is taking part in GeneNetwork Summer Of Code (https://issues.genenetwork.org/topics/biohackathon/GNGSoC2023) where it's exposed to interested stakeholders in the ecosystem.  The goal is to have this work published in BioHackrXiv and possibly another journal.
+* Results
+| Key Indicator                                                        | Baseline | Target | Result as of 30-July-2023 | Status      |
+|----------------------------------------------------------------------+----------+--------+---------------------------+-------------|
+| SQL -> RDF dump                                                      |     100% |   100% |                      100% | Achieved    |
+| Public SPARQL end-point                                              |     100% |   100% |                      100% | Achieved    |
+| Hosting Data in KEMRI/Wellcome Trust                                 |      50% |    50% |                       50% | In-Progress |
+| Assess Ethical Aspects of access to human data in the Kenyan context |        0 |      0 |                         0 | Not Started |
+| Write a peer-reviewed publication                                    |        0 |      0 |                         0 | Not Started |
+* Patners & Stakeholders
+
+| Partner/Stakeholder                               | Relationship update |
+|---------------------------------------------------+---------------------|
+| The University of Tennessee Health Science Center | This relationship is going well.  With the existing DSL in place, remaining work has been to refine the ontology in an iterative way as geneticists, molecular biologists and other interested parties review the generated RDF|
+|---------------------------------------------------+---------------------|
+| KEMRI                                             | This relatioship is going well.  One challenge is waiting to be allocated a server to host this work. |
+
+* Challenges and Lessons Learned
+
+** Lessons Learned
+
+*** Ontology/Documentation
+
+There are many different ontologies that describe things.  And some of these ontologies describe the same thing.  Settling on an ontology to use can be a difficult thing to do when working with different groups.  As such, I have to tweak my DSL to auto-generated documentation and give useful examples to make the generated RDF graph more easier to explore for humans.
+
+*** It's easier to formulate query Graph databases compared to MySQL
+
+Fetching metadata with RDF is easier to do.   One thing that makes this easier is because you can "DESCRIBE" a graph and "discover" what queries you can perform.  Beyond that, with a graph you avoid complex nested SQL JOINS, and for deeply nested queries, they can be more naturally described in SPARQL.
+
+*** Defining your own syntax to conversions is more efficient than writing your own converters by hand
+
+I defined a DSL that doesn't have to know beforehand how the target table structure is defined.  As such, as I dumped more tables, it was as simple as declaring new entries with the new syntax.
+
+** Challenges
+
+*** Converting some tables takes time
+
+Some tables are big, and as such dumping them takes time to run.  The biggest dump currently takes around 50 minutes.
+
+*** Data Cleaning
+There were broken utf-8 character sets that made generated RDF files invalid.
+
+To work around the above problems, I extended the syntax to enable running raw queries as part of the SELECT clause so as to be able to run complex queries to overcome the above.
+
+*** Dealing with blank-nodes
+
+Blank-nodes can be thought of nested triples within a triple, and they have a unique identifier within a given virtuoso instance.  Currently, the created DSL can auto-document normal triples, but can't do so with blank-nodes.
+
+* Budget
+
+| Budget Line heading | Total Budget Allocated | Expenditure This Reporting Period | Total Expenditure to date |
+|---------------------+------------------------+-----------------------------------+---------------------------|
+| Masters Fees        | $5,000                 | $3,000                            | $3,000                    |
+|                     |                        |                                   |                           |
+
