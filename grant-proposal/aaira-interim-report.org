@@ -1,18 +1,19 @@
-#+AUTHOR: Munyoki Kilyungi
+#+TITLE: STATUS REPORT
+#+AUTHOR: Bonface Munyoki Kilyungi
 #+EMAIL: bonface.kilyungi@strathmore.edu
-
+#+OPTIONS: toc:nil title:nil num:nil
 
 * Project Details
-Project Name: Unlocking Biomedical Data for AI Health Research in Africa Using GeneNetwork as an Example
-Location: Nairobi, Kenya
-Grant: Africa Research Awards 2022
-Reporting Period: 
-Report Compiled by: Bonface Munyoki Kilyungi
-Date Submitted: 30-July-2023
+*Project Name:* Unlocking Biomedical Data for AI Health Research in Africa Using GeneNetwork as an Example\\
+*Location:* Nairobi, Kenya\\
+*Grant:* Africa Research Awards 2022\\
+*Reporting Period:*  July 2023\\
+*Report Compiled by:* Bonface Munyoki Kilyungi\\
+*Date Submitted:* 30 July 2023
 
-* Summary:
+* Summary
 
-Thus far, this project has created a self-documenting Domain Specific Language (DSL) that is able to convert SQL to machine readable RDF.  The public RDF server is hosted at https://sparql.genenetwork.org/sparql
+Thus far, this project has created a self-documenting Domain Specific Language (DSL) that is able to convert SQL to machine readable RDF.  The public RDF server is hosted at: https://sparql.genenetwork.org/sparql
 
 * Required Activities and Outputs
 ** Activity: Convert Existing Data Types to RDF graph-databases and make them available as machine discoverable resources with SPARQL and ontologies
@@ -60,20 +61,28 @@ Thus far, this project has created a self-documenting Domain Specific Language (
 - *Outputs Created*:
   - This project is taking part in GeneNetwork Summer Of Code (https://issues.genenetwork.org/topics/biohackathon/GNGSoC2023) where it's exposed to interested stakeholders in the ecosystem.  The goal is to have this work published in BioHackrXiv and possibly another journal.
 * Results
-| Key Indicator                                                        | Baseline | Target | Result as of 30-July-2023 | Status      |
-|----------------------------------------------------------------------+----------+--------+---------------------------+-------------|
-| SQL -> RDF dump                                                      |     100% |   100% |                      100% | Achieved    |
-| Public SPARQL end-point                                              |     100% |   100% |                      100% | Achieved    |
-| Hosting Data in KEMRI/Wellcome Trust                                 |      50% |    50% |                       50% | In-Progress |
-| Assess Ethical Aspects of access to human data in the Kenyan context |        0 |      0 |                         0 | Not Started |
-| Write a peer-reviewed publication                                    |        0 |      0 |                         0 | Not Started |
+
+
+| /Key Indicator/                      | /Baseline/ | /Target/ | /Result as of/ | /Status/    |
+|                                      |            |          | /30 July 2023/ |             |
+|--------------------------------------+------------+----------+----------------+-------------|
+| SQL -> RDF dump                      |       100% |     100% |           100% | Achieved    |
+| Public SPARQL end-point              |       100% |     100% |           100% | Achieved    |
+| Hosting Data in KEMRI/Wellcome Trust |        50% |      50% |            50% | In-Progress |
+| Assess Ethical Aspects of access     |          0 |        0 |              0 | Not Started |
+| to human data in the Kenyan context  |            |          |                |             |
+| Write a peer-reviewed publication    |          0 |        0 |              0 | Not Started |
 * Partners & Stakeholders
 
-| Partner/Stakeholder                               | Relationship update |
-|---------------------------------------------------+---------------------|
-| The University of Tennessee Health Science Center | This relationship is going well.  With the existing DSL in place, remaining work has been to refine the ontology in an iterative way as geneticists, molecular biologists and other interested parties review the generated RDF|
-|---------------------------------------------------+---------------------|
-| KEMRI                                             | This relatioship is going well.  One challenge is waiting to be allocated a server to host this work. |
+| /Partner/Stakeholder/       | /Relationship update/                                              |
+|-----------------------------+--------------------------------------------------------------------|
+| The University of Tennessee | This relationship is going well.  With the existing DSL in place,  |
+| Health Science Center       | remaining work has been to refine the ontology in an iterative way |
+|                             | as geneticists, molecular biologists and other interested parties  |
+|                             | review the generated RDF                                           |
+|-----------------------------+--------------------------------------------------------------------|
+| KEMRI                       | This relatioship is going well.  One challenge is waiting to be    |
+|                             | allocated a server to host this work.                              |
 
 * Challenges and Lessons Learned
 
@@ -108,8 +117,9 @@ Blank-nodes can be thought of nested triples within a triple, and they have a un
 
 * Budget
 
-| Budget Line heading | Total Budget Allocated | Expenditure This Reporting Period | Total Expenditure to date |
-|---------------------+------------------------+-----------------------------------+---------------------------|
-| Masters Fees        | $5,000                 | $3,000                            | $3,000                    |
-|                     |                        |                                   |                           |
+| /Budget Line/ | /Total Budget/ | /Expenditure This/ | /Total Expenditure/ |
+| /Heading/     | /Allocated/    | /Reporting Period/ | /to date/           |
+|---------------+----------------+--------------------+---------------------|
+| Masters Fees  | $5,000         | $3,000             | $3,000              |
+
 
