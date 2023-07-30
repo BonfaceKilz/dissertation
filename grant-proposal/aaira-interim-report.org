@@ -67,7 +67,7 @@ Thus far, this project has created a self-documenting Domain Specific Language (
 | Hosting Data in KEMRI/Wellcome Trust                                 |      50% |    50% |                       50% | In-Progress |
 | Assess Ethical Aspects of access to human data in the Kenyan context |        0 |      0 |                         0 | Not Started |
 | Write a peer-reviewed publication                                    |        0 |      0 |                         0 | Not Started |
-* Patners & Stakeholders
+* Partners & Stakeholders
 
 | Partner/Stakeholder                               | Relationship update |
 |---------------------------------------------------+---------------------|
@@ -81,7 +81,7 @@ Thus far, this project has created a self-documenting Domain Specific Language (
 
 *** Ontology/Documentation
 
-There are many different ontologies that describe things.  And some of these ontologies describe the same thing.  Settling on an ontology to use can be a difficult thing to do when working with different groups.  As such, I have to tweak my DSL to auto-generated documentation and give useful examples to make the generated RDF graph more easier to explore for humans.
+There are many different ontologies that describe things.  And some of these ontologies describe the same thing.  Settling on an ontology to use can be a difficult thing to do when working with different groups.  As such, I have to tweak my DSL to auto-generate documentation and give useful examples to make the generated RDF graph more easier to explore for humans.
 
 *** It's easier to formulate query Graph databases compared to MySQL
 
