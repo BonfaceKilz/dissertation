@@ -1,4 +1,4 @@
-SHELL=/bin/bash
+SHELL=bash
 MAIN=main
 LATEX=pdflatex -shell-escape
 BIBER=biber
