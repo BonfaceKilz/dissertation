@@ -1,6 +1,6 @@
 \chapter{Methodology}
 
-This chapter provides a comprehensive explanation of how each of the research questions listed in Chapter One will be addressed.  This involves showing how the proposed solution will be designed, how the research planning will be carried out and how development and testing will be done.
+This chapter provides a comprehensive explanation of how each of the research questions listed in \autoref{chap:Introduction} will be addressed.  This involves showing how the proposed solution will be designed, how the research planning will be carried out and how development and testing will be done.
 
 \section{Research Approach for Objectives 1 and 2}
 
@@ -8,7 +8,7 @@ The first objective of this dissertation was to study previous research work con
 
 \section{Research Approach for Objectives 3}
 
-In order to accomplish objectives three and four, a Domain Specific Language (DSL) will be developed to facilitate the translation of SQL into RDF.  This DSL will be employed to convert SQL tables into RDF representations, subsequently enabling a comprehensive comparison of RDF performance against that of SQL.
+In order to accomplish objectives three and four, a self-documenting Domain Specific Language (DSL) will be developed to facilitate the translation of SQL into RDF.  This DSL will be employed to convert SQL tables into RDF representations, subsequently enabling a comprehensive comparison of RDF performance against that of SQL.
 
 The development methodology that will be adopted for this step is the \textit{Rapid Application Development (RAD)} methodology since it prioritizes development and prototype-building over planning.  It emphasizes the end-user involvement, prototyping, reuse and the use of automated tools \citep*{van2008software}.  This gives the researcher the ability to efficiently execute numerous iterations and updates to the software/model without the need to begin each iteration anew.  This yields a significant advantage, as it facilitates the ability to modify the design, augment functionality and iteratively refine the software/model at a high frequency.
 
@@ -17,7 +17,7 @@ The development methodology that will be adopted for this step is the \textit{Ra
 \begin{enumerate}
 \item \textbf{Requirements Planning:} In contrast to traditional software development models, the RAD methodology begins by obtaining a general understanding of the requirements rather than seeking a comprehensive list of specifications from end users.  The broad nature of the requirements allows for the segmentation of specific requirements at different points throughout the development cycle.
 
-\item \textbf{Prototyping:} At this stage, actual development occurs.  Prototypes are created featuring various functionalities rapidly, deviating from a strict set of requirements.  Typically, these prototypes are hastily constructed to demonstrate key features.  The final product is only developed during the finalization stage, where the consensus on the desired outcome has been reached.
+\item \textbf{Prototyping:} At this stage, actual development occurs.  Prototypes are created featuring various functionalities rapidly, deviating from a strict set of requirements.  Typically, these prototypes are hastily constructed to demonstrate key features.  The final software artifact is only developed during the finalization stage, where the consensus on the desired outcome has been reached.
 
 \item \textbf{Construction:}  In this stage, the working model is transformed into a functional system.  Usually, most bugs, issues and modifications are addressed.
 
@@ -34,11 +34,11 @@ Figure \ref{fig:rad-lifecycle} shows the aforementioned RAD life-cycle.
   \centering
 \end{figure}
 
-The following subsections elaborate on the application of the RAD methodology within the context of this dissertation.
+The following subsections elaborate on the application of the RAD methodology within this dissertation's context.
 
 \subsection{Requirements Planning}
 
-The process of requirements planning is the initial stage in building the DSL.  This stage encompasses activities such as conceptual ideation, during which potential representations of the DSL are brainstormed.  The primary goal is to design a DSL that is comprehensible and accessible to human end-users.  Moreover, the DSL should support s-expressions and offer a declarative mapping of SQL query results to a predefined ontology.  Furthermore, an ontology will be established to facilitate the conversion of SQL tables to RDF.
+The process of requirements planning is the initial stage in building the DSL.  This stage encompasses activities such as conceptual ideation, during which potential representations of the DSL are brainstormed.  The primary goal is to design a self-documenting DSL that is comprehensible and accessible to human end-users.  Moreover, the DSL should support s-expressions and offer a declarative mapping of SQL query results to a predefined ontology.  Furthermore, in this stage, relevant public and active ontologies will be identified.  The DSL will use these ontologies when transforming data from SQL tables to RDF.
 
 \subsection{Prototyping}
 
@@ -56,7 +56,7 @@ During the prototyping stage, it is crucial to quickly check whether syntactical
 
 \subsection{Construction}
 
-The construction phase encompasses the development of a robust, reusable tool.  During this stage, numerous unforeseen challenges, including bugs, issues, and modifications, will be identified and addressed.  In order to prevent regressions, unit tests and integration tests will be implemented concurrently with the development process, ensuring the tool's reliability and functionality.
+The construction phase encompasses the development of a robust, reusable tool.  During this stage, numerous unforeseen challenges, including bugs, issues, and modifications, will be identified and addressed.  In order to prevent regressions, tests will be implemented concurrently with the development process, ensuring the tool's reliability and functionality.
 
 \subsection{Cut-off}
 
