@@ -1,0 +1,27 @@
+digraph {
+    compound=true;
+    node [ fontname="Handlee" ];
+    subgraph cluster_inputs {
+	label="*INPUTS*";
+	"SQL\nQuery";
+	"Triples\nMapping";
+	"User\nDefined\nTriples";
+	Ontologies;
+	"define-transformer\nsyntax";
+	"RDF Prefixes";
+    }
+    subgraph cluster_outputs {
+	label = "*OUTPUTS*"
+        Documentation;
+	"Turtle File";
+    }
+    Transformer;
+    "SQL\nQuery" -> "define-transformer\nsyntax";
+    "User\nDefined\nTriples" -> "define-transformer\nsyntax";
+    "Triples\nMapping" -> "define-transformer\nsyntax";
+    "define-transformer\nsyntax" -> Transformer;
+    "RDF Prefixes" -> Transformer;
+    Ontologies -> "define-transformer\nsyntax"
+    Transformer -> "Turtle File";
+    Transformer -> Documentation;
+}

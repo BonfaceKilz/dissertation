@@ -7,6 +7,7 @@ DTM=$(shell date +%Y%m%d-%H%M%S)
 all: clean build clear
 
 build:
+	dot -T png -o Figures/systemDesign.png system-design-diagram.dot
 	$(LATEX) $(MAIN).tex
 	$(BIBER) $(MAIN)
 	$(LATEX) $(MAIN).tex
