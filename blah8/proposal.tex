@@ -1,0 +1,87 @@
+% Created 2023-09-14 Thu 16:16
+% Intended LaTeX compiler: pdflatex
+\documentclass[notitlepage,11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{enumitem}
+\usepackage{amsfonts, amsmath, amsthm, amssymb}
+\usepackage{graphicx}
+\date{}
+\title{Linking Biomedical Data for AI-Driven Health Research in Africa}
+\hypersetup{
+ pdfauthor={Munyoki},
+ pdftitle={Linking Biomedical Data for AI-Driven Health Research in Africa},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 28.2 (Org mode 9.5.5)}, 
+ pdflang={English}}
+\usepackage{biblatex}
+\addbibresource{/home/munyoki/projects/rq-dissertation/blah8/proposal.bib}
+\begin{document}
+
+\maketitle
+\pagestyle{empty}
+\hyphenation{ionto-pho-re-tic iso-tro-pic fortran}
+\vspace{-5em}
+\section*{Team Details}
+\label{sec:orge1b7bd3}
+\begin{center}
+\begin{tabular}{ll}
+\textbf{\textbf{Team Name:}} & \emph{Team LOD (Linked Open Data) Avengers}\\
+\hline
+\textbf{\textbf{Team Members:}} & \emph{B.  Munyoki Kilyungi} me@bonfacemunyoki.com\\
+ & \emph{S. Solomon Darnell} ssd2023@nyeusi.tech\\
+\end{tabular}
+\end{center}
+
+
+\section*{Introduction}
+\label{sec:org2744d4e}
+
+Our proposal submission aims to address the challenges faced by biomedical AI/ML research due to the limited accessibility and fragmented nature of data.  Even public datasets often lack clear relationships between data points, thus hindering the full potential of AI/ML.  Our proposal aims to enhance biomedical data accessibility, annotation, and interoperability using Linked Data Principles.  We believe that transforming data into Linked Data will empower researchers to harness the full potential of AI in health research, particularly in Africa's context.
+
+\section*{Objectives}
+\label{sec:org0dfaacb}
+
+\begin{itemize}
+\item Extend our public internally developed self-documenting DSL available at \url{https://git.genenetwork.org/gn-transform-databases/}, to support the conversion of data from various formats, not limited to SQL, into RDF.
+\item Demonstrate the process of converting data into RDF by showcasing transformations with publicly available datasets, with a preference for medical data sourced from Africa.
+\item Illustrate the integration of Linked Data within an LLM (Large Language Model).
+\item Package the aforementioned DSL to upstream Guix so that it becomes available to the wider scientific community.
+\end{itemize}
+
+\section*{Proposed Approach}
+\label{sec:orgc9007af}
+
+\begin{itemize}
+\item \emph{Data Annotation}: Explore suitable ontologies for annotating data or consider developing custom ontologies to model our specific dataset.
+\item \emph{Linked Data Transformation}: Use our DSL to transform data into RDF directly from the source and subsequently upload it to a Virtuoso instance for the purpose of demonstration.
+\item \emph{Machine Learning and AI Integration}: Upload the transformed linked data to an LLM and assess it's performance.
+\end{itemize}
+
+\section*{Expected Outcomes:}
+\label{sec:org87e67e7}
+Our participation in this hackathon is expected to yield the following outcomes:
+
+\begin{itemize}
+\item An improved DSL designed to convert data from various formats into RDF, which will be either incorporated into Guix upstream or be under review by maintainers.
+\item A demonstration of how our DSL can be used to annotate data from different formats while transforming it into triple stores.
+\item A showcase of the integration of machine learning and AI techniques with Linked Data.
+\end{itemize}
+
+\section*{Conclusion}
+\label{sec:orge9fc71f}
+
+We are excited to participate in this hackathon and look forward to this proposal's review and hopefully possible collaboration with fellow participants.  Our team is committed to demonstrating the potential of Linked Data in transforming biomedical research, and we believe that our contribution will pave the way for more accessible and impactful health research in Africa.
+\end{document}

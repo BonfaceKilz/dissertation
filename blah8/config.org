@@ -1,0 +1,7 @@
+#+LaTeX_HEADER: \usepackage[utf8]{inputenc}
+#+LaTeX_HEADER: \usepackage[T1]{fontenc}
+#+LaTeX_HEADER: \usepackage{enumitem}
+#+LaTeX_HEADER: \usepackage{amsfonts, amsmath, amsthm, amssymb}
+#+LaTeX_HEADER: \usepackage{graphicx}
+@@latex:\pagestyle{empty}@@
+@@latex:\hyphenation{ionto-pho-re-tic iso-tro-pic fortran}@@
