@@ -1,0 +1,181 @@
+#+TITLE: Unlocking Biomedical Data for AI Health Research in Africa Using GeneNetwork as an Example
+#+AUTHOR: Munyoki Kilyungi
+
+* Who I Am
+
+- Msc. Student at Strathmore University --- Data Science and Analytics
+- GeneNetwork Active Contributor
+- Free s/w advocate/enthusiast
+
+* Introduction
+
+- Current challenges in bio-medical AI/ML: FAIR data/metadata.
+  - F-indable
+  - A-ccessible
+  - I-nteroperable
+  - R-eusable
+- We need a way to make sure people/machines can access/interpret complex bio-medical data.
+- FAIR Data unlocks scientific research
+- GeneNetwork:
+  - A long-running biomedical web service
+  - Accessible through the web-interface and APIs
+  - Focus on genetics data, phenotyping, QTL and GWA studies
+  - One of the oldest databases in the world.  Been running since '94.
+
+* Goals
+- Converting GN tables---metadata---into RDF
+- Exposing the above to the web
+
+* Example RDF:
+- Example (From my work):
+
+  #+begin_example
+gnc:Species a xkos:ClassificationLevel .
+gnc:Species skos:prefLabel "The species in which this resource belongs" .
+gnc:Species xkos:depth "3" .
+gnc:Species xkos:specializes gnc:Set .
+gnc:Species skos:member gn:Mus_musculus .
+gnc:Species skos:member gn:Rattus_norvegicus .
+gnc:Species skos:member gn:Arabidopsis_thaliana .
+gnc:Species skos:member gn:Homo_sapiens .
+gnc:Species skos:member gn:Hordeum_vulgare .
+[...]
+gn:B6d2f1 rdf:type gnc:strain .
+gn:B6d2f1 xkos:classifiedUnder gn:Mus_musculus .
+gn:B6d2f1 rdfs:label "B6D2F1" .
+gn:C57bl_6j rdf:type gnc:strain .
+gn:C57bl_6j xkos:classifiedUnder gn:Mus_musculus .
+gn:C57bl_6j rdfs:label "C57BL/6J" .
+gn:C57bl_6j gnt:alias "P" .
+gn:C57bl_6j gnt:symbol "B6J" .
+  #+end_example
+
+* Domain Specific Language --- SQL->RDF
+
+- Biggest contribution for this project is creating a declarative DSL
+  that can parse SQL to RDF.  Here's how it looks like:
+
+** The Syntax
+- Defining a transformer that does the real mapping:
+  #+begin_src scheme
+(define-transformer genbank
+  (tables (Genbank
+           (left-join Species "USING (SpeciesId)")))
+  (schema-triples
+   (gnc:nucleotide a skos:Concept)
+   (gnt:hasSequence rdfs:domain gnc:nucleotide))
+  (triples (ontology
+            'genbank:
+            (field Genbank Id))
+    (set gnt:hasSequence (field Genbank Sequence))
+    (set xkos:classifiedUnder
+         (string->identifier "" (remap-species-identifiers (field Species Fullname))))))
+  #+end_src
+
+- And doing the dump with auto-generated docs set to true:
+
+  #+begin_s;rc scheme
+(with-documentation
+   (name "Genebank Metadata")
+   (connection %connection-settings)
+   (table-metadata? #f)
+   (prefixes
+    '(("rdf:" "<http://www.w3.org/1999/02/22-rdf-syntax-ns#>")
+      ("rdfs:" "<http://www.w3.org/2000/01/rdf-schema#>")
+      ("skos:" "<http://www.w3.org/2004/02/skos/core#>")
+      ("xkos:" "<http://rdf-vocabulary.ddialliance.org/xkos#>")
+      ("gn:" "<http://genenetwork.org/id/>")
+      ("gnc:" "<http://genenetwork.org/category/>")
+      ("gnt:" "<http://genenetwork.org/term/>")
+      ("dct:" "<http://purl.org/dc/terms/>")
+      ("foaf:" "<http://xmlns.com/foaf/0.1/>")
+      ("pubmed:" "<http://rdf.ncbi.nlm.nih.gov/pubmed/>")
+      ("ncbiTaxon:" "<https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=Info&id=>")
+      ("generif:" "<http://www.ncbi.nlm.nih.gov/gene?cmd=Retrieve&dopt=Graphics&list_uids=>")
+      ("xsd:" "<http://www.w3.org/2001/XMLSchema#>")
+      ("genbank:" "<https://bioregistry.io/reference/genbank:>")
+      ("owl:" "<http://www.w3.org/2002/07/owl#>")))
+   (inputs
+    (list
+     genbank))
+   (outputs
+    `(#:documentation "$HOME/genbank-output.md"
+      #:rdf "$HOME/genbank-output.ttl")))
+  #+end_src
+
+- Features of the DSL:
+  - Written in GNU Guile and packaged in Guix-bioinformatics so it's
+    reproducible.
+  - Flexible queries: joins, nested queries, aliases
+  - Optional dumping of the tables metadata I.e Column names, types
+    etc
+  - Optional dumping and generating examples during the dump
+
+** Output
+- Example TTL output:
+#+begin_example
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xkos: <http://rdf-vocabulary.ddialliance.org/xkos#> .
+@prefix gn: <http://genenetwork.org/id/> .
+@prefix gnc: <http://genenetwork.org/category/> .@prefix gnt: <http://genenetwork.org/term/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix pubmed: <http://rdf.ncbi.nlm.nih.gov/pubmed/> .
+@prefix ncbiTaxon: <https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=Info&id=> .@prefix generif: <http://www.ncbi.nlm.nih.gov/gene?cmd=Retrieve&dopt=Graphics&list_uids=> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix genbank: <https://bioregistry.io/reference/genbank:> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+gnc:nucleotide a skos:Concept .
+gnt:hasSequence rdfs:domain gnc:nucleotide .
+genbank:AA002843 gnt:hasSequence "GAAAAGGACGAGAGAAAATTATTTTTAAGATAATTAAACATAAAAACCCTGGTGCTTATTACATTATAAAGTACGTTTTTAAAAACCCACAAACTATTATACATACGTTTATGAATCAATTAAATACTCTGCACTTGTTAGGAACACGCATATCCCTTCTTTGTTGAGTTTAACGGAACGGGACAGCGGCGTGCGCCCGCGGCTGGGCTGCTCTGGCCGCGGGTCTCCCCAGGCG" .
+genbank:AA002843 xkos:classifiedUnder gn:Mus_musculus .
+
+[...]
+#+end_example
+
+- Auto-generated docs:
+[[https://github.com/genenetwork/gn-docs/blob/master/rdf-documentation/genbank-metadata.md][genbank autogenerated documentation]]
+
+** Public Links
+
+Public endpoint:
+
+https://sparql.genenetwork.org/sparql
+
+Example [[https://sparql.genenetwork.org/sparql?default-graph-uri=&qtxt=PREFIX%20gn%3A%20%3Chttp%3A%2F%2Fgenenetwork.org%2Fid%2F%3E%20%0APREFIX%20gnc%3A%20%3Chttp%3A%2F%2Fgenenetwork.org%2Fcategory%2F%3E%20%0APREFIX%20owl%3A%20%3Chttp%3A%2F%2Fwww.w3.org%2F2002%2F07%2Fowl%23%3E%20%0APREFIX%20gnt%3A%20%3Chttp%3A%2F%2Fgenenetwork.org%2Fterm%2F%3E%20%0APREFIX%20skos%3A%20%3Chttp%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23%3E%20%0APREFIX%20xkos%3A%20%3Chttp%3A%2F%2Frdf-vocabulary.ddialliance.org%2Fxkos%23%3E%20%0APREFIX%20rdf%3A%20%3Chttp%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23%3E%20%0APREFIX%20rdfs%3A%20%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23%3E%20%0APREFIX%20taxon%3A%20%3Chttp%3A%2F%2Fpurl.uniprot.org%2Ftaxonomy%2F%3E%0A%0ADESCRIBE%20%3Fresource%20WHERE%20%7B%0A%20%20%20%20%20%3Fresource%20a%20xkos%3AClassificationLevel%20.%0A%20%20%20%20%20%3Fresource%20xkos%3Aspecializes%20gnc%3ASet%20.%0A%7D%0A&format=text%2Fx-html%2Btr&timeout=0&signal_void=on][Query]] for describing a Species:
+
+#+begin_example
+PREFIX gn: <http://genenetwork.org/id/>
+PREFIX gnc: <http://genenetwork.org/category/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX gnt: <http://genenetwork.org/term/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX xkos: <http://rdf-vocabulary.ddialliance.org/xkos#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX taxon: <http://purl.uniprot.org/taxonomy/>
+
+DESCRIBE ?resource WHERE {
+     ?resource a xkos:ClassificationLevel .
+     ?resource xkos:specializes gnc:Set .
+}
+#+end_example
+
+
+Public Repository:
+
+https://git.genenetwork.org/gn-transform-databases/
+
+* Remaining Work
+Achievements:
+- Created an auto-documenting DSL for parsing SQL -> RDF
+- Converted GN Metadata to RDF
+- Exposed GN Metadata to the internet in a reproducible way using GNU Guix
+
+Remaining Work
+- Host an instance with KEMRI/Welcome trust
+- Assess ethical aspects of access to human data in the Kenyan context
+- Publish a paper
