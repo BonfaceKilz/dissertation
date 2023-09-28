@@ -14,13 +14,15 @@
   - A-ccessible
   - I-nteroperable
   - R-eusable
-- We need a way to make sure people/machines can access/interpret complex bio-medical data.
-- FAIR Data unlocks scientific research
+- We need a way to make sure people/machines can access/interpret
+  complex bio-medical data.
+- FAIR Data helps unlock scientific research.
 - GeneNetwork:
   - A long-running biomedical web service
-  - Accessible through the web-interface and APIs
-  - Focus on genetics data, phenotyping, QTL and GWA studies
-  - One of the oldest databases in the world.  Been running since '94.
+  - Accessible through a web-interface and APIs
+  - Focuses on genetics data, phenotyping, QTL and GWA studies
+  - One of the oldest databases in the world for genetic and genomic
+    study and analysis.  It has been running since '94.
 
 * Goals
 - Converting GN tables---metadata---into RDF
