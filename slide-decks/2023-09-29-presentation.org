@@ -5,7 +5,9 @@
 
 - Msc. Student at Strathmore University --- Data Science and Analytics
 - GeneNetwork Active Contributor
-- Free s/w advocate/enthusiast
+- Free s/w advocate/enthusiast:
+    Active GNU Guix contributor, and one of
+    Guix Bioinformatic's upstream maintainers.    
 
 * Introduction
 
@@ -24,13 +26,24 @@
   - One of the oldest databases in the world for genetic and genomic
     study and analysis.  It has been running since '94.
 
-* Goals
+* Goals/Why?
+
+"Unlocking Biomedical Data"  ==  Making Data FAIR
+
+"for AI Health Research in Africa" == Applications e.g. in LLMs
+
+"Using GeneNetwork as an Example" == A show case of this project's approach
+
+** How?
+
 - Converting GN tables---metadata---into RDF
 - Exposing the above to the web
 
-* Example RDF:
-- Example (From my work):
+* Example RDF---What we want:
 
+- Example (From my work): 
+
+  Modelling data using a given ontology and then later using that ontology
   #+begin_example
 gnc:Species a xkos:ClassificationLevel .
 gnc:Species skos:prefLabel "The species in which this resource belongs" .
@@ -52,31 +65,36 @@ gn:C57bl_6j gnt:alias "P" .
 gn:C57bl_6j gnt:symbol "B6J" .
   #+end_example
 
+- How do we come up with the above starting from SQL?
+  
 * Domain Specific Language --- SQL->RDF
 
 - Biggest contribution for this project is creating a declarative DSL
-  that can parse SQL to RDF.  Here's how it looks like:
+  that can parse SQL to RDF.
 
+- Features of the DSL:
+  - Database Agnostic
+  - Auto-documenting    
+  - Written in GNU Guile and packaged in Guix-bioinformatics so it's
+    reproducible.
+  - Flexible queries: joins, nested queries, aliases
+  - Optional dumping of the tables metadata I.e Column names, types
+    etc
+
+- Here's how it looks like:
+  
 ** The Syntax
-- Defining a transformer that does the real mapping:
+- Syntax is motivated by Functional Programming and Declarative
+  Programming:
+
+  Functional Programming = Pure Functions.
+     We have inputs and we get outputs
+
+  Declarative Programming = Say what you want.
+
+- Here's how it looks like:
+  
   #+begin_src scheme
-(define-transformer genbank
-  (tables (Genbank
-           (left-join Species "USING (SpeciesId)")))
-  (schema-triples
-   (gnc:nucleotide a skos:Concept)
-   (gnt:hasSequence rdfs:domain gnc:nucleotide))
-  (triples (ontology
-            'genbank:
-            (field Genbank Id))
-    (set gnt:hasSequence (field Genbank Sequence))
-    (set xkos:classifiedUnder
-         (string->identifier "" (remap-species-identifiers (field Species Fullname))))))
-  #+end_src
-
-- And doing the dump with auto-generated docs set to true:
-
-  #+begin_s;rc scheme
 (with-documentation
    (name "Genebank Metadata")
    (connection %connection-settings)
@@ -104,30 +122,31 @@ gn:C57bl_6j gnt:symbol "B6J" .
     `(#:documentation "$HOME/genbank-output.md"
       #:rdf "$HOME/genbank-output.ttl")))
   #+end_src
-
-- Features of the DSL:
-  - Written in GNU Guile and packaged in Guix-bioinformatics so it's
-    reproducible.
-  - Flexible queries: joins, nested queries, aliases
-  - Optional dumping of the tables metadata I.e Column names, types
-    etc
-  - Optional dumping and generating examples during the dump
+  
+- Defining an input that does the real mapping:
+  
+  #+begin_src scheme
+(define-transformer genbank
+  (tables (Genbank
+           (left-join Species "USING (SpeciesId)")))
+  (schema-triples
+   (gnc:nucleotide a skos:Concept)
+   (gnt:hasSequence rdfs:domain gnc:nucleotide))
+  (triples (ontology
+            'genbank:
+            (field Genbank Id))
+    (set gnt:hasSequence (field Genbank Sequence))
+    (set xkos:classifiedUnder
+         (string->identifier "" (remap-species-identifiers (field Species Fullname))))))
+  #+end_src
 
 ** Output
-- Example TTL output:
+
+- Example TTL---RDF---output:
+
 #+begin_example
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix xkos: <http://rdf-vocabulary.ddialliance.org/xkos#> .
-@prefix gn: <http://genenetwork.org/id/> .
-@prefix gnc: <http://genenetwork.org/category/> .@prefix gnt: <http://genenetwork.org/term/> .
-@prefix dct: <http://purl.org/dc/terms/> .
-@prefix foaf: <http://xmlns.com/foaf/0.1/> .
-@prefix pubmed: <http://rdf.ncbi.nlm.nih.gov/pubmed/> .
-@prefix ncbiTaxon: <https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=Info&id=> .@prefix generif: <http://www.ncbi.nlm.nih.gov/gene?cmd=Retrieve&dopt=Graphics&list_uids=> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix genbank: <https://bioregistry.io/reference/genbank:> .
+[...]
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 
 gnc:nucleotide a skos:Concept .
@@ -151,13 +170,7 @@ Example [[https://sparql.genenetwork.org/sparql?default-graph-uri=&qtxt=PREFIX%2
 
 #+begin_example
 PREFIX gn: <http://genenetwork.org/id/>
-PREFIX gnc: <http://genenetwork.org/category/>
-PREFIX owl: <http://www.w3.org/2002/07/owl#>
-PREFIX gnt: <http://genenetwork.org/term/>
-PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-PREFIX xkos: <http://rdf-vocabulary.ddialliance.org/xkos#>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+[...]
 PREFIX taxon: <http://purl.uniprot.org/taxonomy/>
 
 DESCRIBE ?resource WHERE {
@@ -166,18 +179,29 @@ DESCRIBE ?resource WHERE {
 }
 #+end_example
 
-
 Public Repository:
 
 https://git.genenetwork.org/gn-transform-databases/
 
-* Remaining Work
+* Summary
+
 Achievements:
 - Created an auto-documenting DSL for parsing SQL -> RDF
 - Converted GN Metadata to RDF
 - Exposed GN Metadata to the internet in a reproducible way using GNU Guix
-
-Remaining Work
-- Host an instance with KEMRI/Welcome trust
+- Generated RDF is being used as input for an LLM Genenetwork is working on
+  
+Challenges:
+- Parsing very big datasets takes some time.
+  
+Remaining Work:
+- Host an instance with KEMRI/Welcome trust.  Extend GN data with local Data
 - Assess ethical aspects of access to human data in the Kenyan context
-- Publish a paper
+- Publish a paper.  Paper under preparation: 
+  - "Developing a Domain-Specific Language for AI Applications in Biological Data Analysis" by Bonface Munyoki K.(Strathmore University)
+
+  Related paper:     
+  - "Generative AI In the pursuit to moderate and expose Genetic/Genomic Knowledge" by: Dr. S.  Solomon Darnell (UTHSC), Dr. Pjotr Prins (UTHSC), Bonface Munyoki K.(Strathmore University).
+Future Work:
+- Create a more intuitive prolog-like DSL for querying RDF.  
+- Extend to other formats: JSON, CSV.
