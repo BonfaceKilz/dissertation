@@ -44,3 +44,7 @@ Figure \ref{fig:system-diagram} shows the overarching structure of the DSL under
 \end{enumerate}
 
 The ``define-transformer'' macro is the central driver for converting SQL to RDF.  It provides an interface for specifying the SQL query, user-defined triples, and SQL-to-RDF mapping. The ``define-transformer'' macro is one of the inputs to the ``transform-with-documentation'' macro which takes objects using the ``define-transformer'' macro as input, along with RDF prefixes. It then parses the abstract syntax tree of the ``define-transformer'' macro to automatically generate documentation, and executes the transformation itself, resulting in a Turtle file.
+
+%%% Local Variables:
+%%% ispell-local-dictionary: "en_GB-ise"
+%%% End:
