@@ -29,8 +29,8 @@ Figure~\ref{fig:rad-lifecycle} shows the aforementioned RAD life-cycle.
 \begin{figure}[H]
   \centering
   \includegraphics[width=12cm]{RAD}
-  \caption{\textit{Rapid Application Development life-cycle}}\label{fig:rad-lifecycle}
-  \centering
+  \caption{Rapid Application Development life-cycle}
+  \source{https://kissflow.com/application-development/rad/rapid-application-development-rad-meaning/}\label{fig:rad-lifecycle}
 \end{figure}
 
 The following subsections elaborate on the application of the RAD methodology within this dissertation's context.
@@ -41,7 +41,7 @@ The process of requirements planning is the initial stage in building the DSL.\@
 
 \subsection{Prototyping}
 
-During the prototyping phase, a preliminary version of the DSL will be developed, enabling the exploration of its design and functionality.  This prototype will serve as a proof-of-concept and will be refined based on feedback from stakeholders and potential end-users.  Figure~\ref{fig:parser-demo} illustrates the parser's basic operation.
+During the prototyping phase, a preliminary version of the DSL will be developed, enabling the exploration of its design and functionality.  This prototype will function as a proof-of-concept, subject to refinement through feedback from the GeneNetwork leadership team~\footnote{\url{https://git.genenetwork.org/gn-docs/tree/general/team/leadership.md}}, whose members possess extensive experience in programming, genetics, and genomics.  They were selected for their ability to evaluate RDF progress and offer valuable insights.  Figure~\ref{fig:parser-demo} illustrates the parser's basic operation.
 
 \begin{figure}[H]
 \centering
@@ -50,7 +50,7 @@ During the prototyping phase, a preliminary version of the DSL will be developed
 \centering
 \end{figure}
 
-During the prototyping stage, it is crucial to quickly check whether syntactical errors exist in the RDF output.  To this end, \textit{rapper}, an RDF linter, will be utilized to assess the syntactic correctness of the generated RDF format.  This linting process ensures that the output is free of errors, permitting the data to be ingested into a virtuoso instance.  In the absence of errors detected during the linting procedure, the data can subsequently be uploaded to a running Virtuoso instance.
+During the prototyping stage, it is crucial to quickly check whether syntactical errors exist in the RDF output.  To this end, \textit{rapper}~\footnote{\url{https://librdf.org/raptor/rapper.html}}, a Raptor RDF parser utility, will be utilized to assess the syntactic correctness of the generated RDF format.  This linting process ensures that the output is free of errors, permitting the data to be ingested into a virtuoso instance.  In the absence of errors detected during the linting procedure, the data can subsequently be uploaded to a running Virtuoso instance.
 
 \subsection{Construction}
 
