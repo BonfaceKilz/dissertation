@@ -1,6 +1,6 @@
 \chapter{System Implementation and Testing}
 
-This chapter describes the implementation and evaluation of the self-documenting DSL designed for transforming SQL tables into RDF.
+This chapter describes the implementation and evaluation of the self-documenting DSL designed for transforming SQL tables into RDF\@.
 
 \section{Hardware and Sofware Requirements}
 
@@ -11,7 +11,7 @@ The development of this DSL was conducted on a server provided by the University
 \begin{center}
 \begin{tabular}{ll}
 CPU & Dual 32-core AMD EPYC 7551 processors\\
-Kernel & Linux Kernel version 4.9.0-14-amd64 x86\_64\\
+Kernel & Linux Kernel version 4.9.0{-}14{-}amd64 $\times$86\_64\\
 Memory & 251.5939 GiB of RAM\\
 Storage & 24.22 TiB\\
 Operating System & Debian GNU/Linux 9.13 (stretch)\\
@@ -24,11 +24,11 @@ The software dependencies for this DSL was managed using GNU Guix.  The implemen
 
 \section{DSL Implementation}
 
-This DSL uses Scheme's flexible hygienic macro system to offer end-users a human-friendly syntax for interacting with SQL databases and generating RDF output bundled with transparent documentation.  The implementation of this DSL involves several key components, as illustrated in Figure \ref{fig:system-diagram} that include: defining ontologies, defining transformers, processing SQL queries, mapping SQL results to RDF, and generating documentation.  The subsections below outline the implementation of these various parts.
+This DSL uses Scheme's flexible hygienic macro system to offer end-users a human-friendly syntax for interacting with SQL databases and generating RDF output bundled with transparent documentation.  The implementation of this DSL involves several key components, as illustrated in Figure~\ref{fig:system-diagram} that include: defining ontologies, defining transformers, processing SQL queries, mapping SQL results to RDF, and generating documentation.  The subsections below outline the implementation of these various parts.
 
 \subsection{Defining Transformers}
 
-A special syntax, \codeword{define-transformer} is introduced.  This special syntax transforms a view of a database.  \codeword{define-transformer} consists of three order-agnostic clauses: \codeword{tables}, \codeword{schema-triples} and \codeword{triples}, in the form show below:
+A special syntax, \codeword{define-transformer} is introduced.  This special syntax transforms a view of a database.\   \codeword{define-transformer} consists of three order-agnostic clauses: \codeword{tables}, \codeword{schema-triples} and \codeword{triples}, in the form show below:
 
 \begin{Verbatim}[frame=single]
 (define-transformer function-name
@@ -39,7 +39,7 @@ A special syntax, \codeword{define-transformer} is introduced.  This special syn
     (verb predicate object) ...))
 \end{Verbatim}
 
-The \codeword{``tables''} clause specifies the database tables to be joined to construct the view to be transformed.  \textit{``table''} can be either of the form \textit{``table-name''} or of the form: \codeword{(JOIN-OPERATOR TABLE-NAME RAW-CONDITION)}.  \textit{``table-name''} is the name of the table.  \textit{JOIN-OPERATOR} can be one of: \codeword{join}, \codeword{left-join} and \codeword{inner-join}.  \textit{``RAW-CONDITION''} is the join condition as a raw string.  This is usually something like \codeword{"USING (SpeciesId)"}.  \textit{``raw-forms''} are expressions that must evaluate to strings to be appended to the SQL query.  The example below shows an example of doing a left join between a Genbank table with a Species table using the ``SpeciesId'' as the foreign key:
+The \codeword{``tables''} clause specifies the database tables to be joined to construct the view to be transformed.\   \textit{``table''} can be either of the form \textit{``table-name''} or of the form: \codeword{(JOIN-OPERATOR TABLE-NAME RAW-CONDITION)}.\   \textit{``table-name''} is the name of the table.\   \textit{JOIN-OPERATOR} can be one of: \codeword{join}, \codeword{left-join} and \codeword{inner-join}.\   \textit{``RAW-CONDITION''} is the join condition as a raw string.  This is usually something like \codeword{``USING (SpeciesId)''}.\   \textit{``raw-forms''} are expressions that must evaluate to strings to be appended to the SQL query.  The example below shows an example of doing a left join between a Genbank table with a Species table using the ``SpeciesId'' as the foreign key:
 
 \begin{Verbatim}[frame=single]
 (tables (Genbank
@@ -146,7 +146,7 @@ The performance results is as follows:
 \begin{center}
 \begin{tabular}{rr}
 SQL (seconds) & SPARQL (seconds)\\[0pt]
-\hline
+\toprule
 0.09 & 0.014\\[0pt]
 0.08 & 0.017\\[0pt]
 0.10 & 0.016\\[0pt]
@@ -188,7 +188,7 @@ The corresponding results are:
 \begin{center}
 \begin{tabular}{rr}
 SQL (seconds) & SPARQL (seconds)\\[0pt]
-\hline
+\toprule
 0.19 & 0.013\\[0pt]
 0.18 & 0.015\\[0pt]
 0.17 & 0.014\\[0pt]
@@ -240,7 +240,7 @@ The results are:
 \begin{center}
 \begin{tabular}{rr}
 SQL (seconds)) & SPARQL (seconds)\\[0pt]
-\hline
+\toprule
 38.33 & 0.649\\[0pt]
 38.46 & 0.124\\[0pt]
 41.53 & 0.430\\[0pt]

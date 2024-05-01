@@ -4,11 +4,11 @@ This chapter provides a comprehensive explanation of how each of the research qu
 
 \section{Research Approach for Objectives 1 and 2}
 
-The first objective of this dissertation was to study previous research work conducted on the GN platform and RDF.  Consequently, the second objective was focused on understanding the current limitations of the Genenetwork2 SQL database and exploring how the adoption of RDF could potentially address these constraints.  To meet these two objectives, a comprehensive literature review was conducted.
+The first objective of this dissertation was to study previous research work conducted on the GN platform and RDF.\@  Consequently, the second objective was focused on understanding the current limitations of the Genenetwork2 SQL database and exploring how the adoption of RDF could potentially address these constraints.  To meet these two objectives, a comprehensive literature review was conducted.
 
 \section{Research Approach for Objectives 3}
 
-In order to accomplish objectives three and four, a self-documenting Domain Specific Language (DSL) will be developed to facilitate the translation of SQL into RDF.  This DSL will be employed to convert SQL tables into RDF representations, subsequently enabling a comprehensive comparison of RDF performance against that of SQL.
+In order to accomplish objectives three and four, a self-documenting Domain Specific Language (DSL) will be developed to facilitate the translation of SQL into RDF.\@  This DSL will be employed to convert SQL tables into RDF representations, subsequently enabling a comprehensive comparison of RDF performance against that of SQL\@.
 
 The development methodology that will be adopted for this step is the \textit{Rapid Application Development (RAD)} methodology since it prioritizes development and prototype-building over planning.  It emphasizes the end-user involvement, prototyping, reuse and the use of automated tools \citep*{van2008software}.  This gives the researcher the ability to efficiently execute numerous iterations and updates to the software/model without the need to begin each iteration anew.  This yields a significant advantage, as it facilitates the ability to modify the design, augment functionality and iteratively refine the software/model at a high frequency.
 
@@ -24,13 +24,12 @@ The development methodology that will be adopted for this step is the \textit{Ra
 \item \textbf{Cutover:} The final stage of RAD involves the final testing of the system before the system is ready to use by end users.  The cutover phase encompasses intensive scale testing, technical documentation, issue tracking, final customizations and possible system simulations.
 \end{enumerate}
 
-Figure \ref{fig:rad-lifecycle} shows the aforementioned RAD life-cycle.
+Figure~\ref{fig:rad-lifecycle} shows the aforementioned RAD life-cycle.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=12cm]{RAD}
-  \caption{\textit{Rapid Application Development life-cycle}}
-  \label{fig:rad-lifecycle}
+  \caption{\textit{Rapid Application Development life-cycle}}\label{fig:rad-lifecycle}
   \centering
 \end{figure}
 
@@ -38,17 +37,16 @@ The following subsections elaborate on the application of the RAD methodology wi
 
 \subsection{Requirements Planning}
 
-The process of requirements planning is the initial stage in building the DSL.  This stage encompasses activities such as conceptual ideation, during which potential representations of the DSL are brainstormed.  The primary goal is to design a self-documenting DSL that is comprehensible and accessible to human end-users.  Moreover, the DSL should support s-expressions and offer a declarative mapping of SQL query results to a predefined ontology.  Furthermore, in this stage, relevant public and active ontologies will be identified.  The DSL will use these ontologies when transforming data from SQL tables to RDF.
+The process of requirements planning is the initial stage in building the DSL.\@  This stage encompasses activities such as conceptual ideation, during which potential representations of the DSL are brainstormed.  The primary goal is to design a self-documenting DSL that is comprehensible and accessible to human end-users.  Moreover, the DSL should support s-expressions and offer a declarative mapping of SQL query results to a predefined ontology.  Furthermore, in this stage, relevant public and active ontologies will be identified.  The DSL will use these ontologies when transforming data from SQL tables to RDF\@.
 
 \subsection{Prototyping}
 
-During the prototyping phase, a preliminary version of the DSL will be developed, enabling the exploration of its design and functionality.  This prototype will serve as a proof-of-concept and will be refined based on feedback from stakeholders and potential end-users.  Figure \ref{fig:parser-demo} illustrates the parser's basic operation.
+During the prototyping phase, a preliminary version of the DSL will be developed, enabling the exploration of its design and functionality.  This prototype will serve as a proof-of-concept and will be refined based on feedback from stakeholders and potential end-users.  Figure~\ref{fig:parser-demo} illustrates the parser's basic operation.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=8cm]{parserDemo}
-\caption{\textit{The parser operates on each row to produce a valid triple store}}
-\label{fig:parser-demo}
+\caption{\textit{The parser operates on each row to produce a valid triple store}}\label{fig:parser-demo}
 \centering
 \end{figure}
 
@@ -60,7 +58,7 @@ The construction phase encompasses the development of a robust, reusable tool.  
 
 \subsection{Cut-off}
 
-During this final stage, the Domain Specific Language (DSL) will be used to convert GeneNetwork tables into RDF format.  Components of GeneNetwork that rely extensively on metadata will be restructured to utilize RDF.  A comparison between SQL and RDF performance will be assessed.
+During this final stage, the Domain Specific Language (DSL) will be used to convert GeneNetwork tables into RDF format.  Components of GeneNetwork that rely extensively on metadata will be restructured to utilize RDF.\@  A comparison between SQL and RDF performance will be assessed.
 
 \section{Validation}
 

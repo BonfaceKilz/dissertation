@@ -2,37 +2,37 @@
 
 \section{Introduction}
 
-This dissertation aimed to investigate prior research and studies concerning the GeneNetwork platform and RDF to identify the existing limitations of GeneNetwork related to SQL and explore how RDF could potentially mitigate these limitations. Additionally, a domain-specific language (DSL) was developed and implemented to transform GeneNetwork metadata from SQL to RDF, followed by performance benchmarking assessments.  This chapter discusses the performance benchmarks that were conducted in addition to highlighting additional benefits that can be gained by using RDF to store metadata.
+This dissertation aimed to investigate prior research and studies concerning the GeneNetwork platform and RDF to identify the existing limitations of GeneNetwork related to SQL and explore how RDF could potentially mitigate these limitations.  Additionally, a domain-specific language (DSL) was developed and implemented to transform GeneNetwork metadata from SQL to RDF, followed by performance benchmarking assessments.  This chapter discusses the performance benchmarks that were conducted in addition to highlighting additional benefits that can be gained by using RDF to store metadata.
 
 
 \section{Performance Analysis}
 
-The conducted performance tests compared SQL and SPARQL queries for retrieving information related to diabetes from a Genenetwork SQL store. The initial SQL query aimed to count the number of publications with abstracts containing the term "diabetes." Correspondingly, the SPARQL query transformed this SQL query into RDF format to achieve the same result using RDF data model constructs.  More complicated queries were constructed to benchmark the performance of RDF against SQL.
+The conducted performance tests compared SQL and SPARQL queries for retrieving information related to diabetes from a Genenetwork SQL store.  The initial SQL query aimed to count the number of publications with abstracts containing the term ``diabetes''.  Correspondingly, the SPARQL query transformed this SQL query into RDF format to achieve the same result using RDF data model constructs.  More complicated queries were constructed to benchmark the performance of RDF against SQL.\@
 
 The table below shows the performance difference on average for the 3 benchmarks conducted:
 
 \begin{center}
 \begin{tabular}{rrr}
 SQL & Virtuoso & \% difference\\[0pt]
-\hline
+\toprule
 0.095 & 0.0152 & 84\\[0pt]
 0.178 & 0.0134 & 92\\[0pt]
 39.07 & 0.4034 & 98.96\\[0pt]
 \end{tabular}
 \end{center}
 
-These performance results highlight notable disparities in execution times between SQL and SPARQL queries. Across multiple executions, the SPARQL query consistently exhibited faster response times compared to its SQL equivalent. For example, the SQL query executed within milliseconds (0.08 - 0.11 seconds), whereas the equivalent SPARQL query consistently completed in mere fractions of a second (0.013 - 0.017 seconds). Furthermore, as the complexity of the queries increased, SQL experienced a more pronounced slowdown compared to SPARQL.
+These performance results highlight notable disparities in execution times between SQL and SPARQL queries.  Across multiple executions, the SPARQL query consistently exhibited faster response times compared to its SQL equivalent.  For example, the SQL query executed within milliseconds (0.08~-~0.11 seconds), whereas the equivalent SPARQL query consistently completed in mere fractions of a second (0.013~-~0.017 seconds).  Furthermore, as the complexity of the queries increased, SQL experienced a more pronounced slowdown compared to SPARQL\@.
 
 \section{Advantages of RDF for Complex Queries}
 
 In lieu of the preceding performance analysis, the significance of leveraging RDF instead of SQL to store complex relationships becomes clear:
 
-Firstly, RDF shows query execution times compared to SQL. In SQL, the performance of queries tends to degrade with increasing complexity, often due to the need for multiple joins. However, RDF queries do not exhibit this performance decline associated with joins in SQL. Comparative evaluations of equivalent queries in SQL and RDF consistently show that RDF outperforms SQL for complex queries. This performance advantage is particularly crucial in production systems where responsiveness to end users is critical. In the context of Genenetwork, leveraging fast query execution provided by RDF can enhance its search capabilities significantly.
+Firstly, RDF shows query execution times compared to SQL.\@  In SQL, the performance of queries tends to degrade with increasing complexity, often due to the need for multiple joins.  However, RDF queries do not exhibit this performance decline associated with joins in SQL.\@  Comparative evaluations of equivalent queries in SQL and RDF consistently show that RDF outperforms SQL for complex queries.  This performance advantage is particularly crucial in production systems where responsiveness to end users is critical.  In the context of Genenetwork, leveraging fast query execution provided by RDF can enhance its search capabilities significantly.
 
-Aside from the performance benefits, creating RDF queries is notably more straightforward and comprehensible. This ease of use stems from the approach of introducing nodes into the query with well-defined semantics, rather than relying on additional joins as in the case with SQL.  In contrast, the structure of SQL tables tends to be more opaque and less intuitive for query construction.
+Aside from the performance benefits, creating RDF queries is notably more straightforward and comprehensible.  This ease of use stems from the approach of introducing nodes into the query with well-defined semantics, rather than relying on additional joins as in the case with SQL.\@  In contrast, the structure of SQL tables tends to be more opaque and less intuitive for query construction.
 
 
-Finally, RDF enables us to seamlessly query external web services, enhancing integration capabilities and facilitating dynamic data exploration. This feature extends the reach of RDF beyond local data sources, allowing researchers and developers to access and incorporate diverse datasets and resources available on the web. By leveraging RDF's federated query capabilities, it becomes feasible to seamlessly integrate data from multiple distributed sources into a unified query interface. This capability empowers users to retrieve and correlate information from disparate sources without needing to manually consolidate or synchronize datasets.
+Finally, RDF enables us to seamlessly query external web services, enhancing integration capabilities and facilitating dynamic data exploration.  This feature extends the reach of RDF beyond local data sources, allowing researchers and developers to access and incorporate diverse datasets and resources available on the web.  By leveraging RDF's federated query capabilities, it becomes feasible to seamlessly integrate data from multiple distributed sources into a unified query interface.  This capability empowers users to retrieve and correlate information from disparate sources without needing to manually consolidate or synchronize datasets.
 
 %%% Local Variables:
 %%% ispell-local-dictionary: "en_GB-ise"
