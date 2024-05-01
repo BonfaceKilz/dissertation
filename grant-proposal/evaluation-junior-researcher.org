@@ -1,0 +1,36 @@
+* Key Achievements
+Briefly present what you think are the 2 or 3 biggest achievements or results that happened this last year.  Explain why you think these are the most important results or achievements and their contributions to the field of AI4D.
+
+
+- Self-Documenting Domain Specific Language from SQL to RDF: Creating a self-documenting DSL that parses SQL to RDF declaratively addresses a key challenge in AI4D which often involves dealing with complex and diverse data sources, usually stored in SQL databases.  This DSL simplifies the process of converting SQL into a more semantically rich format---RDF---as well as adding extra ontologies while doing so.  This simplification can be useful for development projects in resource constrained environments where expertise in data manipulation may be limited.  By making this process declarative and self-documenting, and limiting learning to only a small syntax, it allows less experienced people to be able to transform data in a meaningful way.
+
+- Modeling Omics Data from Genenetwork with RDF: The use of the aforementioned DSL to model omics data from Genenetwork and hosting it on a public virtuoso instance is a significant step towards advancing AI in healthcare and life sciences.  Genomic and omics data are critical for disease research and precision medicine.  Representing this data as RDF allows it to be more accessible to machines.  Publicly hosting this data on Virtuoso ensures that promotes collaboration, knowledge sharing and innovation in the health sciences fields.
+
+
+From the above: Describe how the above integrates contributions for environmental sustainability in the implementation of its activities. Discuss strategies you put in place that contribute to reduce your carbon’s footprint and ensure an efficient use of resources and energy. For projects of the innovation pillar, discuss their potential to tackle negative impacts of climate change and environmental degradation. What are some emerging learnings?
+
+
+The achievements mentioned above can integrate contributions for environmental sustainability in the implementation of their activities through several strategies:
+
+1. Efficient Data Handling: By creating a self-documenting DSL for SQL to RDF parsing, the project promotes efficient data handling. This efficiency can lead to reduced energy consumption in data processing. When energy-intensive data operations are streamlined, it contributes to a reduction in the carbon footprint associated with data center operations.
+
+2. Cloud-Based Hosting: Hosting the RDF-modeled omics data on a public Virtuoso instance is a sustainable strategy. Cloud-based hosting allows for resource scalability, which means that server resources are allocated as needed. This approach optimizes resource utilization and energy efficiency. Additionally, cloud providers are increasingly investing in renewable energy sources, further reducing the carbon footprint of data hosting.
+
+3. Accessibility and Collaboration: Making omics data publicly available in RDF format promotes collaboration and data sharing. This can lead to more efficient research and development processes, reducing the need for redundant experiments and data collection. In turn, this can help minimize the environmental impact associated with resource-intensive laboratory work.
+
+4. AI for Sustainable Development: The projects under the innovation pillar have the potential to tackle the negative impacts of climate change and environmental degradation directly. For example, AI can be used to analyze environmental data, predict climate patterns, optimize resource allocation in agriculture, and develop more efficient energy systems. These applications have the potential to contribute significantly to sustainability goals by reducing waste, conserving resources, and mitigating environmental damage.
+
+Emerging Learnings:
+
+    Data Efficiency Matters: Efficient data handling and transformation are critical not only for AI development but also for reducing energy consumption. AI4D projects should focus on optimizing data processing to minimize their carbon footprint.
+
+    Public Data Access: Making datasets publicly available, as demonstrated in the RDF modeling project, encourages collaboration and innovation. This approach can lead to faster progress in addressing environmental challenges.
+
+    AI for Sustainability: The integration of AI into projects for sustainability can yield transformative results. These projects have the potential to provide actionable insights and solutions for addressing climate change and environmental degradation.
+
+In summary, the integration of sustainability considerations in AI4D projects involves not only the end goals of the projects but also the methods and practices used during development. Strategies such as efficient data handling, cloud-based hosting, and open data sharing contribute to reduced energy consumption and environmental impact. Additionally, the application of AI in sustainability-focused projects has the potential to drive positive change by addressing critical environmental challenges.
+
+
+This project can be reproduced using GNU Guix thus allowing reproducibility.  The fact that it is easily reproducible reduces the amount of resources required in reproducing it. 
+
+RDF More easily accessible to everyone on the internet.  Data doesn't have to be copied and re-written.  People can simply have federated queries against their instances thus reducing the amount of computational resources that would be need to store and process the data.  Having linked data can lead to more efficient research 

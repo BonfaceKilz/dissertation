@@ -1,0 +1,12 @@
+#+OPTIONS: toc:nil title:t num:nil author:nil date:nil
+* Unlocking Biomedical Data for AI Health Research in Africa Using GeneNetwork as an Example 
+** Submitted Documents:
+The following are all the documents submitted:
+
+- Full Study Protocal: Dissertation Proposal
+- Protocal Summary: Abstract
+- Covering Letter listing all the submitted documents
+- Study Tools
+- Study Budget
+- Turnitin Report
+- Resume

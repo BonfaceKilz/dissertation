@@ -1,0 +1,11 @@
+#+OPTIONS: toc:nil title:t num:nil author:nil date:nil
+* Unlocking Biomedical Data for AI Health Research in Africa Using GeneNetwork as an Example 
+** Study Budget
+The following items lists down the budget for this dissertation
+
+| Item                    | Cost       |
+|-------------------------+------------|
+| Printing and Stationary | KES 6,900  |
+| Storage                 | KES 15,500 |
+|-------------------------+------------|
+| Total                   | KES 22,400 |

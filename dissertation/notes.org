@@ -1,0 +1,13 @@
+* Resource Description Framework: Metadata and Its Applications (Candan et. al.)
+- Universality
+
+In RDF, what does reification mean?
+
+In the Resource Description Framework (RDF), reification refers to the process of making a statement about a statement, or describing a statement using the RDF model. This is typically done by creating a new resource that represents the original statement, and then describing that resource using other RDF triples. This allows for statements to be treated as first-class citizens in the RDF graph, which can be useful for certain applications, such as tracking provenance information or expressing metadata about a statement.
+
+* Mulligan2016
+Species -> Group -> Type (Expression Profiles; Genotypes; Phenotypes) -> Dataset
+
+Record ID gives a unique identifier for each data set, (e.g. a number for phenotype data sets and a probe set identifier for expression data sets),
+
+Calculate Correlations is used to compute the bivariate correlations between the reference trait and any other set of traits that has been measured in the same Group.
