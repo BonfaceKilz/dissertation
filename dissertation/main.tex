@@ -17,10 +17,13 @@
 \usepackage{caption}
 \usepackage{xparse}
 \usepackage{cleveref}
+\usepackage{caption}
 
 \NewDocumentCommand{\codeword}{v}{%
   \texttt{\textcolor{blue}{#1}}%
 }
+
+\newcommand{\source}[1]{\caption*{Source: {#1}} }
 
 \addbibresource{refs.bib}
 
