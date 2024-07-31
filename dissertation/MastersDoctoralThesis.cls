@@ -283,7 +283,8 @@
 	\clearpairofpagestyles%
 	\automark[chapter]{chapter}
 	\ihead{\headmark}% Inner header
-	\ohead[\pagemark]{\pagemark}% Outer header
+	%% \ohead[\pagemark]{\pagemark}% Outer header
+        \cfoot*{\pagemark}
 }
 \ifoot{}% Inner footer
 \ofoot{}% Outer footer

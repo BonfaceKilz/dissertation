@@ -2,16 +2,16 @@
 
 This chapter describes the implementation and evaluation of the self-documenting DSL designed for transforming SQL tables into RDF\@.
 
-\section{Hardware and Sofware Requirements}
+\section{Hardware and Software Requirements}
 
 \subsection{Hardware Requirements}
 
-The development of this DSL was conducted on a server provided by the University of Tennessee Health Science Center.  This server had the following specifications:
+The development of this DSL was conducted on a server provided by the University of Tennessee Health Science Centre.  This server had the following specifications:
 
 \begin{center}
 \begin{tabular}{ll}
 CPU & Dual 32-core AMD EPYC 7551 processors\\
-Kernel & Linux Kernel version 4.9.0{-}14{-}amd64 $\times$86\_64\\
+Kernel & Linux Kernel version 4.9.0{-}14{-}amd64 x86\_64\\
 Memory & 251.5939 GiB of RAM\\
 Storage & 24.22 TiB\\
 Operating System & Debian GNU/Linux 9.13 (stretch)\\
@@ -20,7 +20,7 @@ Operating System & Debian GNU/Linux 9.13 (stretch)\\
 
 \subsection{Software Requirements}
 
-The software dependencies for this DSL was managed using GNU Guix.  The implementation was done in GNU Guile.  The database that was used was MariaDB and the RDF datastore utilized was Virtuoso.
+The software dependencies for this DSL was managed using GNU Guix.  The implementation was done in GNU Guile.  The database that was used was MariaDB and the RDF datastore utilised was Virtuoso.
 
 \section{DSL Implementation}
 
@@ -28,51 +28,69 @@ This DSL uses Scheme's flexible hygienic macro system to offer end-users a human
 
 \subsection{Defining Transformers}
 
-A special syntax, \codeword{define-transformer} is introduced.  This special syntax transforms a view of a database.\   \codeword{define-transformer} consists of three order-agnostic clauses: \codeword{tables}, \codeword{schema-triples} and \codeword{triples}, in the form show below:
+A special syntax, \codeword{``define-transformer''} is introduced.  This special syntax transforms a view of a database.\   \codeword{``define-transformer''} consists of three order-agnostic clauses: \codeword{``tables''}, \codeword{``schema-triples''} and \codeword{``triples''}, in the form show in Figure~\ref{code:define-transformer-syntax} below:
 
-\begin{Verbatim}[frame=single]
+\begin{figure}[H]
+\centering
+\begin{minted}{scheme}
 (define-transformer function-name
   (tables (table ...) raw-forms ...)
   (schema-triples
    (subject predicate object) ...)
   (triples subject
     (verb predicate object) ...))
-\end{Verbatim}
+\end{minted}
+\caption{The general form of the ``define-transformer'' syntax}\label{code:define-transformer-syntax}
+\end{figure}
 
-The \codeword{``tables''} clause specifies the database tables to be joined to construct the view to be transformed.\   \textit{``table''} can be either of the form \textit{``table-name''} or of the form: \codeword{(JOIN-OPERATOR TABLE-NAME RAW-CONDITION)}.\   \textit{``table-name''} is the name of the table.\   \textit{JOIN-OPERATOR} can be one of: \codeword{join}, \codeword{left-join} and \codeword{inner-join}.\   \textit{``RAW-CONDITION''} is the join condition as a raw string.  This is usually something like \codeword{``USING (SpeciesId)''}.\   \textit{``raw-forms''} are expressions that must evaluate to strings to be appended to the SQL query.  The example below shows an example of doing a left join between a Genbank table with a Species table using the ``SpeciesId'' as the foreign key:
+The \codeword{``tables''} clause specifies the database tables to be joined to construct the view to be transformed.\   \textit{``table''} can be either of the form \textit{``table-name''} or of the form: \codeword{``(JOIN-OPERATOR TABLE-NAME RAW-CONDITION)''}.\   \textit{``table-name''} is the name of the table.\   \codeword{``JOIN-OPERATOR''} can be one of: \codeword{``join''}, \codeword{``left-join''} and \codeword{``inner-join''}.\   \textit{``RAW-CONDITION''} is the join condition as a raw string.  This is usually something like \codeword{``USING (SpeciesId)''}.\   \textit{``raw-forms''} are expressions that must evaluate to strings to be appended to the SQL query.  The example below shows an example of doing a left join between a Genbank table with a Species table using the ``SpeciesId'' as the foreign key as show in Figure~\ref{code:genbank-species-join-example}:
 
-\begin{Verbatim}[frame=single]
+\begin{figure}[H]
+\centering
+\begin{minted}{scheme}
 (tables (Genbank
            (left-join Species "USING (SpeciesId)")))
-\end{Verbatim}
+\end{minted}
+\caption{Doing a left join between the Genbank table and Species using SpeciesId}\label{code:genbank-species-join-example}
+\end{figure}
 
-The \codeword{schema-triples} clause specifies the list of triples to be written once when the transform starts.  An example of how this would like is:
+The \codeword{``schema-triples''} clause specifies the list of triples to be written once when the transform starts.  An example of how this would like is demonstrated in Figure~\ref{code:schema-triples-example}:
 
-\begin{Verbatim}[frame=single]
+\begin{figure}[H]
+\centering
+\begin{minted}{scheme}
 (schema-triples
    (gnc:nucleotide a skos:Concept)
    (gnt:hasSequence rdfs:domain gnc:nucleotide))
-\end{Verbatim}
+\end{minted}
+\caption{An example of how to define a schema triple}\label{code:schema-triples-example}
+\end{figure}
 
-On the other hand, the \codeword{triples} clause specifies the triples to be transformed once for each row in the view.  All triples have a common \textit{subject}.  The \codeword{(verb predicate object)} clauses are described below:
+On the other hand, the \codeword{``triples''} clause specifies the triples to be transformed once for each row in the view.  All triples have a common \textit{``subject''}.  The \codeword{``(verb predicate object)''} clauses are described below:
 
-\textit{``verb''} can either be a \codeword{set} or \codeword{multiset}.  For the \codeword{set} \textit{verb}, a single triple \codeword{(SUBJECT PREDICATE OBJECT-VALUE)} is written where \textit{OBJECT-VALUE} is the result of evaluating \textit{OBJECT}.  For the \codeword{multiset} \textit{verb}, \textit{OBJECT} evaluates to a list, and a triple \codeword{(SUBJECT PREDICATE OBJECT-VALUE-ELEMENT)} is created for each element \textit{OBJECT-VALUE-ELEMENT} of that list.
+\textit{``verb''} can either be a \codeword{``set''} or \codeword{``multiset''}.  For the \codeword{``set''} \textit{``verb''}, a single triple \codeword{``(SUBJECT PREDICATE OBJECT-VALUE)''} is written where \textit{``OBJECT-VALUE''} is the result of evaluating \textit{``OBJECT''}.  For the \codeword{``multiset''} \textit{``verb''}, \textit{``OBJECT''} evaluates to a list, and a triple \codeword{``(SUBJECT PREDICATE OBJECT-VALUE-ELEMENT)''} is created for each element \textit{``OBJECT-VALUE-ELEMENT''} of that list.
 
-The \textit{``subject''} and \textit{object} expressions in the triples clause reference database fields using a \codeword{(field TABLE COLUMN)} clause where \textit{TABLE} and \textit{COLUMN} refer to the table and column of the field being referenced.  Database fields can also be referenced using \codeword{(field TABLE COLUMN ALIAS)} where ALIAS is an alias for that column in the SQL query.
+The \textit{``subject''} and \textit{``object''} expressions in the triples clause reference database fields using a \codeword{``(field TABLE COLUMN)''} clause where \textit{``TABLE''} and \textit{``COLUMN''} refer to the table and column of the field being referenced.  Database fields can also be referenced using \codeword{``(field TABLE COLUMN ALIAS)''} where \textit{``ALIAS''} is an alias for that column in the SQL query.
 
-The example below show's how a triple is defined:
+The example in Figure~\ref{code:triples-example} below show's how a triple can be defined:
 
-\begin{Verbatim}[frame=single]
+\begin{figure}[H]
+\centering
+\begin{minted}{scheme}
 (triples (field Genbank Id)
     (set gnt:hasSequence (field Genbank Sequence))
     (set gnt:belongsToSpecies (field Species Fullname)))
-\end{Verbatim}
+\end{minted}
+\caption{An example of how to define triples}\label{code:triples-example}
+\end{figure}
 
 \subsection{Executing a Transformer}
 
-To execute transformers, an extra special syntax, \codeword{``with-documentation''} is provided.  This special syntax takes the form:
+To execute transformers, an extra special syntax, \codeword{``with-documentation''} is provided.  This special syntax is shown in Figure~\ref{code:with-documentation-syntax} below:
 
-\begin{Verbatim}[frame=single]
+\begin{figure}[H]
+\centering
+\begin{minted}{scheme}
 (with-documentation
    (name ...)
    (connection ...)
@@ -82,22 +100,25 @@ To execute transformers, an extra special syntax, \codeword{``with-documentation
    (outputs
     `(#:documentation ...
       #:rdf ...)))
-\end{Verbatim}
-
+\end{minted}
+\caption{The general form of the ``with-documentation'' syntax}\label{code:with-documentation-syntax}
+\end{figure}
 
 Each part of the \codeword{``with-documentation''} is described below:
 
-\begin{itemize}
+\begin{enumerate}
 \item \codeword{``name''}: This represents the title used in the generated documentation markdown file.
 \item \codeword{``connection''}: This contains the SQL configuration variables that will be used to connect to the database.
 \item \codeword{``prefixes''}: These are various ontologies that will be included at the beginning of the RDF document.
 \item \codeword{``inputs''}: This is a list of defined transformers that will be executed.
 \item \codeword{``outputs''}: This specifies the file path where the RDF and documentation files will be saved.
-\end{itemize}
+\end{enumerate}
 
-A more complete example is shown below:
+A more complete example is shown in Figure~\ref{code:with-documentation-example} below:
 
-\begin{Verbatim}[frame=single]
+\begin{figure}[H]
+\centering
+\begin{minted}{scheme}
 (with-documentation
    (name "Genebank Metadata")
    (connection %connection-settings)
@@ -111,39 +132,47 @@ A more complete example is shown below:
    (outputs
     `(#:documentation "/tmp/genbank.md"
       #:rdf "/tmp/genbank.ttl")))
-\end{Verbatim}
+\end{minted}
+\caption{An example of how to use the ``with-documentation'' syntax}\label{code:with-documentation-example}
+\end{figure}
 
 \section{System Testing and Validation}
 
-In this section, various tests were done to assess the performance and functionality of the self-documenting DSL designed for transformed tables into RDF format.  In addition to assessing the performance of the RDF queries, queries that are impossible to do in SQL will be highlighted.
+In this section, various tests were done to assess the performance and functionality of the self-documenting DSL designed for transformed tables into RDF format.  In addition to assessing the performance of the SPARQL queries from the generated RDF, the quality of the output is also assessed, and federated queries that are impossible to do in SQL are highlighted.
 
 \subsection{Query Execution Performance}
 
-The following SQL query was run several times to count the number of publications in the Genenetwork SQL store related to diabetes:
+The following SQL query, shown in Figure~\ref{sql:counting-pubs-with-diabetes}, was run several times to count the number of publications in the Genenetwork SQL store related to diabetes:
 
-\begin{Verbatim}[frame=single]
-  SELECT COUNT(*) FROM Publication WHERE Abstract LIKE "%diabetes%";
-\end{Verbatim}
+\begin{figure}[H]
+\centering
+\begin{minted}{sql}
+SELECT COUNT(*) FROM Publication WHERE Abstract LIKE "%diabetes%";
+\end{minted}
+\caption{Counting the number of publications with word ``diabetes'' in SQL}\label{sql:counting-pubs-with-diabetes}
+\end{figure}
 
-The corresponding SPARQL query used to transform this SQL query into RDF format is as follows:
-  
-\begin{Verbatim}[frame=single]
-SPARQL
+Similarly, Figure~\ref{sparql:counting-pubs-with-diabetes} shows the corresponding SPARQL query use to count the number of publications in RDF\@.
 
-PREFIX dct: <http://purl.org/dc/terms/>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+\begin{figure}[H]
+\centering
+\begin{minted}{sparql}
+PREFIX   dct: <http://purl.org/dc/terms/>
+PREFIX   rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX fabio: <http://purl.org/spar/fabio/>
 
 SELECT COUNT(?paper) WHERE {
        ?paper rdf:type fabio:ResearchPaper ;
                dct:abstract ?abstract .
        ?abstract bif:contains "diabetes" .
-};
-\end{Verbatim}
+}
+\end{minted}
+\caption{Counting the number of publications with word ``diabetes'' in SPARQL}\label{sparql:counting-pubs-with-diabetes}
+\end{figure}
 
-The performance results is as follows:
+The performance results is shown in Table~\ref{table:perf-1}:
 
-\begin{center}
+\begin{table}[H]
 \begin{tabular}{rr}
 SQL (seconds) & SPARQL (seconds)\\[0pt]
 \toprule
@@ -153,25 +182,36 @@ SQL (seconds) & SPARQL (seconds)\\[0pt]
 0.11 & 0.014\\[0pt]
 0.09 & 0.015\\[0pt]
 \end{tabular}
-\end{center}
+\caption{Performance results: Figure~\ref{sql:counting-pubs-with-diabetes} versus Figure~\ref{sql:counting-pubs-with-diabetes} }\label{table:perf-1}
+\end{table}
 
-The following query is more complicated and counts the number of phenotypes that are related to diabetes:
+The following query, shown in Figure~\ref{sql:counting-phenotypes-with-diabetes}, is more complicated and counts the number of phenotypes that are related to diabetes:
 
+\begin{figure}[H]
+\centering
+\begin{minted}{sql}
+SELECT 
+  COUNT(Phenotype.Id) 
+FROM 
+  PublishXRef 
+  LEFT JOIN Publication ON
+    Publication.Id = PublishXRef.PublicationId 
+  LEFT JOIN Phenotype ON
+    Phenotype.Id = PublishXRef.PhenotypeId 
+WHERE 
+  Publication.Abstract LIKE "%diabetes%";
+\end{minted}
+\caption{Counting the number of phenotypes related to diabetes in SQL}\label{sql:counting-phenotypes-with-diabetes}
+\end{figure}
 
-\begin{Verbatim}[frame=single]
-SELECT COUNT(Phenotype.Id) FROM PublishXRef
-LEFT JOIN Publication ON Publication.Id = PublishXRef.PublicationId
-LEFT JOIN Phenotype ON Phenotype.Id = PublishXRef.PhenotypeId
-WHERE Publication.Abstract LIKE "%diabetes%";
-\end{Verbatim}
+The corresponding SPARQL query, shown in Figure~\ref{sparql:counting-phenotypes-with-diabetes}, is:
 
-The corresponding sparql query is:
-
-\begin{Verbatim}[frame=single]
-SPARQL
-
-PREFIX dct: <http://purl.org/dc/terms/>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+\begin{figure}[H]
+\centering
+\begin{minted}{sparql}
+PREFIX   dct: <http://purl.org/dc/terms/>
+PREFIX   rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX   gnc: <http://genenetwork.org/category/>
 PREFIX fabio: <http://purl.org/spar/fabio/>
 
 SELECT COUNT(?phenotype) WHERE {
@@ -180,12 +220,14 @@ SELECT COUNT(?phenotype) WHERE {
        ?abstract bif:contains "diabetes" .
        ?phenotype rdf:type gnc:Phenotype ;
                   dct:isReferencedBy ?paper .
-};  
-\end{Verbatim}
+}
+\end{minted}
+\caption{Counting the number of phenotypes related to diabetes in SPARQL}\label{sparql:counting-phenotypes-with-diabetes}
+\end{figure}
 
-The corresponding results are:
+The corresponding results, shown in Table~\ref{table:perf-2}, are:
 
-\begin{center}
+\begin{table}[H]
 \begin{tabular}{rr}
 SQL (seconds) & SPARQL (seconds)\\[0pt]
 \toprule
@@ -195,33 +237,44 @@ SQL (seconds) & SPARQL (seconds)\\[0pt]
 0.18 & 0.016\\[0pt]
 0.17 & 0.009\\[0pt]
 \end{tabular}
-\end{center}
+\caption{Performance results: Figure~\ref{sql:counting-phenotypes-with-diabetes} versus Figure~\ref{sparql:counting-phenotypes-with-diabetes} }\label{table:perf-2}
+\end{table}
 
-A more complicated query that counts the number of datasets under a given group that have phenotypes related to diabetes is:
+A more complicated query that counts the number of datasets under a given group that have phenotypes related to diabetes is shown in Figure~\ref{sql:datasets-phenotypes-diabetes}.
 
-\begin{Verbatim}[frame=single]
-SELECT COUNT(DISTINCT InfoFiles.DatasetId)
-FROM InfoFiles
-LEFT JOIN PublishFreeze ON InfoFiles.InfoPageName = PublishFreeze.Name
-LEFT JOIN Datasets USING (DatasetId)
-LEFT JOIN InbredSet ON InfoFiles.InbredSetId = InbredSet.InbredSetId
-LEFT JOIN PublishXRef ON
- PublishXRef.InbredSetId = InfoFiles.InbredSetId
-LEFT JOIN Publication ON Publication.Id = PublishXRef.PublicationId
-LEFT JOIN Phenotype ON Phenotype.Id = PublishXRef.PhenotypeId
-WHERE Publication.Abstract LIKE "%diabetes%";
-\end{Verbatim}
+\begin{figure}[H]
+\centering
+\begin{minted}{sql}
+SELECT 
+  COUNT(DISTINCT InfoFiles.DatasetId) 
+FROM 
+  InfoFiles 
+  LEFT JOIN PublishFreeze
+    ON InfoFiles.InfoPageName = PublishFreeze.Name 
+  LEFT JOIN Datasets USING (DatasetId) 
+  LEFT JOIN InbredSet
+    ON InfoFiles.InbredSetId = InbredSet.InbredSetId 
+  LEFT JOIN PublishXRef
+    ON PublishXRef.InbredSetId = InfoFiles.InbredSetId 
+  LEFT JOIN Publication
+    ON Publication.Id = PublishXRef.PublicationId 
+  LEFT JOIN Phenotype ON Phenotype.Id = PublishXRef.PhenotypeId 
+WHERE 
+  Publication.Abstract LIKE "%diabetes%";
+\end{minted}
+\caption{SQL query that counts the number of datasets under a given groups that have phenotypes related to diabetes}\label{sql:datasets-phenotypes-diabetes}
+\end{figure}
 
-The corresponding SPARQL query is:
+The corresponding SPARQL query is shown in Figure~\ref{sparql:datasets-phenotypes-diabetes}.
 
-\begin{Verbatim}[frame=single]
-SPARQL
-
-PREFIX dct: <http://purl.org/dc/terms/>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+\begin{figure}[H]
+\centering
+\begin{minted}{sparql}
+PREFIX   dct: <http://purl.org/dc/terms/>
+PREFIX   rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX fabio: <http://purl.org/spar/fabio/>
-PREFIX gnc: <http://genenetwork.org/category/>
-PREFIX gnt: <http://genenetwork.org/term/>
+PREFIX   gnc: <http://genenetwork.org/category/>
+PREFIX   gnt: <http://genenetwork.org/term/>
 
 SELECT COUNT(DISTINCT ?dataset) WHERE {
        ?paper rdf:type fabio:ResearchPaper ;
@@ -232,12 +285,14 @@ SELECT COUNT(DISTINCT ?dataset) WHERE {
                   dct:isReferencedBy ?paper .
        ?dataset rdf:type dcat:Dataset ;
                 gnt:belongsToGroup ?group .
-};
-\end{Verbatim}
+}
+\end{minted}
+\caption{SPARQL query that counts the number of datasets under a given groups that have phenotypes related to diabetes}\label{sparql:datasets-phenotypes-diabetes}
+\end{figure}
 
-The results are:
+The results are shown in Table~\ref{table:perf-3}.
 
-\begin{center}
+\begin{table}[H]
 \begin{tabular}{rr}
 SQL (seconds)) & SPARQL (seconds)\\[0pt]
 \toprule
@@ -247,23 +302,138 @@ SQL (seconds)) & SPARQL (seconds)\\[0pt]
 38.53 & 0.118\\[0pt]
 38.50 & 0.696\\[0pt]
 \end{tabular}
-\end{center}
+\caption{Performance results: Figure~\ref{sparql:datasets-phenotypes-diabetes} versus Figure~\ref{sparql:datasets-phenotypes-diabetes} }\label{table:perf-3}
+\end{table}
+
+\subsection{Query Output Quality}
+
+Consider the SQL query, shown in Figure~\ref{sql:mouse}, which fetches all the details about the Mouse species from the SQL store.
+
+\begin{figure}[H]
+\centering
+\begin{minted}{SQL}
+SELECT * FROM Species WHERE Name="Mouse" \G
+\end{minted}
+\caption{Fetching the details about a Mouse in SQL}\label{sql:mouse}
+\end{figure}
+
+The corresponding results are illustrated in Figure~\ref{sql:mouse-results}.
+
+\begin{figure}[H]
+\centering
+\begin{minted}{rst}
+           Id: 1
+    SpeciesId: 1
+  SpeciesName: Mouse
+         Name: mouse
+     MenuName: Mouse (Mus musculus, mm10)
+     FullName: Mus musculus
+       Family: Vertebrates
+FamilyOrderId: 1
+   TaxonomyId: 10090
+      OrderId: 15
+\end{minted}
+\caption{Fetching details of the Mouse Species from the SQL store}\label{sql:mouse-results}
+\end{figure}
+
+However, it's noticeable that the tabular format lacks contextual details about each column. In contrast, consider the SPARQL query showcased in Figure~\ref{sparql:mouse}, aiming to achieve a similar goal.
+
+\begin{figure}[H]
+\centering
+\begin{minted}{sparql}
+PREFIX gnt: <http://genenetwork.org/term/>
+
+SELECT ?species ?predicate ?object {
+  ?species gnt:shortName "bat";
+           ?predicate ?object .
+}
+\end{minted}
+\caption{Fetching details of the Mouse Species using a SPARQL SELECT}\label{sparql:mouse}
+\end{figure}
+
+The enriched results of Figure~\ref{sparql:mouse} are illustrated in Table~\ref{table:mouse-sparql-results}
+
+\begin{table}[H]
+\begin{tabular}{p{5cm}p{5cm}m{6cm}}
+species & predicate & object\\[0pt]
+\toprule
+\url{http://genenetwork.org/id/Glossophaga\_soricina} & \url{http://www.w3.org/2004/02/skos/core\#altLabel} & "Bat (Glossophaga soricina)"\\[0pt]
+\midrule
+\url{http://genenetwork.org/id/Glossophaga\_soricina} & \url{http://www.w3.org/2004/02/skos/core\#prefLabel} & "Bat (Glossophaga soricina, gsor23)"\\[0pt]
+\midrule
+\url{http://genenetwork.org/id/Glossophaga\_soricina} & \url{http://genenetwork.org/term/shortName} & "bat"\\[0pt]
+\midrule
+\url{http://genenetwork.org/id/Glossophaga\_soricina} & \url{http://www.w3.org/2004/02/skos/core\#inScheme} & \url{http://genenetwork.org/category/ResourceClassificationScheme}\\[0pt]
+\midrule
+\url{http://genenetwork.org/id/Glossophaga\_soricina} & \url{http://www.w3.org/2004/02/skos/core\#notation} & \url{http://purl.uniprot.org/taxonomy/27638}\\[0pt]
+\midrule
+\url{http://genenetwork.org/id/Glossophaga\_soricina} & \url{http://www.w3.org/2000/01/rdf-schema\#label} & "Glossophaga soricina"\\[0pt]
+\midrule
+\url{http://genenetwork.org/id/Glossophaga\_soricina} & \url{http://www.w3.org/1999/02/22-rdf-syntax-ns\#isDefinedBy} & \url{http://www.wikidata.org/entity/Q304929}\\[0pt]
+\midrule
+\url{http://genenetwork.org/id/Glossophaga\_soricina} & \url{http://genenetwork.org/term/family} & "Vertebrates"\\[0pt]
+\end{tabular}
+\caption{Fetching results}\label{table:mouse-sparql-results}
+\end{table}
+
+The SPARQL query results offer richer contextual information.  Each subject and predicate field, analogous to SQL columns, is linked to a resource providing additional definitions.  Furthermore, the versatility of SPARQL extends to the ability to output results to HTML, CSV, TSV, JSON, JSON-LD and other formats~\footnote{http://docs.openlinksw.com/virtuoso/rdfsparql.html\#rdfsparqlimplementatioptragmassfs}.
+
+In addition to basic SELECT operations, SPARQL enables the specification and construction of new graphs for retrieval, as illustrated in Figure~\ref{sparql:mouse-consruct}.
+
+\begin{figure}[H]
+\centering
+\begin{minted}{sparql}
+PREFIX gnt: <http://genenetwork.org/term/>
+
+CONSTRUCT {?species ?predicate ?object} WHERE {
+  ?species gnt:shortName "bat";
+           ?predicate ?object .
+}
+\end{minted}
+\caption{Fetching details of the Mouse Species using SPARQL CONSTRUCT}\label{sparql:mouse-construct}
+\end{figure}
+
+Figure~\ref{sparql:mouse-graph} show the result of fetching a graph about the Mouse species.
+
+\begin{figure}[H]
+\centering
+\begin{minted}[
+    breaklines,
+    fontsize=\small
+  ]{json-ld}
+{
+"@graph": [
+{ "@id": "http://genenetwork.org/id/Glossophaga_soricina",
+  "http://www.w3.org/2004/02/skos/core#altLabel": "Bat (Glossophaga soricina)",
+  "http://www.w3.org/2004/02/skos/core#prefLabel": "Bat (Glossophaga soricina, gsor23)",
+  "http://genenetwork.org/term/shortName": "bat",
+  "http://www.w3.org/2004/02/skos/core#inScheme": {
+    "@id": "http://genenetwork.org/category/ResourceClassificationScheme"
+  },
+  "http://www.w3.org/2004/02/skos/core#notation": {
+    "@id": "http://purl.uniprot.org/taxonomy/27638"
+  },
+  "http://www.w3.org/2000/01/rdf-schema#label": "Glossophaga soricina",
+  "http://www.w3.org/1999/02/22-rdf-syntax-ns#isDefinedBy": {
+    "@id": "http://www.wikidata.org/entity/Q304929"
+  },
+  "http://genenetwork.org/term/family": "Vertebrates" }
+]}
+\end{minted}
+\caption{EXample JSON-LD result from a SPARQL CONSTRUCT query}\label{sparql:mouse-graph}
+\end{figure}
+
 
 \subsection{Federated Queries in SPARQL}
 
-SQL is limited to querying tables that reside within the local server environment and does not have the capability to access or query external servers on the internet.  However, RDF overcomes this limitation by allowing the use of federated queries that allow a person to query external services.  The following example, highlights SQL's limitation.  It queries GeneNetwork to get the Wikidata identifier that can be used to query Wikidata as an external service, to get the longest recorded life span of a bat which is 11 years.
+SQL is limited to querying tables that reside within the local server environment and does not have the capability to access or query external servers on the internet.  However, RDF overcomes this limitation by allowing the use of federated queries that allow a person to query external services.  The following example, shown in Figure~\ref{sparql:federated}, highlights SQL's limitation.  It queries GeneNetwork to get the Wikidata identifier that can be used to query Wikidata as an external service, to get the longest recorded life span of a bat which is 11 years.
 
-\begin{Verbatim}[frame=single]
-SPARQL
-
-PREFIX       wdt:  <http://www.wikidata.org/prop/direct/>
-PREFIX        wd:  <http://www.wikidata.org/entity/>
-PREFIX        bd:  <http://www.bigdata.com/rdf#>
-PREFIX  wikibase:  <http://wikiba.se/ontology#>
-PREFIX      rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX gnt: <http://genenetwork.org/term/>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX gn: <http://genenetwork.org/id/>
+\begin{figure}[H]
+\centering
+\begin{minted}{sparql}
+PREFIX       gnt: <http://genenetwork.org/term/>
+PREFIX       rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX       wdt: <http://www.wikidata.org/prop/direct/>
 
 SELECT ?years {
   ?species gnt:shortName "bat";
@@ -271,9 +441,10 @@ SELECT ?years {
 SERVICE <https://query.wikidata.org/sparql> {
     ?id wdt:P4214 ?years .
   }
-};
-\end{Verbatim}
-
+}
+\end{minted}
+\caption{Using a federated query to get the longest recorded life span of a bat from Wikidata}\label{sparql:federated}
+\end{figure}
 %%% Local Variables:
 %%% ispell-local-dictionary: "en_GB-ise"
 %%% End:

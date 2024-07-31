@@ -1,14 +1,20 @@
-\chapter{Conclusion}
+\chapter{Conclusions, Recommendations and Future Work}
 
-In conclusion, this dissertation has explored the practical implementation and evaluation of a self-documenting DSL designed to transform SQL tables into RDF, with a specific focus on addressing limitations within the GeneNetwork platform related to SQL queries. Through the development and testing of this DSL, several key findings and outcomes have emerged.
+\section{Conclusion}
+
+This dissertation has explored the practical implementation and evaluation of a self-documenting DSL designed to transform SQL tables into RDF, with a specific focus on addressing limitations within the GeneNetwork platform related to SQL queries. Through the development and testing of this DSL, several key findings and outcomes have emerged.
 
 Firstly, the performance analysis conducted between SQL and SPARQL queries has demonstrated significant advantages of using RDF over SQL, particularly in terms of query execution times. Across multiple benchmarks, SPARQL consistently exhibited faster response times compared to its SQL counterparts, especially as query complexity increased. This performance advantage is critical for enhancing the overall responsiveness of production systems like GeneNetwork.
 
-Furthermore, beyond the performance benefits, RDF offers a more intuitive and straightforward approach to query formation. By leveraging RDF's graph-based structure and semantics, query construction becomes more transparent and comprehensible compared to SQL, which often relies on complex join operations.
+Furthermore, beyond the performance benefits, RDF makes data FAIR.  By making data FAIR, RDF extends the capabilities of systems like GeneNetwork to incorporate a broader range of data resources, ultimately empowering researchers and developers to derive deeper insights from distributed and heterogeneous data.
 
-Lastly, RDF's ability to query external web services and integrate data from diverse sources presents a compelling advantage for data exploration and integration. By enabling federated queries and seamless access to external datasets, RDF extends the capabilities of systems like GeneNetwork to incorporate a broader range of data resources, ultimately empowering researchers and developers to derive deeper insights from distributed and heterogeneous data.
+\section{Recommendations}
 
-In summary, the findings from this dissertation underscore the importance and advantages of leveraging RDF-based solutions, such as the developed DSL, to address complex data integration and querying challenges within bioinformatics and related domains. The demonstrated performance improvements and enhanced query flexibility highlight the potential for RDF to contribute significantly to advancing data-driven research and applications within genomic and phenotypic data analysis.
+Researchers and developers within the domain of bioinformatics and data management can leverage the developed DSL to streamline the transformation of SQL data into RDF, enhancing data accessibility and interoperability. Institutions and organizations involved in data-intensive research can benefit from adopting RDF for improved data management, search capabilities, and adherence to FAIR data principles.
+
+\section{Future Work}
+
+Beyond creating a DSL that can convert SQL into RDF, a more flexible reasoning system based off a logic programming language such as Prolog, should be created to read the generated RDF.  Such a system could offer enhanced capabilities for semantic reasoning and inference, leveraging the Logic programming language's logic-based approach to derive insights and conclusions from RDF data. Future work in this direction could involve exploring the integration of this reasoning system with advanced AI techniques, such as deep learning and natural language processing, to enable more sophisticated and context-aware reasoning capabilities. Additionally, efforts could focus on developing novel algorithms and inference mechanisms tailored to the specific challenges and requirements of RDF data, ultimately leading to more intelligent and adaptive systems for knowledge representation and semantic analysis.
 
 %%% Local Variables:
 %%% ispell-local-dictionary: "en_GB-ise"

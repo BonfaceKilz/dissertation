@@ -2,11 +2,13 @@
   11pt,
   oneside,
   english,
-  singlespacing,
+  %% singlespacing,
+  doublespacing,
   headsepline,
 ]{MastersDoctoralThesis}
 \nonfrenchspacing
 \usepackage[utf8]{inputenc}
+\usepackage{float}
 \usepackage[T1]{fontenc}
 \usepackage{mathpazo}
 \usepackage{amsmath}
@@ -18,6 +20,10 @@
 \usepackage{xparse}
 \usepackage{cleveref}
 \usepackage{caption}
+
+\usepackage{etoolbox}
+\AtBeginEnvironment{minted}{\singlespacing%
+  \fontsize{11}{11}\selectfont}
 
 \NewDocumentCommand{\codeword}{v}{%
   \texttt{\textcolor{blue}{#1}}%
@@ -42,13 +48,16 @@
 	bottom=1.5cm,
 }
 
+%----------------------------------------------------------------------------------------
+%	THESIS INFORMATION
+%----------------------------------------------------------------------------------------
 \thesistitle{Unlocking Biomedical Data for AI Health Research in Africa Using GeneNetwork}
 \supervisori{Dr. Joseph \textsc{Sevilla}}
 \supervisorii{Dr. Pjotr \textsc{Prins}}
 \supervisoriii{Dr. Shelby \textsc{Solomon}}
 \supervisoriv{Dr. George \textsc{Githinji}}
 \examiner{}
-\degree{Msc. Data Science And Analytics}
+\degree{Data Science And Analytics}
 \author{\href{https://bonfacemunyoki.com}{Bonface Munyoki Kilyungi}}
 \addresses{}
 
@@ -76,13 +85,13 @@
 \begin{center}
 
 \vspace*{.06\textheight}
-%{\scshape\LARGE \univname\par}\vspace{1.1cm} % University name
+%% {\scshape\LARGE \univname\par}\vspace{1.5cm} % University name
 \includegraphics[scale=0.5]{Logo}\\ % University/department logo - uncomment to place it
 \textsc{\Large Dissertation}\\[0.5cm] % Thesis type
 
 \HRule \\[0.4cm] % Horizontal line
 {\huge \bfseries \ttitle\par}\vspace{0.4cm} % Thesis title
-\HRule \\[1.5cm] % Horizontal line
+\HRule \\[1.3cm] % Horizontal line
 
 \begin{minipage}[t]{0.4\textwidth}
 \begin{flushleft} \large
@@ -100,27 +109,39 @@
     \supnameiii\\
     \supnameiv
 \end{flushright}
-\end{minipage}\\
+\end{minipage}\\[1cm]
 
 \vfill
 
-\large \textit{A dissertation submitted in fulfilment of the
-  requirements\\ for Msc. Data Science and Analytics}\\[1cm]
-% \deptname\\[1cm] % Research group name and department name
+\large \textit{A dissertation submitted in fulfillment of the
+  requirements\\ for a Masters in \degreename}\\[0.3cm]
 
-\noindent Approved by: \supnamei\\[1cm]
-\noindent Signed:
-\rule[0pt]{25em}{0.5pt}\\[1cm] % This prints a line for the signature
+\vfill
 
-\noindent Date:
-\rule[0pt]{25em}{0.5pt} % This prints a line to write the date
-%% \vfill
-%%     {\large \today}\\[4cm]
+{\large \today}\\[1cm] % Date
 
 
 \end{center}
 
 \end{titlepage}
+
+%----------------------------------------------------------------------------------------
+%	DECLARATION PAGE
+%----------------------------------------------------------------------------------------
+
+\begin{declaration}
+\addchaptertocentry{\authorshipname} % Add the declaration to the table of contents
+\noindent I, \authorname, declare that this dissertation titled, \enquote{\ttitle} and the work presented in it are my own.  To the best of my knowledge and belief, the dissertation contains no material previously published or written by another person except where due reference is made in the dissertation itself.
+
+\vspace*{0.9\textheight}
+\noindent Signed:\\
+\rule[0.5em]{25em}{0.5pt} % This prints a line for the signature
+ 
+\noindent Date: 13th May 2024\\
+\rule[0.5em]{25em}{0.5pt} % This prints a line to write the date
+\end{declaration}
+
+\clearpage
 
 %----------------------------------------------------------------------------------------
 %	QUOTATION PAGE
@@ -138,11 +159,20 @@
 \include{sections/abstract}
 
 %----------------------------------------------------------------------------------------
+%	ACKNOWLEDGEMENTS
+%----------------------------------------------------------------------------------------
+
+%% \begin{acknowledgements}
+%% \addchaptertocentry{\acknowledgementname} % Add the acknowledgements to the table of contents
+%% The acknowledgments and the people to thank go here, don't forget to include your project advisor\ldots
+%% \end{acknowledgements}
+
+%----------------------------------------------------------------------------------------
 %	LIST OF CONTENTS/FIGURES/TABLES PAGES
 %----------------------------------------------------------------------------------------
 \tableofcontents
-%% \listoffigures
-%% \listoftables
+\listoffigures
+\listoftables
 
 %----------------------------------------------------------------------------------------
 %	ABBREVIATIONS

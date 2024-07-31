@@ -1,14 +1,14 @@
 \chapter{Methodology}
 
-This chapter provides a comprehensive explanation of how each of the research questions listed in Chapter One will be addressed.  This involves showing how the proposed solution will be designed, how the research planning will be carried out and how development and testing will be done.
+This chapter provides a comprehensive explanation of how each of the research questions listed in Chapter One will be addressed.  This involves showing how the proposed solution will be designed, how the research planning will be carried out, and how development and testing will be done.  Beyond this, the dissemination and utilization of the results from this dissertation will be discussed.
 
 \section{Research Approach for Objectives 1 and 2}
 
-The first objective of this dissertation was to study previous research work conducted on the GN platform and RDF.  Consequently, the second objective was focused on understanding the current limitations of the Genenetwork2 SQL database and exploring how the adoption of RDF could potentially address these constraints.  To meet these two objectives, a comprehensive literature review was conducted.
+The first objective of this dissertation was to study previous research work conducted on the GN platform and RDF.\@  Consequently, the second objective was focused on understanding the current limitations of the Genenetwork2 SQL database and exploring how the adoption of RDF could potentially address these constraints.  To meet these two objectives, a comprehensive literature review was conducted.
 
 \section{Research Approach for Objectives 3}
 
-In order to accomplish objectives three and four, a Domain Specific Language (DSL) will be developed to facilitate the translation of SQL into RDF.  This DSL will be employed to convert SQL tables into RDF representations, subsequently enabling a comprehensive comparison of RDF performance against that of SQL.
+In order to accomplish objectives three and four, a Domain Specific Language (DSL) will be developed to facilitate the translation of SQL into RDF.\@  This DSL will be employed to convert SQL tables into RDF representations, subsequently enabling a comprehensive comparison of RDF performance against that of SQL\@.
 
 The development methodology that will be adopted for this step is the \textit{Rapid Application Development (RAD)} methodology since it prioritizes development and prototype-building over planning.  It emphasizes the end-user involvement, prototyping, reuse and the use of automated tools \citep*{van2008software}.  This gives the researcher the ability to efficiently execute numerous iterations and updates to the software/model without the need to begin each iteration anew.  This yields a significant advantage, as it facilitates the ability to modify the design, augment functionality and iteratively refine the software/model at a high frequency.
 
@@ -21,16 +21,15 @@ The development methodology that will be adopted for this step is the \textit{Ra
 
 \item \textbf{Construction:}  In this stage, the working model is transformed into a functional system.  Usually, most bugs, issues and modifications are addressed.
 
-\item \textbf{Cutover:} The final stage of RAD involves the final testing of the system before the system is ready to use by end users.  The cutover phase encompasses intensive scale testing, technical documentation, issue tracking, final customizations and possible system simulations.
+\item \textbf{Cutover:} The final stage of RAD involves the final testing of the system before the system is ready to use by end users.  The cutover phase encompasses intensive scale testing, technical documentation, issue tracking, final customisations and possible system simulations.
 \end{enumerate}
 
-Figure \ref{fig:rad-lifecycle} shows the aforementioned RAD life-cycle.
+Figure~\ref{fig:rad-lifecycle} shows the aforementioned RAD life-cycle.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=12cm]{RAD}
-  \caption{\textit{Rapid Application Development life-cycle}}
-  \label{fig:rad-lifecycle}
+  \caption{\textit{Rapid Application Development life-cycle}}\label{fig:rad-lifecycle}
   \centering
 \end{figure}
 
@@ -38,17 +37,16 @@ The following subsections elaborate on the application of the RAD methodology wi
 
 \subsection{Requirements Planning}
 
-The process of requirements planning is the initial stage in building the DSL.  This stage encompasses activities such as conceptual ideation, during which potential representations of the DSL are brainstormed.  The primary goal is to design a DSL that is comprehensible and accessible to human end-users.  Moreover, the DSL should support s-expressions and offer a declarative mapping of SQL query results to a predefined ontology.  Furthermore, an ontology will be established to facilitate the conversion of SQL tables to RDF.
+The process of requirements planning is the initial stage in building the DSL.\@  This stage encompasses activities such as conceptual ideation, during which potential representations of the DSL are brainstormed.  The primary goal is to design a DSL that is comprehensible and accessible to human end-users.  Moreover, the DSL should support s-expressions and offer a declarative mapping of SQL query results to a predefined ontology.  Furthermore, an ontology will be established to facilitate the conversion of SQL tables to RDF\@.
 
 \subsection{Prototyping}
 
-During the prototyping phase, a preliminary version of the DSL will be developed, enabling the exploration of its design and functionality.  This prototype will serve as a proof-of-concept and will be refined based on feedback from stakeholders and potential end-users.  Figure \ref{fig:parser-demo} illustrates the parser's basic operation.
+During the prototyping phase, a preliminary version of the DSL will be developed, enabling the exploration of its design and functionality.  This prototype will serve as a proof-of-concept and will be refined based on feedback from stakeholders and potential end-users.  Figure~\ref{fig:parser-demo} illustrates the parser's basic operation.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=8cm]{parserDemo}
-\caption{\textit{The parser operates on each row to produce a valid triple store}}
-\label{fig:parser-demo}
+\caption{\textit{The parser operates on each row to produce a valid triple store}}\label{fig:parser-demo}
 \centering
 \end{figure}
 
@@ -60,8 +58,17 @@ The construction phase encompasses the development of a robust, reusable tool.  
 
 \subsection{Cut-off}
 
-During this final stage, the Domain Specific Language (DSL) will be used to convert GeneNetwork tables into RDF format.  Components of GeneNetwork that rely extensively on metadata will be restructured to utilize RDF.  A comparison between SQL and RDF performance will be assessed.
+During this final stage, the Domain Specific Language (DSL) will be used to convert GeneNetwork tables into RDF format.  Components of GeneNetwork that rely extensively on metadata will be restructured to utilize RDF.\@  A comparison between SQL and RDF performance will be assessed.
 
 \section{Validation}
 
-The final objective of this dissertation is to validate this dissertation by comparing the performance of RDF against SQL/flat-files.  To validate the findings in this dissertation, performance benchmarks will be conducted to compare the efficiency of RDF, SQL and flat-files in different scenarios.  The performance benchmarks will include measuring the time required to execute specific queries.  Moreover, functionalities that can be achieved using SPARQL but not SQL will be identified.
+The final objective of this dissertation is to validate this dissertation by comparing the performance of RDF against SQL/flat-files.  This data will be sourced from GeneNetwork's open SQL database in addition to the public SPARQL end-point which contains the RDF metadata.  The inclusion criteria require diabetes-related datasets, mRNA, phenotype, or genotype metadata stored in GeneNetwork's SQL database, while non-diabetes-related data will be excluded.  To validate the findings in this dissertation, performance benchmarks will be conducted to compare the efficiency of RDF, SQL and flat-files in different scenarios.  The performance benchmarks will include measuring the time required to execute specific queries.  Moreover, functionalities that can be achieved using SPARQL but not SQL will be identified.
+
+\section{Dissemination of Results}
+
+The primary medium for disseminating the research findings for this work will be through the final dissertation which will be presented to Strathmore University in fulfillment of a Masters Degree in Data Science.  Beyond this,
+and to ensure a broader access to research findings, the results will be deposited in the open access platform bioRxiv\footnote{https://biorxiv.org}.  Also, peer-reviewed journal articles and conference papers will be prepared to present the methodologies, results, and implications of the research.  Target journals will include those specializing in bio-informatics, database management, and semantic web technologies.  Conferences such as the ISWC (International Semantic Web Conference), and FOSDEM (Free and Open source Software Developers' European Meeting) will be considered for presenting the work.
+
+\section{Utilization of Results}
+
+This proposal seeks to improve the efficiency and functionality of bio-informatics databases by adopting RDF, in addition to making this data FAIR.\@  Researchers in the field of database management, semantic web technologies, and bio-informatics can leverage the results to explore new avenues to enhance existing systems.  The DSL that will be developed can be further refined and adapted to other domains, promoting cross-disciplinary research and innovation.

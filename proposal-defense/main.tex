@@ -12,7 +12,8 @@
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{minted}
-
+\usepackage[document]{ragged2e}
+\usepackage{blindtext}
 \usepackage[backend=biber,style=apa,natbib=true]{biblatex}
 \usepackage{caption}
 \addbibresource{refs.bib}
@@ -33,10 +34,10 @@
 }
 
 \thesistitle{Unlocking Biomedical Data for AI Health Research in Africa Using GeneNetwork as an Example}
-\supervisori{Dr. Joseph \textsc{Sevilla}}
-\supervisorii{Dr. Pjotr \textsc{Prins}}
-\supervisoriii{Dr. Shelby \textsc{Solomon}}
-\supervisoriv{Dr. George \textsc{Githinji}}
+\supervisori{Dr. Joseph Sevilla}
+\supervisorii{Dr. Pjotr Prins}
+\supervisoriii{Dr. Shelby Solomon}
+\supervisoriv{Dr. George Githinji}
 \examiner{}
 \degree{Msc. Data Science And Analytics}
 \author{\href{https://bonfacemunyoki.com}{Bonface Munyoki Kilyungi}}
@@ -96,17 +97,45 @@
 \vfill
 
 \large \textit{A dissertation proposal submitted in fulfilment of the
-  requirements\\ for Msc. Data Science and Analytics}\\[1cm]
+  requirements\\ for Msc. Data Science and Analytics}\\
 % \deptname\\[1cm] % Research group name and department name
 
-\noindent Approved by: \supnamei\\[1cm]
-\noindent Signed:
+
+%%     {\large \today}\\[4cm]
+
+%----------------------------------------------------------------------------------------
+%	DECLARATION PAGE
+%----------------------------------------------------------------------------------------
+
+\begin{declaration}
+  \addchaptertocentry{\authorshipname} % Add the declaration to the table of contents
+
+  \vspace{3cm}
+  \begin{flushleft}
+\noindent I, \authorname, declare that this dissertation proposal titled, \enquote{\ttitle} and the work presented in it are my own.  To the best of my knowledge and belief, the dissertation proposal contains no material previously published or written by another person except where due reference is made in the dissertation proposal itself.
+
+\vspace*{0.2\textheight}
+\noindent Signed: \hspace{1cm}\includegraphics[scale=0.2]{signature}\\
+\rule[0.5em]{25em}{0.5pt} % This prints a line for the signature
+ 
+\noindent Date: 10th April 2024\\
+\rule[0.5em]{25em}{0.5pt} % This prints a line to write the date
+  \end{flushleft}
+
+\vspace{2cm}
+
+\begin{flushleft}
+    \noindent Approved by: \supnamei\\
+\noindent Signed:\hspace{1cm}\includegraphics[scale=1]{sevilla}\\
 \rule[0pt]{25em}{0.5pt}\\[1cm] % This prints a line for the signature
 
-\noindent Date:
+\noindent Date: 24th April 2023\\
 \rule[0pt]{25em}{0.5pt} % This prints a line to write the date
-%% \vfill
-%%     {\large \today}\\[4cm]
+\end{flushleft}
+\vfill
+\end{declaration}
+
+\clearpage
 
 
 \end{center}

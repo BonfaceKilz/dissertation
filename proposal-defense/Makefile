@@ -1,4 +1,4 @@
-SHELL=/bin/bash
+SHELL=/home/munyoki/.guix-home/profile/bin/bash
 MAIN=main
 LATEX=pdflatex -shell-escape
 BIBER=biber
