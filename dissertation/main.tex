@@ -29,7 +29,7 @@
   \texttt{\textcolor{blue}{#1}}%
 }
 
-\newcommand{\source}[1]{\caption*{Source: {#1}} }
+\newcommand{\source}[1]{\caption*{\textbf{Source:} {#1}} }
 
 \addbibresource{refs.bib}
 
@@ -72,6 +72,10 @@
   coltitle=black,% Make the title black
   #3}% And pass the options to tcolorbox
 
+\DeclareCaptionFormat{custom}{%
+  \textbf{#1#2}#3
+}
+\captionsetup{format=custom, justification=raggedright}
 %----------------------------------------------------------------------------------------
 %	THESIS INFORMATION
 %----------------------------------------------------------------------------------------
