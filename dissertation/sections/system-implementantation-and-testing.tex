@@ -20,7 +20,7 @@ Operating System & Debian GNU/Linux 9.13 (stretch)\\
 
 \subsection{Software Requirements}
 
-The software dependencies for this DSL was managed using GNU Guix.  The implementation was done in GNU Guile.  The database that was used was MariaDB and the RDF datastore utilised was Virtuoso.
+The software dependencies for this DSL was managed using GNU Guix\footnote{https://guix.gnu.org/}.  The implementation was done in a scheme dialect called GNU Guile\footnote{https://www.gnu.org/software/guile/}.  The database that was used was MariaDB and the RDF datastore utilised was Virtuoso\footnote{https://virtuoso.openlinksw.com/}.
 
 \section{DSL Implementation}
 
@@ -140,19 +140,20 @@ A more complete example is shown in Figure~\ref{code:with-documentation-example}
 
 In this section, various tests were done to assess the performance and functionality of the self-documenting DSL designed for transformed tables into RDF format.  In addition to assessing the performance of the SPARQL queries from the generated RDF, the quality of the output is also assessed, and federated queries that are impossible to do in SQL are highlighted.
 
-\subsection{Query Execution Performance}
+\subsection{Query Quality and Execution Performance}
 
-The following SQL query, shown in Figure~\ref{sql:counting-pubs-with-diabetes}, was run several times to count the number of publications in the Genenetwork SQL store related to diabetes:
+The following SQL query, shown in Figure~\ref{sql:counting-pubs-with-diabetes} below, was run several times to count the number of publications in the Genenetwork SQL store related to diabetes:
 
 \begin{figure}[H]
 \centering
 \begin{minted}{sql}
-SELECT COUNT(*) FROM Publication WHERE Abstract LIKE "%diabetes%";
+  SELECT COUNT(DISTINCT Id) FROM Publication
+  WHERE Abstract LIKE "%diabetes%";
 \end{minted}
 \caption{Counting the number of publications with word ``diabetes'' in SQL}\label{sql:counting-pubs-with-diabetes}
 \end{figure}
 
-Similarly, Figure~\ref{sparql:counting-pubs-with-diabetes} shows the corresponding SPARQL query use to count the number of publications in RDF\@.
+Similarly, Figure~\ref{sparql:counting-pubs-with-diabetes} below shows the corresponding SPARQL query use to count the number of publications in RDF\@.
 
 \begin{figure}[H]
 \centering
@@ -161,16 +162,28 @@ PREFIX   dct: <http://purl.org/dc/terms/>
 PREFIX   rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX fabio: <http://purl.org/spar/fabio/>
 
-SELECT COUNT(?paper) WHERE {
+SELECT COUNT(DISTINCT ?paper) WHERE {
        ?paper rdf:type fabio:ResearchPaper ;
-               dct:abstract ?abstract .
+              dct:abstract ?abstract .
        ?abstract bif:contains "diabetes" .
 }
 \end{minted}
 \caption{Counting the number of publications with word ``diabetes'' in SPARQL}\label{sparql:counting-pubs-with-diabetes}
 \end{figure}
 
-The performance results is shown in Table~\ref{table:perf-1}:
+
+Table~\ref{table:count-diabetes-publications} below shows the results of running the above 2 queries:
+
+\begin{table}[H]
+\begin{tabular}{rr}
+SQL & SPARQL \\[0pt]
+\toprule
+22 & 22\\[0pt]
+\end{tabular}
+\caption{Counting the number of Publications that reference ``diabetes'' in the abstract}\label{table:count-diabetes-publications}
+\end{table}
+
+The performance metrics is shown in Table~\ref{table:perf-1} below:
 
 \begin{table}[H]
 \begin{tabular}{rr}
@@ -190,15 +203,15 @@ The following query, shown in Figure~\ref{sql:counting-phenotypes-with-diabetes}
 \begin{figure}[H]
 \centering
 \begin{minted}{sql}
-SELECT 
-  COUNT(Phenotype.Id) 
-FROM 
-  PublishXRef 
+SELECT
+  COUNT(DISTINCT Phenotype.Id)
+FROM
+  PublishXRef
   LEFT JOIN Publication ON
     Publication.Id = PublishXRef.PublicationId 
   LEFT JOIN Phenotype ON
-    Phenotype.Id = PublishXRef.PhenotypeId 
-WHERE 
+    Phenotype.Id = PublishXRef.PhenotypeId
+WHERE
   Publication.Abstract LIKE "%diabetes%";
 \end{minted}
 \caption{Counting the number of phenotypes related to diabetes in SQL}\label{sql:counting-phenotypes-with-diabetes}
@@ -214,7 +227,7 @@ PREFIX   rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX   gnc: <http://genenetwork.org/category/>
 PREFIX fabio: <http://purl.org/spar/fabio/>
 
-SELECT COUNT(?phenotype) WHERE {
+SELECT COUNT(DISTINCT ?phenotype) WHERE {
        ?paper rdf:type fabio:ResearchPaper ;
               dct:abstract ?abstract .
        ?abstract bif:contains "diabetes" .
@@ -225,7 +238,18 @@ SELECT COUNT(?phenotype) WHERE {
 \caption{Counting the number of phenotypes related to diabetes in SPARQL}\label{sparql:counting-phenotypes-with-diabetes}
 \end{figure}
 
-The corresponding results, shown in Table~\ref{table:perf-2}, are:
+The results of Figure~\ref{sql:counting-phenotypes-with-diabetes} and Figure~\ref{sparql:counting-phenotypes-with-diabetes} and are shown in Table~\ref{table:counting-phenotypes-with-diabetes}:
+
+\begin{table}[H]
+\begin{tabular}{rr}
+SQL & SPARQL \\[0pt]
+\toprule
+105 & 105\\[0pt]
+\end{tabular}
+\caption{Counting the number of phenotypes that reference ``diabetes'' in the abstract}\label{table:counting-phenotypes-with-diabetes}
+\end{table}
+
+The corresponding performance metrics, shown in Table~\ref{table:perf-2}, are:
 
 \begin{table}[H]
 \begin{tabular}{rr}
@@ -240,18 +264,18 @@ SQL (seconds) & SPARQL (seconds)\\[0pt]
 \caption{Performance results: Figure~\ref{sql:counting-phenotypes-with-diabetes} versus Figure~\ref{sparql:counting-phenotypes-with-diabetes} }\label{table:perf-2}
 \end{table}
 
-A more complicated query that counts the number of datasets under a given group that have phenotypes related to diabetes is shown in Figure~\ref{sql:datasets-phenotypes-diabetes}.
+A more complicated query that counts the number of datasets under a given InbredSet group that have phenotypes related to diabetes is shown in Figure~\ref{sql:datasets-phenotypes-diabetes}.
 
 \begin{figure}[H]
 \centering
 \begin{minted}{sql}
 SELECT 
-  COUNT(DISTINCT InfoFiles.DatasetId) 
+  COUNT(DISTINCT InfoFiles.InfoFileId) 
 FROM 
   InfoFiles 
   LEFT JOIN PublishFreeze
     ON InfoFiles.InfoPageName = PublishFreeze.Name 
-  LEFT JOIN Datasets USING (DatasetId) 
+  LEFT JOIN Datasets USING (DatasetId)
   LEFT JOIN InbredSet
     ON InfoFiles.InbredSetId = InbredSet.InbredSetId 
   LEFT JOIN PublishXRef
@@ -275,6 +299,8 @@ PREFIX   rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX fabio: <http://purl.org/spar/fabio/>
 PREFIX   gnc: <http://genenetwork.org/category/>
 PREFIX   gnt: <http://genenetwork.org/term/>
+PREFIX  dcat: <http://www.w3.org/ns/dcat#>
+PREFIX  xkos: <http://rdf-vocabulary.ddialliance.org/xkos#>
 
 SELECT COUNT(DISTINCT ?dataset) WHERE {
        ?paper rdf:type fabio:ResearchPaper ;
@@ -285,12 +311,24 @@ SELECT COUNT(DISTINCT ?dataset) WHERE {
                   dct:isReferencedBy ?paper .
        ?dataset rdf:type dcat:Dataset ;
                 gnt:belongsToGroup ?group .
+                  
 }
 \end{minted}
-\caption{SPARQL query that counts the number of datasets under a given groups that have phenotypes related to diabetes}\label{sparql:datasets-phenotypes-diabetes}
+\caption{SPARQL query that counts the number of datasets under a given inbredset group that have phenotypes related to diabetes}\label{sparql:datasets-phenotypes-diabetes}
 \end{figure}
 
-The results are shown in Table~\ref{table:perf-3}.
+The results of Figure~\ref{sql:datasets-phenotypes-diabetes} and Figure~\ref{sparql:datasets-phenotypes-diabetes} and are shown in Table~\ref{table:datasets-phenotypes-diabetes}:
+
+\begin{table}[H]
+\begin{tabular}{rr}
+SQL & SPARQL \\[0pt]
+\toprule
+406 & 419\\[0pt]
+\end{tabular}
+\caption{Counting the number of phenotypes that reference ``diabetes'' in the abstract}\label{table:datasets-phenotypes-diabetes}
+\end{table}
+
+The performance metrics are shown in Table~\ref{table:perf-3}.
 
 \begin{table}[H]
 \begin{tabular}{rr}
@@ -336,97 +374,244 @@ FamilyOrderId: 1
 \caption{Fetching details of the Mouse Species from the SQL store}\label{sql:mouse-results}
 \end{figure}
 
-However, it's noticeable that the tabular format lacks contextual details about each column. In contrast, consider the SPARQL query showcased in Figure~\ref{sparql:mouse}, aiming to achieve a similar goal.
+The corresponding sparql query is shown in Figure~\ref{sparql:mouse}:
 
 \begin{figure}[H]
 \centering
 \begin{minted}{sparql}
 PREFIX gnt: <http://genenetwork.org/term/>
 
-SELECT ?species ?predicate ?object {
-  ?species gnt:shortName "bat";
+CONSTRUCT {
+  ?species ?predicate ?object
+} WHERE {
+  ?species gnt:shortName "mouse";
            ?predicate ?object .
 }
 \end{minted}
 \caption{Fetching details of the Mouse Species using a SPARQL SELECT}\label{sparql:mouse}
 \end{figure}
 
-The enriched results of Figure~\ref{sparql:mouse} are illustrated in Table~\ref{table:mouse-sparql-results}
+The enriched results of Figure~\ref{sparql:mouse} are illustrated in Figure~\ref{figure:mouse-sparql-results}
 
-\begin{table}[H]
-\begin{tabular}{p{5cm}p{5cm}m{6cm}}
-species & predicate & object\\[0pt]
-\toprule
-\url{http://genenetwork.org/id/Glossophaga\_soricina} & \url{http://www.w3.org/2004/02/skos/core\#altLabel} & "Bat (Glossophaga soricina)"\\[0pt]
-\midrule
-\url{http://genenetwork.org/id/Glossophaga\_soricina} & \url{http://www.w3.org/2004/02/skos/core\#prefLabel} & "Bat (Glossophaga soricina, gsor23)"\\[0pt]
-\midrule
-\url{http://genenetwork.org/id/Glossophaga\_soricina} & \url{http://genenetwork.org/term/shortName} & "bat"\\[0pt]
-\midrule
-\url{http://genenetwork.org/id/Glossophaga\_soricina} & \url{http://www.w3.org/2004/02/skos/core\#inScheme} & \url{http://genenetwork.org/category/ResourceClassificationScheme}\\[0pt]
-\midrule
-\url{http://genenetwork.org/id/Glossophaga\_soricina} & \url{http://www.w3.org/2004/02/skos/core\#notation} & \url{http://purl.uniprot.org/taxonomy/27638}\\[0pt]
-\midrule
-\url{http://genenetwork.org/id/Glossophaga\_soricina} & \url{http://www.w3.org/2000/01/rdf-schema\#label} & "Glossophaga soricina"\\[0pt]
-\midrule
-\url{http://genenetwork.org/id/Glossophaga\_soricina} & \url{http://www.w3.org/1999/02/22-rdf-syntax-ns\#isDefinedBy} & \url{http://www.wikidata.org/entity/Q304929}\\[0pt]
-\midrule
-\url{http://genenetwork.org/id/Glossophaga\_soricina} & \url{http://genenetwork.org/term/family} & "Vertebrates"\\[0pt]
-\end{tabular}
-\caption{Fetching results}\label{table:mouse-sparql-results}
-\end{table}
+\begin{figure}[H]
+\centering
+\begin{minted}[breaklines]{json-ld}
+{
+  "@context": {
+    "gnc": "http://genenetwork.org/category/",
+    "gnt": "http://genenetwork.org/term/",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#>",
+    "label": "rdfs:label",
+    "prefLabel": "http://www.w3.org/2004/02/skos/core#prefLabel",
+    "taxonomy-id": "http://www.w3.org/2004/02/skos/core#notation",
+    "family": "gnt:family",
+    "shortname": "gnt:shortName",
+    "definedBy": "http://www.w3.org/1999/02/22-rdf-syntax-ns#isDefinedBy",
+    "in-scheme": "http://www.w3.org/2004/02/skos/core#inScheme",
+    "alt-label": "http://www.w3.org/2004/02/skos/core#altLabel"
+  },
+  "@id": "http://genenetwork.org/id/Mus_musculus",
+  "family": "Vertebrates",
+  "shortname": "mouse",
+  "definedBy": {
+    "@id": "http://www.wikidata.org/entity/Q83310"
+  },
+  "label": "Mus musculus",
+  "alt-label": "Mouse",
+  "in-scheme": {
+    "@id": "gnc:ResourceClassificationScheme"
+  },
+  "taxonomy-id": {
+    "@id": "http://purl.uniprot.org/taxonomy/10090"
+  },
+  "prefLabel": "Mouse (Mus musculus, mm10)"
+}
+\end{minted}
+\caption{Fetching results in a compacted json-ld form related to the Mouse species}\label{figure:mouse-sparql-results}
+\end{figure}
 
-The SPARQL query results offer richer contextual information.  Each subject and predicate field, analogous to SQL columns, is linked to a resource providing additional definitions.  Furthermore, the versatility of SPARQL extends to the ability to output results to HTML, CSV, TSV, JSON, JSON-LD and other formats~\footnote{http://docs.openlinksw.com/virtuoso/rdfsparql.html\#rdfsparqlimplementatioptragmassfs}.
+A common operation done in GeneNetwork is to search GeneRIF entries from NCBI to search given probesets for key terms belonging to a given species.   Figure~\ref{sql:search-ncbi} shows how such a query in SQL looks like:
 
-In addition to basic SELECT operations, SPARQL enables the specification and construction of new graphs for retrieval, as illustrated in Figure~\ref{sparql:mouse-consruct}.
+\begin{figure}[H]
+\centering
+\begin{minted}[breaklines]{SQL}
+SELECT 
+  DISTINCT Species.*, GeneRIF_BASIC.* 
+FROM 
+  Species
+  INNER JOIN InbredSet ON InbredSet.SpeciesId = Species.Id 
+  INNER JOIN ProbeFreeze ON ProbeFreeze.InbredSetId = InbredSet.Id 
+  INNER JOIN Tissue ON ProbeFreeze.TissueId = Tissue.Id 
+  INNER JOIN ProbeSetFreeze ON ProbeSetFreeze.ProbeFreezeId = ProbeFreeze.Id 
+  INNER JOIN ProbeSetXRef ON ProbeSetXRef.ProbeSetFreezeId = ProbeSetFreeze.Id 
+  INNER JOIN ProbeSet ON ProbeSet.Id = ProbeSetXRef.ProbeSetId 
+  LEFT JOIN Geno ON ProbeSetXRef.Locus = Geno.Name 
+  AND Geno.SpeciesId = Species.Id
+  INNER JOIN GeneRIF_BASIC ON GeneRIF_BASIC.symbol = ProbeSet.Symbol 
+WHERE 
+  GeneRIF_BASIC.comment LIKE "%diabetes%" 
+  AND Species.Name = "mouse"
+  AND GeneRIF_BASIC.`symbol` = BINARY "Gcg"
+ORDER BY 
+  GeneRIF_BASIC.comment ASC
+LIMIT 
+  1\G
+\end{minted}
+\caption{SQL Search for GeneRIF entries from NCBI for the keywords ``diabetes'' that belong to the mouse species}\label{sql:search-ncbi}
+\end{figure}
+
+The results of Figure~\ref{sql:search-ncbi} are shown in Figure~\ref{sql:ncbi-results}.
+
+\begin{figure}[H]
+\centering
+\begin{minted}{rst}
+           Id: 1
+    SpeciesId: 1
+  SpeciesName: Mouse
+         Name: mouse
+     MenuName: Mouse (Mus musculus, mm10)
+     FullName: Mus musculus
+        Family: VertebratesFamilyOrderId: 1
+   TaxonomyId: 10090
+      OrderId: 15
+    SpeciesId: 2
+        TaxID: 10116
+       GeneId: 24952
+       symbol: Gcg
+    PubMed_ID: 26037249
+   createtime: 2015-10-24 11:29:00
+      comment: Data (including data from transgenic rats) suggest 1)
+               celiac ganglia neurotransmission and 2) glucagon
+               secretion are down-regulated in short-term
+               hyperglycemia of diabetes; Wallerian degeneration
+               protein mutation protects against these dysfunctions.
+    VersionId: 1
+1 row in set (0.01 sec)
+\end{minted}
+\caption{Results of SQL search for GeneRIF from NCBI for the keywords ``diabetes'' that belong to the mouse species}\label{sql:ncbi-results}
+\end{figure}
+
+The corresponding SPARQL query for Figure~\ref{sql:search-ncbi} is shown in Figure:~\ref{sparql:ncbi-rif}:
 
 \begin{figure}[H]
 \centering
 \begin{minted}{sparql}
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX gnt: <http://genenetwork.org/term/>
+PREFIX gnc: <http://genenetwork.org/category/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX gn: <http://genenetwork.org/id/>
 
-CONSTRUCT {?species ?predicate ?object} WHERE {
-  ?species gnt:shortName "bat";
-           ?predicate ?object .
-}
+CONSTRUCT {
+  ?species ?speciesPred ?speciesObj .
+  gnt:comment ?commentPred ?commentObj .
+} WHERE {
+?probeset rdf:type gnc:Probeset ;
+          gnt:geneSymbol "Gcg" ;
+          ?p ?o .
+?symbol rdfs:comment _:node ;
+        rdfs:label "Gcg" .
+_:node rdf:type gnc:NCBIWikiEntry ;
+       gnt:belongsToSpecies ?species ;
+       rdfs:comment ?comment ;
+       ?commentPred ?commentObj .
+?species gnt:shortName "mouse";
+       ?speciesPred ?speciesObj .
+?comment bif:contains "diabetes" .
+} ORDER BY ASC(?comment)
 \end{minted}
-\caption{Fetching details of the Mouse Species using SPARQL CONSTRUCT}\label{sparql:mouse-construct}
+\caption{SPARQL Search for GeneRIF entries from NCBI for the keywords ``diabetes'' that belong to the mouse species}\label{sparql:ncbi-rif}
 \end{figure}
 
-Figure~\ref{sparql:mouse-graph} show the result of fetching a graph about the Mouse species.
+The corresponding results for Figure~\ref{sparql:ncbi-rif} are shown below:
 
-\begin{figure}[H]
-\centering
-\begin{minted}[
-    breaklines,
-    fontsize=\small
-  ]{json-ld}
+\begin{mintedbox}{json-ld}[]
 {
-"@graph": [
-{ "@id": "http://genenetwork.org/id/Glossophaga_soricina",
-  "http://www.w3.org/2004/02/skos/core#altLabel": "Bat (Glossophaga soricina)",
-  "http://www.w3.org/2004/02/skos/core#prefLabel": "Bat (Glossophaga soricina, gsor23)",
-  "http://genenetwork.org/term/shortName": "bat",
-  "http://www.w3.org/2004/02/skos/core#inScheme": {
-    "@id": "http://genenetwork.org/category/ResourceClassificationScheme"
+  "@context": {
+    "hasGeneId": {
+      "@id": "http://genenetwork.org/term/hasGeneId",
+      "@type": "@id"
+    },
+    "created": {
+      "@id": "http://purl.org/dc/terms/created",
+      "@type": "http://www.w3.org/2001/XMLSchema#datetime"
+    },
+    "altLabel": {
+      "@id": "http://www.w3.org/2004/02/skos/core#altLabel"
+    },
+    "inScheme": {
+      "@id": "http://www.w3.org/2004/02/skos/core#inScheme",
+      "@type": "@id"
+    },
+    "family": {
+      "@id": "http://genenetwork.org/term/family"
+    },
+    "shortName": {
+      "@id": "http://genenetwork.org/term/shortName"
+    },
+    "isDefinedBy": {
+      "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#isDefinedBy",
+      "@type": "@id"
+    },
+    "belongsToSpecies": {
+      "@id": "http://genenetwork.org/term/belongsToSpecies",
+      "@type": "@id"
+    },
+    "prefLabel": {
+      "@id": "http://www.w3.org/2004/02/skos/core#prefLabel"
+    },
+    "label": {
+      "@id": "http://www.w3.org/2000/01/rdf-schema#label"
+    },
+    "comment": {
+      "@id": "http://www.w3.org/2000/01/rdf-schema#comment"
+    },
+    "notation": {
+      "@id": "http://www.w3.org/2004/02/skos/core#notation",
+      "@type": "@id"
+    },
+    "hasVersionId": {
+      "@id": "http://genenetwork.org/term/hasVersionId"
+    }
   },
-  "http://www.w3.org/2004/02/skos/core#notation": {
-    "@id": "http://purl.uniprot.org/taxonomy/27638"
-  },
-  "http://www.w3.org/2000/01/rdf-schema#label": "Glossophaga soricina",
-  "http://www.w3.org/1999/02/22-rdf-syntax-ns#isDefinedBy": {
-    "@id": "http://www.wikidata.org/entity/Q304929"
-  },
-  "http://genenetwork.org/term/family": "Vertebrates" }
-]}
-\end{minted}
-\caption{EXample JSON-LD result from a SPARQL CONSTRUCT query}\label{sparql:mouse-graph}
-\end{figure}
+  "@graph": [
+    {
+      "@id": "http://genenetwork.org/id/Mus_musculus",
+      "family": "Vertebrates",
+      "shortName": "mouse",
+      "isDefinedBy": "http://www.wikidata.org/entity/Q83310",
+      "label": "Mus musculus",
+      "altLabel": "Mouse",
+      "inScheme": "http://genenetwork.org/category/ResourceClassificationScheme",
+      "notation": "http://purl.uniprot.org/taxonomy/10090",
+      "prefLabel": "Mouse (Mus musculus, mm10)"
+    },
+    {
+      "@id": "http://genenetwork.org/term/comment",
+      "@type": "http://genenetwork.org/category/NCBIWikiEntry",
+      "belongsToSpecies": "http://genenetwork.org/id/Mus_musculus",
+      "hasGeneId": "http://www.ncbi.nlm.nih.gov/gene?cmd=Retrieve&dopt=Graphics&list_uids=14526",
+      "hasVersionId": 1,
+      "created": "2010-10-23T06:10:00",
+      "comment": {
+        "@type": "http://www.w3.org/2001/XMLSchema#string",
+        "@value": "Data show that in an animal model of diabetes induced by alloxan, progression of hyperglycemia was significantly attenuated in mice given the Ad-GLP-1 vector compared with control mice."
+      },
+      "notation": "https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?mode=Info&id=10090"
+    }
+  ]
+}
+\end{mintedbox}
+%% \caption{SPARQL Search Results for GeneRIF entries from NCBI for the keywords ``diabetes'' that belong to the mouse species}\label{sparql:ncbi-rif-results}
+%% \end{figure}
 
+From the above results, we see that the SPARQL query results offer richer contextual information.  Each subject and predicate field, analogous to SQL columns, is linked to a resource providing additional definitions.  Furthermore, the versatility of SPARQL extends to the ability to output results to HTML, CSV, TSV, JSON, JSON-LD and other formats~\footnote{http://docs.openlinksw.com/virtuoso/rdfsparql.html\#rdfsparqlimplementatioptragmassfs}.
 
 \subsection{Federated Queries in SPARQL}
 
-SQL is limited to querying tables that reside within the local server environment and does not have the capability to access or query external servers on the internet.  However, RDF overcomes this limitation by allowing the use of federated queries that allow a person to query external services.  The following example, shown in Figure~\ref{sparql:federated}, highlights SQL's limitation.  It queries GeneNetwork to get the Wikidata identifier that can be used to query Wikidata as an external service, to get the longest recorded life span of a bat which is 11 years.
+SQL is limited to querying tables that reside within the local server environment and does not have the capability to access or query external servers on the internet.  However, RDF overcomes this limitation by allowing the use of federated queries that allow a person to query external services.  The following example, shown in Figure~\ref{sparql:federated}, highlights SQL's limitation.  It queries GeneNetwork to get the Wikidata identifier that can be used to query Wikidata as an external service, to get the longest recorded life span of a mouse which is 4 years.
 
 \begin{figure}[H]
 \centering
@@ -436,15 +621,16 @@ PREFIX       rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX       wdt: <http://www.wikidata.org/prop/direct/>
 
 SELECT ?years {
-  ?species gnt:shortName "bat";
+  ?species gnt:shortName "mouse";
            rdf:isDefinedBy ?id .
 SERVICE <https://query.wikidata.org/sparql> {
     ?id wdt:P4214 ?years .
   }
 }
 \end{minted}
-\caption{Using a federated query to get the longest recorded life span of a bat from Wikidata}\label{sparql:federated}
+\caption{Using a federated query to get the longest recorded life span of a mouse from Wikidata}\label{sparql:federated}
 \end{figure}
+
 %%% Local Variables:
 %%% ispell-local-dictionary: "en_GB-ise"
 %%% End:

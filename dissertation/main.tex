@@ -34,8 +34,9 @@
 \addbibresource{refs.bib}
 
 \usepackage[autostyle=true]{csquotes}
-\usepackage{tcolorbox}
+\usepackage[minted,xparse,breakable]{tcolorbox}
 
+\usepackage{mdframed}
 \BeforeBeginEnvironment{minted}{\begin{tcolorbox}}%
 \AfterEndEnvironment{minted}{\end{tcolorbox}}%
 
@@ -47,6 +48,29 @@
 	top=1.5cm,
 	bottom=1.5cm,
 }
+\definecolor{bg}{gray}{0.97}
+\DeclareTCBListing{mintedbox}{O{}m!O{}}{%
+  listing only,% Prevent tcolorbox from trying to compile the code
+  breakable,% Allow page breaks
+  minted language=#2,% Make the mandatory argument be the language
+  minted options={% Pass these options to minted
+    linenos,
+    numbersep=5pt,
+    gobble=0,
+    tabsize=4,
+    breaklines=true,
+    mathescape,
+    framesep=2mm,#1},
+  % Appearance tweaks
+  top=0pt,% Remove borders
+  bottom=0pt,
+  left=0pt,
+  right=0pt,
+  arc=0pt,% Make the corners sharp
+  colframe=bg,% Make the frame the same color as the background
+  colback=bg,
+  coltitle=black,% Make the title black
+  #3}% And pass the options to tcolorbox
 
 %----------------------------------------------------------------------------------------
 %	THESIS INFORMATION
