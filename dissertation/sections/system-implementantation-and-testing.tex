@@ -40,7 +40,7 @@ A special syntax, \codeword{``define-transformer''} is introduced.  This special
   (triples subject
     (verb predicate object) ...))
 \end{minted}
-\caption{The general form of the ``define-transformer'' syntax}\label{code:define-transformer-syntax}
+\caption[\textit{``define-transformer''} special form]{\textbf{``define-transformer'' syntax.}  This shows the general form of the ``define-transformer'' syntax.  It comprises the ``tables'', ``schema-triples'' and ``triples'' form.}\label{code:define-transformer-syntax}
 \end{figure}
 
 The \codeword{``tables''} clause specifies the database tables to be joined to construct the view to be transformed.\   \textit{``table''} can be either of the form \textit{``table-name''} or of the form: \codeword{``(JOIN-OPERATOR TABLE-NAME RAW-CONDITION)''}.\   \textit{``table-name''} is the name of the table.\   \codeword{``JOIN-OPERATOR''} can be one of: \codeword{``join''}, \codeword{``left-join''} and \codeword{``inner-join''}.\   \textit{``RAW-CONDITION''} is the join condition as a raw string.  This is usually something like \codeword{``USING (SpeciesId)''}.\   \textit{``raw-forms''} are expressions that must evaluate to strings to be appended to the SQL query.  The example below shows an example of doing a left join between a Genbank table with a Species table using the ``SpeciesId'' as the foreign key as show in Figure~\ref{code:genbank-species-join-example}:
@@ -51,7 +51,7 @@ The \codeword{``tables''} clause specifies the database tables to be joined to c
 (tables (Genbank
            (left-join Species "USING (SpeciesId)")))
 \end{minted}
-\caption{Doing a left join between the Genbank table and Species using SpeciesId}\label{code:genbank-species-join-example}
+\caption[\textit{``table''} special form]{\textbf{Using the ``table'' special form to select data from tables}.  This example use the ``table'' special form to do a left join between the \textit{Genbank} and \textit{Species} table using the \textit{SpeciesId} column as the foreign key.}\label{code:genbank-species-join-example}
 \end{figure}
 
 The \codeword{``schema-triples''} clause specifies the list of triples to be written once when the transform starts.  An example of how this would like is demonstrated in Figure~\ref{code:schema-triples-example}:
@@ -63,7 +63,7 @@ The \codeword{``schema-triples''} clause specifies the list of triples to be wri
    (gnc:nucleotide a skos:Concept)
    (gnt:hasSequence rdfs:domain gnc:nucleotide))
 \end{minted}
-\caption{An example of how to define a schema triple}\label{code:schema-triples-example}
+\caption[\textit{``schema-triples''} special form]{\textbf{Defining special triples that will be run only once before the SQL query is executed.}  This example defines 2 triples.  These 2 triples are are generated only once for the entire SQL query.}\label{code:schema-triples-example}
 \end{figure}
 
 On the other hand, the \codeword{``triples''} clause specifies the triples to be transformed once for each row in the view.  All triples have a common \textit{``subject''}.  The \codeword{``(verb predicate object)''} clauses are described below:
@@ -81,7 +81,7 @@ The example in Figure~\ref{code:triples-example} below show's how a triple can b
     (set gnt:hasSequence (field Genbank Sequence))
     (set gnt:belongsToSpecies (field Species Fullname)))
 \end{minted}
-\caption{An example of how to define triples}\label{code:triples-example}
+\caption[\textit{``triples''} special form]{\textbf{Defining triples from table rows.}  This example shows how triples are expressed declaratively from the relevant table fields.  Each row returned from the SQL query will be parsed into the triples matching the form expressed here.}\label{code:triples-example}
 \end{figure}
 
 \subsection{Executing a Transformer}
@@ -101,7 +101,7 @@ To execute transformers, an extra special syntax, \codeword{``with-documentation
     `(#:documentation ...
       #:rdf ...)))
 \end{minted}
-\caption{The general form of the ``with-documentation'' syntax}\label{code:with-documentation-syntax}
+\caption[\textit{``with-documentation''} special form]{\textbf{The general form of the ``with-documentation'' syntax.}  This special form glues together: defined transformers, RDF prefixes, important connection parameters to the Virtuoso store and specifies where the output is generated to.}\label{code:with-documentation-syntax}
 \end{figure}
 
 Each part of the \codeword{``with-documentation''} is described below:
@@ -133,7 +133,7 @@ A more complete example is shown in Figure~\ref{code:with-documentation-example}
     `(#:documentation "/tmp/genbank.md"
       #:rdf "/tmp/genbank.ttl")))
 \end{minted}
-\caption{An example of how to use the ``with-documentation'' syntax}\label{code:with-documentation-example}
+\caption[Transforming Genbank SQL data into RDF using \textit{``with-documentation''} special form]{\textbf{Transforming Genbank SQL data into RDF}.  This example uses the ``with-documentation'' special form to convert data from the Genbank table to RDF.  We use the prefixes ``rdf:'' and ``rdfs:''.  As input, we use the genbank transformer.  The auto-generated document is stored in ``/tmp/genbank.md'' and the generated turtle file is stored in ``/tmp/genbank.ttl''.  In this example we don't include table metadata provided from the SQL engine in ``/tmp/genbank.ttl'' by setting the ``table-metadata'' option to ``false''.  Connection settings to the MariaDB is provided by ``\%connection-settings''.}\label{code:with-documentation-example}
 \end{figure}
 
 \section{System Testing and Validation}
@@ -150,7 +150,7 @@ The following SQL query, shown in Figure~\ref{sql:counting-pubs-with-diabetes} b
   SELECT COUNT(DISTINCT Id) FROM Publication
   WHERE Abstract LIKE "%diabetes%";
 \end{minted}
-\caption{Counting the number of publications with word ``diabetes'' in SQL}\label{sql:counting-pubs-with-diabetes}
+\caption[SQL Query to count publications with the word ``diabetes'']{\textbf{Finding the number of Publications whose Abstract have the word ``diabetes'' from the GN database.}  This query shows the number of distinct publications tha contain the word ``diabetes'' in their abstract from the GN SQL database.}\label{sql:counting-pubs-with-diabetes}
 \end{figure}
 
 Similarly, Figure~\ref{sparql:counting-pubs-with-diabetes} below shows the corresponding SPARQL query use to count the number of publications in RDF\@.
@@ -168,7 +168,7 @@ SELECT COUNT(DISTINCT ?paper) WHERE {
        ?abstract bif:contains "diabetes" .
 }
 \end{minted}
-\caption{Counting the number of publications with word ``diabetes'' in SPARQL}\label{sparql:counting-pubs-with-diabetes}
+\caption[SPARQL Query to count publications with the word ``diabetes'']{\textbf{Finding the number of publications whose abstract have the word ``diabetes'' from Virtuoso in SPARQL.}  This query shows the number of distinct publications tha contain the word ``diabetes'' in their abstract using SPARQL.}\label{sparql:counting-pubs-with-diabetes}
 \end{figure}
 
 
@@ -180,25 +180,27 @@ SQL & SPARQL \\[0pt]
 \toprule
 22 & 22\\[0pt]
 \end{tabular}
-\caption{Counting the number of Publications that reference ``diabetes'' in the abstract}\label{table:count-diabetes-publications}
+\caption[Comparison of publication count with "diabetes" in abstracts: SQL vs SPARQL.]{\textbf{Getting the number of publications with the word ``diabetes'' in the abstracts: SQL vs SPARQL.}  Here, we get the same exact count of 22.}\label{table:count-diabetes-publications}
 \end{table}
 
 The performance metrics is shown in Table~\ref{table:perf-1} below:
 
 \begin{table}[H]
-\begin{tabular}{rr}
-SQL (seconds) & SPARQL (seconds)\\[0pt]
+\begin{tabular}{r|rr}
+& SQL (seconds) & SPARQL (seconds)\\[0pt]
 \toprule
-0.09 & 0.014\\[0pt]
-0.08 & 0.017\\[0pt]
-0.10 & 0.016\\[0pt]
-0.11 & 0.014\\[0pt]
-0.09 & 0.015\\[0pt]
+& 0.09 & 0.014\\[0pt]
+& 0.08 & 0.017\\[0pt]
+& 0.10 & 0.016\\[0pt]
+& 0.11 & 0.014\\[0pt]
+& 0.09 & 0.015\\[0pt]
+\toprule
+\textit{Mean:} & 0.094 & 0.0152\\[0pt]
 \end{tabular}
-\caption{Performance results: Figure~\ref{sql:counting-pubs-with-diabetes} versus Figure~\ref{sql:counting-pubs-with-diabetes} }\label{table:perf-1}
+\caption[Performance comparison in seconds: publication count with "diabetes" (SQL vs SPARQL).]{\textbf{Comparing how fast it takes to get the number of publications with the word ``diabetes'' in the abstract.}}\label{table:perf-1}
 \end{table}
 
-The following query, shown in Figure~\ref{sql:counting-phenotypes-with-diabetes}, is more complicated and counts the number of phenotypes that are related to diabetes:
+The following query, shown in Figure~\ref{sql:counting-phenotypes-with-diabetes}, is more complicated and counts the number of phenotype datasets that are related to diabetes:
 
 \begin{figure}[H]
 \centering
@@ -214,7 +216,7 @@ FROM
 WHERE
   Publication.Abstract LIKE "%diabetes%";
 \end{minted}
-\caption{Counting the number of phenotypes related to diabetes in SQL}\label{sql:counting-phenotypes-with-diabetes}
+\caption[SQL Query to count the number of phenotypes with the word ``diabetes'']{\textbf{Finding the number of phenotypes related to diabetes from the GN database.}  The SQL query is more complex because it requires multiple table joins (I.e., PublishXRef, Publication, and Phenotype) and prior knowledge of the schema to understand the relationships.  Without context, it's difficult to know what each table represents.}\label{sql:counting-phenotypes-with-diabetes}
 \end{figure}
 
 The corresponding SPARQL query, shown in Figure~\ref{sparql:counting-phenotypes-with-diabetes}, is:
@@ -235,7 +237,7 @@ SELECT COUNT(DISTINCT ?phenotype) WHERE {
                   dct:isReferencedBy ?paper .
 }
 \end{minted}
-\caption{Counting the number of phenotypes related to diabetes in SPARQL}\label{sparql:counting-phenotypes-with-diabetes}
+\caption[SPARQL Query to count the number of phenotypes with the word ``diabetes'']{\textbf{Finding the number of phenotypes related to diabetes from the GN database.}  This SPARQL query is simpler and less complex compared to it's alternative SQL query---Figure~\ref{sql:counting-phenotypes-with-diabetes}---because it directly expresses relationships using intuitive RDF triples and ontology terms like \textit{fabio:ResearchPaper} and \textit{gnc:Phenotype}.  This makes it easier to understand without needing prior knowledge of the database schema or explicit table joins, unlike the SQL query, which requires joining multiple tables and navigating their relationships manually.}\label{sparql:counting-phenotypes-with-diabetes}
 \end{figure}
 
 The results of Figure~\ref{sql:counting-phenotypes-with-diabetes} and Figure~\ref{sparql:counting-phenotypes-with-diabetes} and are shown in Table~\ref{table:counting-phenotypes-with-diabetes}:
@@ -261,7 +263,7 @@ SQL (seconds) & SPARQL (seconds)\\[0pt]
 0.18 & 0.016\\[0pt]
 0.17 & 0.009\\[0pt]
 \end{tabular}
-\caption{Performance results: Figure~\ref{sql:counting-phenotypes-with-diabetes} versus Figure~\ref{sparql:counting-phenotypes-with-diabetes} }\label{table:perf-2}
+\caption[Performance comparison in seconds: phenotype datasets related to diabetes (SQL vs SPARQL)]{\textbf{Comparing how fast it takes to get the number of phenotype datasets with the word ``diabetes''.}}\label{table:perf-2}
 \end{table}
 
 A more complicated query that counts the number of datasets under a given InbredSet group that have phenotypes related to diabetes is shown in Figure~\ref{sql:datasets-phenotypes-diabetes}.
@@ -286,7 +288,7 @@ FROM
 WHERE 
   Publication.Abstract LIKE "%diabetes%";
 \end{minted}
-\caption{SQL query that counts the number of datasets under a given groups that have phenotypes related to diabetes}\label{sql:datasets-phenotypes-diabetes}
+\caption[SQL query to count diabetes-related phenotype datasets across different inbredset groups]{\textbf{SQL Query to count the number of datasets across different inbredset groups that have phenotypes related to diabetes.}}\label{sql:datasets-phenotypes-diabetes}
 \end{figure}
 
 The corresponding SPARQL query is shown in Figure~\ref{sparql:datasets-phenotypes-diabetes}.
@@ -314,7 +316,7 @@ SELECT COUNT(DISTINCT ?dataset) WHERE {
                   
 }
 \end{minted}
-\caption{SPARQL query that counts the number of datasets under a given inbredset group that have phenotypes related to diabetes}\label{sparql:datasets-phenotypes-diabetes}
+\caption[SPARQL query to count diabetes-related phenotype datasets across different inbredset group]{\textbf{SPARQL Query to count the number of datasets across different inbredset groups that have phenotypes related to diabetes.}}\label{sparql:datasets-phenotypes-diabetes}
 \end{figure}
 
 The results of Figure~\ref{sql:datasets-phenotypes-diabetes} and Figure~\ref{sparql:datasets-phenotypes-diabetes} and are shown in Table~\ref{table:datasets-phenotypes-diabetes}:
@@ -340,7 +342,7 @@ SQL (seconds)) & SPARQL (seconds)\\[0pt]
 38.53 & 0.118\\[0pt]
 38.50 & 0.696\\[0pt]
 \end{tabular}
-\caption{Performance results: Figure~\ref{sparql:datasets-phenotypes-diabetes} versus Figure~\ref{sparql:datasets-phenotypes-diabetes} }\label{table:perf-3}
+\caption[Performance comparison in seconds: Counting diabetes-related phenotype datasets across different inbredset group]{\textbf{Comparing how fast it takes to get the number of datasets across different inbredset groups that have phenotypes related to diabetes.}}\label{table:perf-3}
 \end{table}
 
 \subsection{Query Output Quality}
@@ -352,7 +354,7 @@ Consider the SQL query, shown in Figure~\ref{sql:mouse}, which fetches all the d
 \begin{minted}{SQL}
 SELECT * FROM Species WHERE Name="Mouse" \G
 \end{minted}
-\caption{Fetching the details about a Mouse in SQL}\label{sql:mouse}
+\caption[SQL: Fetching mouse details from Species table]{\textbf{SQL query to retrieve mouse details from Species table.}}\label{sql:mouse}
 \end{figure}
 
 The corresponding results are illustrated in Figure~\ref{sql:mouse-results}.
@@ -371,7 +373,7 @@ FamilyOrderId: 1
    TaxonomyId: 10090
       OrderId: 15
 \end{minted}
-\caption{Fetching details of the Mouse Species from the SQL store}\label{sql:mouse-results}
+\caption[SQL Results: Fetching mouse details from Species table]{\textbf{Mouse details from Species table.}  This example illustrates the SQL tabular result structure, which lacks semantic context for the columns unless defined elsewhere.}\label{sql:mouse-results}
 \end{figure}
 
 The corresponding sparql query is shown in Figure~\ref{sparql:mouse}:
@@ -388,7 +390,7 @@ CONSTRUCT {
            ?predicate ?object .
 }
 \end{minted}
-\caption{Fetching details of the Mouse Species using a SPARQL SELECT}\label{sparql:mouse}
+\caption[SPARQL: Fetching mouse details]{SPARQL SELECT query to retrieve mouse details from Species table.}\label{sparql:mouse}
 \end{figure}
 
 The enriched results of Figure~\ref{sparql:mouse} are illustrated in Figure~\ref{figure:mouse-sparql-results}
@@ -428,7 +430,7 @@ The enriched results of Figure~\ref{sparql:mouse} are illustrated in Figure~\ref
   "prefLabel": "Mouse (Mus musculus, mm10)"
 }
 \end{minted}
-\caption{Fetching results in a compacted json-ld form related to the Mouse species}\label{figure:mouse-sparql-results}
+\caption[SPARQL Results: Fetching mouse details]{\textbf{Mouse details in json-ld format from Genenetwork Graph in Virtuoso.}  Here, we can see that json-ld provides richer semantic context by clearly defining relationships and attributes through standardized vocabularies and links to relevant resources.}\label{figure:mouse-sparql-results}
 \end{figure}
 
 A common operation done in GeneNetwork is to search GeneRIF entries from NCBI to search given probesets for key terms belonging to a given species.   Figure~\ref{sql:search-ncbi} shows how such a query in SQL looks like:
@@ -458,7 +460,7 @@ ORDER BY
 LIMIT 
   1\G
 \end{minted}
-\caption{SQL Search for GeneRIF entries from NCBI for the keywords ``diabetes'' that belong to the mouse species}\label{sql:search-ncbi}
+\caption[SQL: Search for GeneRIF entries from NCBI for the keyword ``diabetes'' that belongs to the mouse species]{\textbf{SQL Search for GeneRIF entries from NCBI for the keywords ``diabetes'' that belong to the mouse species}}\label{sql:search-ncbi}
 \end{figure}
 
 The results of Figure~\ref{sql:search-ncbi} are shown in Figure~\ref{sql:ncbi-results}.
@@ -489,7 +491,7 @@ The results of Figure~\ref{sql:search-ncbi} are shown in Figure~\ref{sql:ncbi-re
     VersionId: 1
 1 row in set (0.01 sec)
 \end{minted}
-\caption{Results of SQL search for GeneRIF from NCBI for the keywords ``diabetes'' that belong to the mouse species}\label{sql:ncbi-results}
+\caption[SQL Results: Search for GeneRIF entries from NCBI for the keyword ``diabetes'' that belongs to the mouse species]{Results of SQL search for GeneRIF from NCBI for the keywords ``diabetes'' that belong to the mouse species}\label{sql:ncbi-results}
 \end{figure}
 
 The corresponding SPARQL query for Figure~\ref{sql:search-ncbi} is shown in Figure:~\ref{sparql:ncbi-rif}:
@@ -522,12 +524,14 @@ _:node rdf:type gnc:NCBIWikiEntry ;
 ?comment bif:contains "diabetes" .
 } ORDER BY ASC(?comment)
 \end{minted}
-\caption{SPARQL Search for GeneRIF entries from NCBI for the keywords ``diabetes'' that belong to the mouse species}\label{sparql:ncbi-rif}
+\caption[SPARQL: Search for GeneRIF entries from NCBI for the keyword ``diabetes'' that belongs to the mouse species]{\textbf{SPARQL Search for GeneRIF entries from NCBI for the keywords ``diabetes'' that belong to the mouse species}}\label{sparql:ncbi-rif}
 \end{figure}
 
 The corresponding results for Figure~\ref{sparql:ncbi-rif} are shown below:
 
-\begin{mintedbox}{json-ld}[]
+\begin{figure}[H]
+\centering
+\begin{minted}[breaklines]{json-ld}
 {
   "@context": {
     "hasGeneId": {
@@ -551,6 +555,12 @@ The corresponding results for Figure~\ref{sparql:ncbi-rif} are shown below:
     "shortName": {
       "@id": "http://genenetwork.org/term/shortName"
     },
+\end{minted}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minted}[breaklines, breakanywhere=True]{json-ld}
     "isDefinedBy": {
       "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#isDefinedBy",
       "@type": "@id"
@@ -595,6 +605,12 @@ The corresponding results for Figure~\ref{sparql:ncbi-rif} are shown below:
       "hasGeneId": "http://www.ncbi.nlm.nih.gov/gene?cmd=Retrieve&dopt=Graphics&list_uids=14526",
       "hasVersionId": 1,
       "created": "2010-10-23T06:10:00",
+\end{minted}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{minted}[breaklines, breakanywhere=True]{json-ld}
       "comment": {
         "@type": "http://www.w3.org/2001/XMLSchema#string",
         "@value": "Data show that in an animal model of diabetes induced by alloxan, progression of hyperglycemia was significantly attenuated in mice given the Ad-GLP-1 vector compared with control mice."
@@ -603,9 +619,9 @@ The corresponding results for Figure~\ref{sparql:ncbi-rif} are shown below:
     }
   ]
 }
-\end{mintedbox}
-%% \caption{SPARQL Search Results for GeneRIF entries from NCBI for the keywords ``diabetes'' that belong to the mouse species}\label{sparql:ncbi-rif-results}
-%% \end{figure}
+\end{minted}
+\caption[SPARQL Results: Search for GeneRIF entries from NCBI for the keyword ``diabetes'' that belongs to the mouse species]{\textbf{SPARQL Search for GeneRIF entries from NCBI for the keywords ``diabetes'' that belong to the mouse species}}\label{sparql:ncbi-rif-results}
+\end{figure}
 
 From the above results, we see that the SPARQL query results offer richer contextual information.  Each subject and predicate field, analogous to SQL columns, is linked to a resource providing additional definitions.  Furthermore, the versatility of SPARQL extends to the ability to output results to HTML, CSV, TSV, JSON, JSON-LD and other formats~\footnote{http://docs.openlinksw.com/virtuoso/rdfsparql.html\#rdfsparqlimplementatioptragmassfs}.
 
@@ -628,7 +644,7 @@ SERVICE <https://query.wikidata.org/sparql> {
   }
 }
 \end{minted}
-\caption{Using a federated query to get the longest recorded life span of a mouse from Wikidata}\label{sparql:federated}
+\caption[Federated Query to get longest recorded life span of a mouse from Wikidata]{\textbf{Using a Federated Query.}  In this example, a federated query is used to annotate Genenetwork data using metadata from an external service, Wikidata, to fetch the longest recorded life span of a mouse.}\label{sparql:federated}
 \end{figure}
 
 %%% Local Variables:
