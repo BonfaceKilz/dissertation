@@ -4,25 +4,11 @@
 
 This dissertation aimed to investigate prior research and studies concerning the GeneNetwork platform and RDF to identify the existing limitations of GeneNetwork related to SQL and explore how RDF could potentially mitigate these limitations.  Additionally, a domain-specific language (DSL) was developed and implemented to transform GeneNetwork metadata from SQL to RDF, followed by performance bench marking and output quality assessments.  This chapter discusses the performance benchmarks and output quality assessment that were conducted in addition to highlighting additional benefits that can be gained by using RDF to store metadata.
 
-
 \section{Performance Analysis}
 
 The conducted performance tests compared SQL and SPARQL queries for retrieving information related to diabetes from a GeneNetwork SQL store.  The initial SQL query aimed to count the number of publications with abstracts containing the term ``diabetes''.  Correspondingly, the SPARQL query transformed this SQL query into RDF format to achieve the same result using RDF data model constructs.  More complicated queries were constructed to benchmark the performance of RDF against SQL.\@
 
-Table~\ref{table:avg-query-exec} shows the performance difference on average for the 3 benchmarks conducted:
-
-\begin{table}[H]
-\begin{tabular}{rrr}
-SQL & Virtuoso & \% difference\\[0pt]
-\toprule
-0.095 & 0.0152 & 84\\[0pt]
-0.178 & 0.0134 & 92\\[0pt]
-39.07 & 0.4034 & 98.96\\[0pt]
-\end{tabular}
-\caption{Average query execution performance}\label{table:avg-query-exec}
-\end{table}
-
-These performance results highlight notable disparities in execution times between SQL and SPARQL queries.  Across multiple executions, the SPARQL query consistently exhibited faster response times compared to its SQL equivalent.  For example, the SQL query executed within milliseconds (0.08~-~0.11 seconds), whereas the equivalent SPARQL query consistently completed in mere fractions of a second (0.013~-~0.017 seconds).  Furthermore, as the complexity of the queries increased, SQL experienced a more pronounced slowdown compared to SPARQL\@.
+Table~\ref{table:perf-1}, Table~\ref{table:perf-2} and Table~\ref{table:perf-3} show the comparison in preformance between SQL queries against MariaDB and SPARQL against Virtuoso.  These performance results highlight notable disparities in execution times between SQL and SPARQL queries.  Across multiple executions, the SPARQL query consistently exhibited faster response times compared to its SQL equivalent.  For example, the SQL query executed within milliseconds (0.08~-~0.11 seconds), whereas the equivalent SPARQL query consistently completed in mere fractions of a second (0.013~-~0.017 seconds).  Furthermore, as the complexity of the queries increased, SQL experienced a more pronounced slowdown compared to SPARQL\@.
 
 \section{Output Quality and FAIR Data}
 

@@ -141,6 +141,7 @@ A more complete example is shown in Figure~\ref{code:with-documentation-example}
 In this section, various tests were done to assess the performance and functionality of the self-documenting DSL designed for transformed tables into RDF format.  In addition to assessing the performance of the SPARQL queries from the generated RDF, the quality of the output is also assessed, and federated queries that are impossible to do in SQL are highlighted.
 
 \subsection{Query Quality and Execution Performance}
+\label{sec:benchmark}
 
 The following SQL query, shown in Figure~\ref{sql:counting-pubs-with-diabetes} below, was run several times to count the number of publications in the Genenetwork SQL store related to diabetes:
 
@@ -171,36 +172,24 @@ SELECT COUNT(DISTINCT ?paper) WHERE {
 \caption[SPARQL Query to count publications with the word ``diabetes'']{\textbf{Finding the number of publications whose abstract have the word ``diabetes'' from Virtuoso in SPARQL.}  This query shows the number of distinct publications tha contain the word ``diabetes'' in their abstract using SPARQL.}\label{sparql:counting-pubs-with-diabetes}
 \end{figure}
 
-
-Table~\ref{table:count-diabetes-publications} below shows the results of running the above 2 queries:
-
-\begin{table}[H]
-\begin{tabular}{rr}
-SQL & SPARQL \\[0pt]
-\toprule
-22 & 22\\[0pt]
-\end{tabular}
-\caption[Comparison of publication count with "diabetes" in abstracts: SQL vs SPARQL.]{\textbf{Getting the number of publications with the word ``diabetes'' in the abstracts: SQL vs SPARQL.}  Here, we get the same exact count of 22.}\label{table:count-diabetes-publications}
-\end{table}
-
-The performance metrics is shown in Table~\ref{table:perf-1} below:
+In the 2 queries above, we get 22 publications that have the word ``diabetes'' in their abstract.  The performance metrics of these 2 queries is shown in Table~\ref{table:perf-1} below:
 
 \begin{table}[H]
-\begin{tabular}{r|rr}
-& SQL (seconds) & SPARQL (seconds)\\[0pt]
+\begin{tabular}{r|rr|r}
+& SQL (seconds) & SPARQL (seconds) & \% perf. difference\\[0pt]
 \toprule
-& 0.09 & 0.014\\[0pt]
-& 0.08 & 0.017\\[0pt]
-& 0.10 & 0.016\\[0pt]
-& 0.11 & 0.014\\[0pt]
-& 0.09 & 0.015\\[0pt]
+& 0.09 & 0.014 & 84.44\\[0pt]
+& 0.08 & 0.017 & 78.75\\[0pt]
+& 0.10 & 0.016 & 84.00\\[0pt]
+& 0.11 & 0.014 & 87.27\\[0pt]
+& 0.09 & 0.015 & 83.33\\[0pt]
 \toprule
-\textit{Mean:} & 0.094 & 0.0152\\[0pt]
+\textit{Mean:} & 0.094 & 0.0152 & 83.33\\[0pt]
 \end{tabular}
-\caption[Performance comparison in seconds: publication count with "diabetes" (SQL vs SPARQL).]{\textbf{Comparing how fast it takes to get the number of publications with the word ``diabetes'' in the abstract.}}\label{table:perf-1}
+\caption[Performance comparison in seconds: publication count with "diabetes" (SQL vs SPARQL)]{\textbf{Comparing how fast it takes to get the number of publications with the word ``diabetes'' in the abstract.}}\label{table:perf-1}
 \end{table}
 
-The following query, shown in Figure~\ref{sql:counting-phenotypes-with-diabetes}, is more complicated and counts the number of phenotype datasets that are related to diabetes:
+The following query, shown in Figure~\ref{sql:counting-phenotypes-with-diabetes}, is more complicated and counts the number of phenotypes that are related to diabetes:
 
 \begin{figure}[H]
 \centering
@@ -240,33 +229,24 @@ SELECT COUNT(DISTINCT ?phenotype) WHERE {
 \caption[SPARQL Query to count the number of phenotypes with the word ``diabetes'']{\textbf{Finding the number of phenotypes related to diabetes from the GN database.}  This SPARQL query is simpler and less complex compared to it's alternative SQL query---Figure~\ref{sql:counting-phenotypes-with-diabetes}---because it directly expresses relationships using intuitive RDF triples and ontology terms like \textit{fabio:ResearchPaper} and \textit{gnc:Phenotype}.  This makes it easier to understand without needing prior knowledge of the database schema or explicit table joins, unlike the SQL query, which requires joining multiple tables and navigating their relationships manually.}\label{sparql:counting-phenotypes-with-diabetes}
 \end{figure}
 
-The results of Figure~\ref{sql:counting-phenotypes-with-diabetes} and Figure~\ref{sparql:counting-phenotypes-with-diabetes} and are shown in Table~\ref{table:counting-phenotypes-with-diabetes}:
+In both queries above, we get 105 phenotypes that are related to diabetes.  The performance of these 2 queries is tabulated in Table~\ref{table:perf-2} below:
 
 \begin{table}[H]
-\begin{tabular}{rr}
-SQL & SPARQL \\[0pt]
+\begin{tabular}{r|rr|r}
+& SQL (seconds) & SPARQL (seconds) & \% perf. difference\\[0pt]
 \toprule
-105 & 105\\[0pt]
-\end{tabular}
-\caption{Counting the number of phenotypes that reference ``diabetes'' in the abstract}\label{table:counting-phenotypes-with-diabetes}
-\end{table}
-
-The corresponding performance metrics, shown in Table~\ref{table:perf-2}, are:
-
-\begin{table}[H]
-\begin{tabular}{rr}
-SQL (seconds) & SPARQL (seconds)\\[0pt]
+& 0.19 & 0.013 & 93.16\\[0pt]
+& 0.18 & 0.015 & 91.67\\[0pt]
+& 0.17 & 0.014 & 91.76\\[0pt]
+& 0.18 & 0.016 & 91.11\\[0pt]
+& 0.17 & 0.009 & 94.71\\[0pt]
 \toprule
-0.19 & 0.013\\[0pt]
-0.18 & 0.015\\[0pt]
-0.17 & 0.014\\[0pt]
-0.18 & 0.016\\[0pt]
-0.17 & 0.009\\[0pt]
+\textit{mean} & 0.178 & 0.0134 & 92.47\\[0pt]
 \end{tabular}
 \caption[Performance comparison in seconds: phenotype datasets related to diabetes (SQL vs SPARQL)]{\textbf{Comparing how fast it takes to get the number of phenotype datasets with the word ``diabetes''.}}\label{table:perf-2}
 \end{table}
 
-A more complicated query that counts the number of datasets under a given InbredSet group that have phenotypes related to diabetes is shown in Figure~\ref{sql:datasets-phenotypes-diabetes}.
+A more complicated query that counts the number of datasets across different InbredSet group that have phenotypes related to diabetes is shown in Figure~\ref{sql:datasets-phenotypes-diabetes}.
 
 \begin{figure}[H]
 \centering
@@ -319,28 +299,19 @@ SELECT COUNT(DISTINCT ?dataset) WHERE {
 \caption[SPARQL query to count diabetes-related phenotype datasets across different inbredset group]{\textbf{SPARQL Query to count the number of datasets across different inbredset groups that have phenotypes related to diabetes.}}\label{sparql:datasets-phenotypes-diabetes}
 \end{figure}
 
-The results of Figure~\ref{sql:datasets-phenotypes-diabetes} and Figure~\ref{sparql:datasets-phenotypes-diabetes} and are shown in Table~\ref{table:datasets-phenotypes-diabetes}:
+From the above 2 queries - Figure~\ref{sql:datasets-phenotypes-diabetes} and Figure~\ref{sparql:datasets-phenotypes-diabetes} - we get 2 different dataset counts.  The SQL query returns 406 datasets, while the SPARQL query returns 419 datasets.  The performance metrics of thes 2 queries are tabulated in Table~\ref{table:perf-3} below.
 
 \begin{table}[H]
-\begin{tabular}{rr}
-SQL & SPARQL \\[0pt]
+\begin{tabular}{r|rr|r}
+& SQL (seconds) & SPARQL (seconds) & \% perf. difference\\[0pt]
 \toprule
-406 & 419\\[0pt]
-\end{tabular}
-\caption{Counting the number of phenotypes that reference ``diabetes'' in the abstract}\label{table:datasets-phenotypes-diabetes}
-\end{table}
-
-The performance metrics are shown in Table~\ref{table:perf-3}.
-
-\begin{table}[H]
-\begin{tabular}{rr}
-SQL (seconds)) & SPARQL (seconds)\\[0pt]
+& 38.33 & 0.649 & 98.31 \\[0pt]
+& 38.46 & 0.124 & 99.68\\[0pt]
+& 41.53 & 0.430 & 98.96\\[0pt]
+& 38.53 & 0.118 & 99.69\\[0pt]
+& 38.50 & 0.696 & 98.19\\[0pt]
 \toprule
-38.33 & 0.649\\[0pt]
-38.46 & 0.124\\[0pt]
-41.53 & 0.430\\[0pt]
-38.53 & 0.118\\[0pt]
-38.50 & 0.696\\[0pt]
+\textit{mean:} & 39.07 & 0.4034 & 98.97\\[0pt]
 \end{tabular}
 \caption[Performance comparison in seconds: Counting diabetes-related phenotype datasets across different inbredset group]{\textbf{Comparing how fast it takes to get the number of datasets across different inbredset groups that have phenotypes related to diabetes.}}\label{table:perf-3}
 \end{table}
